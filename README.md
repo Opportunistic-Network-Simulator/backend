@@ -1,7 +1,6 @@
-# Finances
+# IME-Opportunistic-Network-Simulator
 
-Programas necessários:
+Spftwares necessários para desenvolvimento:
 - java versão 8
 - spring tool suite (com extensão do lombok) 
-- postegreSQL
-- postman
+- postegreSQL com o banco ime-ons criado
