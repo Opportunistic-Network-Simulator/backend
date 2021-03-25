@@ -16,6 +16,5 @@ import lombok.Setter;
 public class UploadMultipleFilesResponseDTO {
 	
 	private List<UploadFileResponse> uploadFileResponses;
-	private Integer numberOfRegistredProducts;
 
 }

@@ -14,5 +14,4 @@ import lombok.Setter;
 public class StoragedFileDTO {
 	
 	private String fileName;
-	private Integer numberOfRegistredProducts;
 }
