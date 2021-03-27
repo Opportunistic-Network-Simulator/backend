@@ -23,7 +23,6 @@ public class SimulationService {
 	}
 	
 	public List<Meet> generateMeetingTrace(List<Pair> pairsList) {
-		
 		this.fel.clear();
 		for(Pair pair : pairsList) {
 			if(pair.getRate() != 0) this.generatePairMeetings(pair);

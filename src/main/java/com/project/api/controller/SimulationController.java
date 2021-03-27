@@ -17,7 +17,7 @@ import com.project.model.entity.Pair;
 import com.project.service.SimulationService;
 
 @RestController
-@CrossOrigin //para habilitar cors
+//@CrossOrigin //para habilitar cors
 @RequestMapping("/api/simulation")
 public class SimulationController {
 	
@@ -27,7 +27,6 @@ public class SimulationController {
 	@PostMapping("/generateMeetingTrace")
 	public ResponseEntity generateMeetingTrace(@RequestBody PairsDTO pairsDto) {
 		List<Meet> fel = simulationService.generateMeetingTrace(pairsDto.getPairsList());
-		
 		return ResponseEntity.ok(fel);
 	}
 }
