@@ -11,9 +11,9 @@ import com.project.api.dto.StoragedFileDTO;
 import com.project.exception.BusinessRuleException;
 import com.project.exception.FileStorageException;
 import com.project.exception.MyFileNotFoundException;
-import com.project.model.entity.Progress;
+//import com.project.model.entity.Progress;
 import com.project.model.entity.FileStorageProperties;
-import com.project.model.repository.ProgressRepository;
+//import com.project.model.repository.ProgressRepository;
 
 
 import java.io.BufferedInputStream;
@@ -46,8 +46,8 @@ public class FileStorageService {
     private final Path fileStorageLocation;
 	private static final int BUFFER = 2048;
 	
-	@Autowired
-	ProgressRepository progressRepository;
+//	@Autowired
+//	ProgressRepository progressRepository;
 	
     @Autowired
     public FileStorageService(FileStorageProperties fileStorageProperties) throws JAXBException {
@@ -92,24 +92,24 @@ public class FileStorageService {
         
     }
 
-    public Double getUploadProgressByKey(String key) {
-    	Optional<Progress> progress = progressRepository.findByKey(key);
-    	if(!progress.isPresent()) {
-    		return 0.0;
-    	}
-    	return progress.get().getProgress();
-    	
-    }
+//    public Double getUploadProgressByKey(String key) {
+//    	Optional<Progress> progress = progressRepository.findByKey(key);
+//    	if(!progress.isPresent()) {
+//    		return 0.0;
+//    	}
+//    	return progress.get().getProgress();
+//    	
+//    }
     
-    public Progress deleteProgress(String key) {
-		Optional<Progress> progress = progressRepository.findByKey(key);
-		if(!progress.isPresent()) {
-			throw new BusinessRuleException("Chave de progresso inexistente");
-		}
-		progressRepository.delete(progress.get());
-		return progress.get();
-		
-	}
+//    public Progress deleteProgress(String key) {
+//		Optional<Progress> progress = progressRepository.findByKey(key);
+//		if(!progress.isPresent()) {
+//			throw new BusinessRuleException("Chave de progresso inexistente");
+//		}
+//		progressRepository.delete(progress.get());
+//		return progress.get();
+//		
+//	}
 
     public Resource loadFileAsResource(String fileName) {
         try {
