@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
-import com.project.model.entity.Meet;
-import com.project.model.entity.Pair;
+import com.project.simulator.entity.Meet;
+import com.project.simulator.entity.Pair;
 
 public class Test {
 	

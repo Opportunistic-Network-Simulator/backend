@@ -1,4 +1,4 @@
-package com.project.model.entity;
+package com.project.simulator.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,14 +7,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
-@Builder 
-@NoArgsConstructor
 @AllArgsConstructor
 public class Meet implements Comparable<Meet>{
 	
-	Pair pair;
-	double instant; //meet instant in seconds
+	private Pair pair;
+	private double instant; //meet instant in seconds
 	
 	@Override
 	public int compareTo(Meet otherMeet) {
