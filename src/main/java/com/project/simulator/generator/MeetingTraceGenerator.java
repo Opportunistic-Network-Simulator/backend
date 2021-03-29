@@ -10,7 +10,7 @@ public class MeetingTraceGenerator {
 		double lastMeetInstant = 0;
 
 		while(true) {
-			lastMeetInstant = lastMeetInstant + pair.generateDt();
+			lastMeetInstant = lastMeetInstant + pair.generateDt(lastMeetInstant == 0);
 			if(lastMeetInstant > totalSimulationTime) break;
 			meetingTrace.addMeet(new Meet(pair, lastMeetInstant));
 		}

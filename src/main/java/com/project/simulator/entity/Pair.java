@@ -34,8 +34,13 @@ public class Pair {
 		this(node1, node2, rate, 0);
 	}
 	
-	public double generateDt() {
-		double rate = Math.random() * (maxRate - minRate) + minRate;
+	public double generateDt(boolean firstMeet) {
+		double rate;
+		if(firstMeet) {
+			rate = (maxRate + minRate)/2.0; //in first meet, must be use the informed rate
+		} else {
+			rate = Math.random() * (maxRate - minRate) + minRate; // random rate by uniform distribution in specified interval	
+		}
 		return 1.0/rate;
 	}
 	
