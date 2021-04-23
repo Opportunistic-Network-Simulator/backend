@@ -41,7 +41,8 @@ public class Pair {
 		} else {
 			rate = Math.random() * (maxRate - minRate) + minRate; // random rate by uniform distribution in specified interval	
 		}
-		return 1.0/rate;
+		double u = Math.random();
+		return -Math.log(1 - u)/rate; // inverse transformation method
 	}
 	
 	public boolean pairMeets() {

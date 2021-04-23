@@ -15,13 +15,9 @@ public class Meet implements Comparable<Meet>{
 	
 	@Override
 	public int compareTo(Meet otherMeet) {
-		if(this.instant > otherMeet.instant) {
-			return 1; //increasing way
-		}
-		else if(this.instant < otherMeet.instant) {
-			return -1;
-		}
-		else return 0;
+		if(this.instant > otherMeet.instant) return 1; //increasing way
+		if(this.instant < otherMeet.instant) return -1;
+		return 0;
 	}
 	
 }
