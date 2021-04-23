@@ -12,7 +12,7 @@ import com.project.simulator.entity.Pair;
 public class Test {
 	
 	public static void main(String[] args) throws IOException{
-		generateSamples(2.5, 1000);
+		generateSamples(2.5, 10);
 	}
 	
 	public static void generateSamples(double parameter, int numberOfSamples) throws IOException {
@@ -25,6 +25,7 @@ public class Test {
 		samples.sort();
 		String result = parameter + "\n" + samples.toString();
 		System.out.println(result);
+		//the path below must be at the same plot code python directory
 		FileWriter Writer = new FileWriter("\\\\wsl$\\Ubuntu-20.04\\home\\gabriel\\dev\\PFC-plot-test\\ExperimentalCDF.txt");
 	    Writer.write(result);
 	    Writer.close();
