@@ -1,17 +1,17 @@
-package com.project.test;
+package com.project.simulator.entity;
+
+import java.util.List;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 public class Node {
 	
-	private int id;
-	private boolean message;
+	private long id;
+	private List<Message> messages;
 
 }

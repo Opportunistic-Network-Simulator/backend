@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class PairsDTO {
 
 	private List<PairDTO> pairsList;
-	double totalSimulationTime;
+	private long numberOfNodes;
+	private double totalSimulationTime;
 	
 }

@@ -9,9 +9,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PairDTO {
 
-	private int node1;
-	private int node2;
+	private long node1;
+	private long node2;
 	private double rate;
 	private double variabilityDegree;
+	
+	public PairDTO(long node1, long node2){
+		this.node1 = node1;
+		this.node2 = node2;
+	}
 	
 }

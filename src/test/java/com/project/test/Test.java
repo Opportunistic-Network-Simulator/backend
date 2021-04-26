@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 
 import com.project.simulator.entity.Meet;
-import com.project.simulator.entity.Pair;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -21,16 +20,21 @@ public class Test {
 	private Node node;
 	
 	public static void main(String[] args) throws IOException{
-		Node node = Node.builder().id(0).message(false).build();
 		
-		List<Node> nodes = new ArrayList<>();
-		nodes.add(node);
-		System.out.println(nodes.get(0).isMessage());
-		Node node2 = new Node(nodes.get(0)); 
-		node2.setMessage(true);
-		System.out.println(nodes.get(0).isMessage());
+		NodeGenerator nodeGenerator = new NodeGenerator(3);
+		List<Node> nodes = nodeGenerator.nodes;
+		Pair pair01 = new Pair(nodes.get(0), nodes.get(1));
+		Pair pair02 = new Pair(nodes.get(0), nodes.get(2));
+		Node node0 = pair01.getNode1();
+		System.out.println("NodeGen: " + nodes.get(0).isMessage());
+		System.out.println("pair01: " + pair01.getNode1().isMessage());
+		System.out.println("pair02: " + pair02.getNode1().isMessage());
+		node0.setMessage(true);
+		System.out.println("NodeGen: " + nodes.get(0).isMessage());
+		System.out.println("pair01: " + pair01.getNode1().isMessage());
+		System.out.println("pair02: " + pair02.getNode1().isMessage());
 	
-}
+	}
 }
 
 

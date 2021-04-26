@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Pair {
 	
-	private int node1;
-	private int node2;
+	private Node node1;
+	private Node node2;
 	private double minRate;
 	private double maxRate;
 	
-	public Pair(int node1, int node2, double rate, double variabilityDegree) throws ValueInputException {
-		if(node1 >= node2) {
+	public Pair(Node node1, Node node2, double rate, double variabilityDegree) throws ValueInputException {
+		if(node1.getId() >= node2.getId()) {
 			throw new ValueInputException("Node 1 value is bigger than node 2");
 		}
 		
@@ -30,7 +30,7 @@ public class Pair {
 		this.maxRate = rate*(1 + variabilityDegree);
 	}
 	
-	public Pair(int node1, int node2, double rate) throws ValueInputException {
+	public Pair(Node node1, Node node2, double rate) throws ValueInputException {
 		this(node1, node2, rate, 0);
 	}
 	

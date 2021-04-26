@@ -11,11 +11,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.api.dto.MeetDTO;
+import com.project.api.dto.MeetingTraceDTO;
 import com.project.api.dto.PairDTO;
 import com.project.api.dto.PairsDTO;
 import com.project.service.SimulationService;
+import com.project.simulator.entity.Meet;
 import com.project.simulator.entity.MeetingTrace;
+import com.project.simulator.entity.Node;
 import com.project.simulator.entity.Pair;
+import com.project.simulator.generator.NodesGenerator;
 
 @RestController
 //@CrossOrigin //para habilitar cors
@@ -26,15 +31,31 @@ public class SimulationController {
 	private SimulationService simulationService;
 	
 	@PostMapping("/generateMeetingTrace")
-	public ResponseEntity<MeetingTrace> generateMeetingTrace(@RequestBody PairsDTO pairsDto) {
-		return ResponseEntity.ok(simulationService.generateMeetingTrace(convert(pairsDto.getPairsList()), pairsDto.getTotalSimulationTime()));
+	public ResponseEntity<MeetingTraceDTO> generateMeetingTrace(@RequestBody PairsDTO pairsDto) {
+		simulationService.generateNodes(pairsDto.getNumberOfNodes());
+		MeetingTrace response = simulationService.generateMeetingTrace(convertDtoToPair(pairsDto.getPairsList()), pairsDto.getTotalSimulationTime());
+		return ResponseEntity.ok(convertMeetingTraceToDto(response));
 	}
 	
-	private List<Pair> convert(List<PairDTO> pairs) {
-		List<Pair> result = new ArrayList<Pair>();
+	private List<Pair> convertDtoToPair(List<PairDTO> pairs) {
+		List<Pair> pairsList = new ArrayList<Pair>();
 		for(PairDTO pair : pairs) {
-			result.add(new Pair(pair.getNode1(), pair.getNode2(), pair.getRate(), pair.getVariabilityDegree()));
+			Node node1 = simulationService.findNodeById(pair.getNode1());
+			Node node2 = simulationService.findNodeById(pair.getNode2());
+			pairsList.add(new Pair(node1, node2, pair.getRate(), pair.getVariabilityDegree()));
 		}
-		return result;
+		return pairsList;
+	}
+	
+	private MeetingTraceDTO convertMeetingTraceToDto(MeetingTrace meetingTrace) {
+		MeetingTraceDTO meetingTraceDto = new MeetingTraceDTO();
+		for(Meet meet : meetingTrace.getMeetingTrace()) {
+			Pair pair = meet.getPair();
+			PairDTO pairDTO = new PairDTO(pair.getNode1().getId(), pair.getNode2().getId());
+			MeetDTO meetDto = new MeetDTO(pairDTO, meet.getInstant());
+			meetingTraceDto.addMeet(meetDto);
+		}
+		return meetingTraceDto;
+		
 	}
 }
