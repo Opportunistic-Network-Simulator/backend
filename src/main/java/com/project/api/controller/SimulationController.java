@@ -15,11 +15,13 @@ import com.project.api.dto.MeetDTO;
 import com.project.api.dto.MeetingTraceDTO;
 import com.project.api.dto.PairDTO;
 import com.project.api.dto.PairsDTO;
+import com.project.api.dto.SimulationResponseDTO;
 import com.project.service.SimulationService;
 import com.project.simulator.entity.Meet;
 import com.project.simulator.entity.MeetingTrace;
 import com.project.simulator.entity.Node;
 import com.project.simulator.entity.Pair;
+import com.project.simulator.generator.MessagesGenerator;
 import com.project.simulator.generator.NodesGenerator;
 
 @RestController
@@ -30,11 +32,13 @@ public class SimulationController {
 	@Autowired
 	private SimulationService simulationService;
 	
-	@PostMapping("/generateMeetingTrace")
-	public ResponseEntity<MeetingTraceDTO> generateMeetingTrace(@RequestBody PairsDTO pairsDto) {
+	@PostMapping("/executeSimulation")
+	public ResponseEntity<SimulationResponseDTO> generateMeetingTrace(@RequestBody PairsDTO pairsDto) {
 		simulationService.generateNodes(pairsDto.getNumberOfNodes());
-		MeetingTrace response = simulationService.generateMeetingTrace(convertDtoToPair(pairsDto.getPairsList()), pairsDto.getTotalSimulationTime());
-		return ResponseEntity.ok(convertMeetingTraceToDto(response));
+		simulationService.generateMessages();
+		MeetingTrace meetingTrace = simulationService.generateMeetingTrace(convertDtoToPair(pairsDto.getPairsList()), pairsDto.getTotalSimulationTime());
+		simulationService.executeSimulation(meetingTrace);
+		return ResponseEntity.ok(new SimulationResponseDTO(convertMeetingTraceToDto(meetingTrace), MessagesGenerator.messages));
 	}
 	
 	private List<Pair> convertDtoToPair(List<PairDTO> pairs) {
