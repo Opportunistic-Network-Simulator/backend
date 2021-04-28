@@ -19,10 +19,9 @@ import com.project.api.dto.SimulationResponseDTO;
 import com.project.service.SimulationService;
 import com.project.simulator.entity.Meet;
 import com.project.simulator.entity.MeetingTrace;
-import com.project.simulator.entity.Node;
+import com.project.simulator.entity.NodeGroup;
 import com.project.simulator.entity.Pair;
-import com.project.simulator.generator.MessagesGenerator;
-import com.project.simulator.generator.NodesGenerator;
+import com.project.simulator.entity.event.MessageGenerationEvent;
 
 @RestController
 //@CrossOrigin //para habilitar cors
@@ -34,19 +33,16 @@ public class SimulationController {
 	
 	@PostMapping("/executeSimulation")
 	public ResponseEntity<SimulationResponseDTO> generateMeetingTrace(@RequestBody PairsDTO pairsDto) {
-		simulationService.generateNodes(pairsDto.getNumberOfNodes());
-		simulationService.generateMessages();
+		NodeGroup nodes = simulationService.generateNodes(pairsDto.getNumberOfNodes());
+		List<MessageGenerationEvent> messageGenerationEventQueue = simulationService.generateMessages(nodes);
 		MeetingTrace meetingTrace = simulationService.generateMeetingTrace(convertDtoToPair(pairsDto.getPairsList()), pairsDto.getTotalSimulationTime());
-		simulationService.executeSimulation(meetingTrace);
-		return ResponseEntity.ok(new SimulationResponseDTO(convertMeetingTraceToDto(meetingTrace), MessagesGenerator.messages));
+		return ResponseEntity.ok(new SimulationResponseDTO(convertMeetingTraceToDto(meetingTrace), messageGenerationEventQueue));
 	}
 	
 	private List<Pair> convertDtoToPair(List<PairDTO> pairs) {
 		List<Pair> pairsList = new ArrayList<Pair>();
 		for(PairDTO pair : pairs) {
-			Node node1 = simulationService.findNodeById(pair.getNode1());
-			Node node2 = simulationService.findNodeById(pair.getNode2());
-			pairsList.add(new Pair(node1, node2, pair.getRate(), pair.getVariabilityDegree()));
+			pairsList.add(new Pair(pair.getNode1(), pair.getNode2(), pair.getRate(), pair.getVariabilityDegree()));
 		}
 		return pairsList;
 	}
@@ -55,7 +51,7 @@ public class SimulationController {
 		MeetingTraceDTO meetingTraceDto = new MeetingTraceDTO();
 		for(Meet meet : meetingTrace.getMeetingTrace()) {
 			Pair pair = meet.getPair();
-			PairDTO pairDTO = new PairDTO(pair.getNode1().getId(), pair.getNode2().getId());
+			PairDTO pairDTO = new PairDTO(pair.getNode1(), pair.getNode2());
 			MeetDTO meetDto = new MeetDTO(pairDTO, meet.getInstant());
 			meetingTraceDto.addMeet(meetDto);
 		}

@@ -1,14 +1,11 @@
 package com.project.simulator.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
-public class Meet implements Comparable<Meet>{
+public class Meet implements Comparable<Meet> {
 	
 	private Pair pair;
 	private double instant; //meet instant in seconds

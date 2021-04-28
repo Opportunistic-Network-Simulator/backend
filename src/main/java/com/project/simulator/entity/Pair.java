@@ -2,21 +2,18 @@ package com.project.simulator.entity;
 
 import com.project.simulator.exception.ValueInputException;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 public class Pair {
 	
-	private Node node1;
-	private Node node2;
+	private long node1;
+	private long node2;
 	private double minRate;
 	private double maxRate;
 	
-	public Pair(Node node1, Node node2, double rate, double variabilityDegree) throws ValueInputException {
-		if(node1.getId() >= node2.getId()) {
+	public Pair(long node1, long node2, double rate, double variabilityDegree) throws ValueInputException {
+		if(node1 >= node2) {
 			throw new ValueInputException("Node 1 value is bigger than node 2");
 		}
 		
@@ -30,7 +27,7 @@ public class Pair {
 		this.maxRate = rate*(1 + variabilityDegree);
 	}
 	
-	public Pair(Node node1, Node node2, double rate) throws ValueInputException {
+	public Pair(long node1, long node2, double rate) throws ValueInputException {
 		this(node1, node2, rate, 0);
 	}
 	

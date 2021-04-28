@@ -9,9 +9,8 @@ public class MeetingTraceGenerator {
 	private static void generatePairMeetings(MeetingTrace meetingTrace, Pair pair, double totalSimulationTime) {
 		double lastMeetInstant = 0;
 
-		while(true) {
+		while(lastMeetInstant < totalSimulationTime) {
 			lastMeetInstant = lastMeetInstant + pair.generateDt(lastMeetInstant == 0);
-			if(lastMeetInstant > totalSimulationTime) break;
 			meetingTrace.addMeet(new Meet(pair, lastMeetInstant));
 		}
 	}
