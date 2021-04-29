@@ -1,21 +1,5 @@
 package com.project.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.project.api.dto.StoragedFileDTO;
-import com.project.exception.BusinessRuleException;
-import com.project.exception.FileStorageException;
-import com.project.exception.MyFileNotFoundException;
-//import com.project.model.entity.Progress;
-import com.project.model.entity.FileStorageProperties;
-//import com.project.model.repository.ProgressRepository;
-
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -32,13 +16,25 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.project.api.dto.StoragedFileDTO;
+import com.project.exception.FileStorageException;
+import com.project.exception.MyFileNotFoundException;
+//import com.project.model.entity.Progress;
+import com.project.model.entity.FileStorageProperties;
+//import com.project.model.repository.ProgressRepository;
 
 @Service
 public class FileStorageService {

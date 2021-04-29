@@ -1,18 +1,22 @@
 package com.project.simulator.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class Node {
 	
 	private long id;
 	private List<Message> messages;
+	
+	public Node(long id) {
+		this.id = id;
+		this.messages = new ArrayList<Message>();
+	}
 	
 	public void addMessage(Message message) {
 		this.messages.add(message);
@@ -21,6 +25,7 @@ public class Node {
 	public void receiveMessage(Message message, double instant) {
 		if(this.messages.contains(message)) return; //não recebo msg que já tenho
 		this.messages.add(message);
+		message.notifyNewNode(this.id, instant);
 		if(message.getDestinationNode() == this.id) {
 			message.setArrivalInstant(instant);
 			message.setDelay(instant - message.getGenarationInstant());
