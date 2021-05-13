@@ -32,6 +32,19 @@ public class Node {
 		}
 	}
 	
+	public void removeMessage(long removedMessageId) {
+		Integer index = null;
+		
+		for(Message message : this.messages) {
+			if(message.getId() == removedMessageId && message.getDestinationNode() != this.id) {
+				index = this.messages.indexOf(message);
+			}
+		}
+
+		if(index != null)
+			this.messages.remove(index.intValue());
+	}
+	
 	public void sendMessages(Node receiverNode, double instant) {
 		for(Message message : this.messages) {
 			if(message.getDestinationNode() != this.id) { //não envio se eu sou o destino (já chegou onde deveria)

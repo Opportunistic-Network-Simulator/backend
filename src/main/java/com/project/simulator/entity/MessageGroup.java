@@ -20,6 +20,10 @@ public class MessageGroup implements Iterable<Message> {
 		messages.put(newMessage.getId(), newMessage);
 		return newMessage;
 	}
+	
+	public int getSize() {
+		return this.messages.size();
+	}
 
 	@Override
 	public Iterator<Message> iterator() {

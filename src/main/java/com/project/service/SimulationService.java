@@ -13,7 +13,7 @@ import com.project.simulator.entity.event.EventQueue;
 import com.project.simulator.entity.event.MessageGenerationEvent;
 import com.project.simulator.generator.MeetingTraceGenerator;
 import com.project.simulator.generator.NodesGenerator;
-import com.project.simulator.generator.SingleMessagesGenerator;
+import com.project.simulator.generator.messageGenerator.SingleMessagesGenerator;
 import com.project.simulator.simulation.Simulation;
 import com.project.simulator.simulation.protocols.EpidemicProtocol;
 
@@ -42,8 +42,7 @@ public class SimulationService {
 		EventQueue eventQueue = new EventQueue(meetingTrace, messageGenerationQueue);
 		MessageGroup messages = new MessageGroup();
 		
-		Simulation simulation = new Simulation(
-										totalSimulationTime, 
+		Simulation simulation = new Simulation( 
 										new EpidemicProtocol(), 
 										eventQueue, 
 										nodes, 
