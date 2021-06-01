@@ -15,7 +15,7 @@ import com.project.simulator.generator.MeetingTraceGenerator;
 import com.project.simulator.generator.NodesGenerator;
 import com.project.simulator.generator.messageGenerator.SingleMessagesGenerator;
 import com.project.simulator.simulation.Simulation;
-import com.project.simulator.simulation.protocols.EpidemicProtocol;
+import com.project.simulator.simulation.protocols.SingleCopyEpidemicProtocol;
 
 	
 
@@ -34,7 +34,7 @@ public class SimulationService {
 		return MeetingTraceGenerator.generateMeetingTrace(new MeetingTraceGeneratorInput(pairs, totalSimulationTime));
 	}
 
-	public void executeSimulation(	double totalSimulationTime,
+	public double executeSimulation(	double totalSimulationTime,
 									MeetingTrace meetingTrace,
 									long nodeQuantity) {
 		NodeGroup nodes = this.generateNodes(nodeQuantity);
@@ -43,11 +43,12 @@ public class SimulationService {
 		MessageGroup messages = new MessageGroup();
 		
 		Simulation simulation = new Simulation( 
-										new EpidemicProtocol(), 
+										new SingleCopyEpidemicProtocol(), 
 										eventQueue, 
 										nodes, 
 										messages);
 		
 		simulation.start();
+		return simulation.reportMessageDelay();
 	}
 }

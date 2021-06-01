@@ -15,13 +15,10 @@ import com.project.api.dto.MeetDTO;
 import com.project.api.dto.MeetingTraceDTO;
 import com.project.api.dto.PairDTO;
 import com.project.api.dto.PairsDTO;
-import com.project.api.dto.SimulationResponseDTO;
 import com.project.service.SimulationService;
 import com.project.simulator.entity.Meet;
 import com.project.simulator.entity.MeetingTrace;
-import com.project.simulator.entity.NodeGroup;
 import com.project.simulator.entity.Pair;
-import com.project.simulator.entity.event.MessageGenerationEvent;
 
 @RestController
 //@CrossOrigin //para habilitar cors
@@ -31,12 +28,24 @@ public class SimulationController {
 	@Autowired
 	private SimulationService simulationService;
 	
-	@PostMapping("/executeSimulation")
-	public ResponseEntity<SimulationResponseDTO> generateMeetingTrace(@RequestBody PairsDTO pairsDto) {
-		NodeGroup nodes = simulationService.generateNodes(pairsDto.getNumberOfNodes());
-		List<MessageGenerationEvent> messageGenerationEventQueue = simulationService.generateMessages(nodes);
+	@PostMapping("/generateMeetingTrace")
+	public ResponseEntity<MeetingTraceDTO> generateMeetingTrace(@RequestBody PairsDTO pairsDto) {
 		MeetingTrace meetingTrace = simulationService.generateMeetingTrace(convertDtoToPair(pairsDto.getPairsList()), pairsDto.getTotalSimulationTime());
-		return ResponseEntity.ok(new SimulationResponseDTO(convertMeetingTraceToDto(meetingTrace), messageGenerationEventQueue));
+		return ResponseEntity.ok(convertMeetingTraceToDto(meetingTrace));
+	}
+	
+	@PostMapping("/executeSimulation")
+	public ResponseEntity<Double> executeSimulation(@RequestBody PairsDTO pairsDto) {
+		MeetingTrace meetingTrace = simulationService
+										.generateMeetingTrace(
+												convertDtoToPair(pairsDto.getPairsList()), 
+												pairsDto.getTotalSimulationTime());
+		double avgDelay = simulationService.executeSimulation(
+									pairsDto.getTotalSimulationTime(), 
+									meetingTrace, 
+									pairsDto.getNumberOfNodes());
+		
+		return ResponseEntity.ok(avgDelay);
 	}
 	
 	private List<Pair> convertDtoToPair(List<PairDTO> pairs) {

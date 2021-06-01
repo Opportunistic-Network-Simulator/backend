@@ -66,7 +66,10 @@ public class SimulationTest {
 		List<Pair> pairs = new ArrayList<Pair>();
 		for (int i = comunityNumber * 5; i < comunityNumber * 5 + 5; i++) {
 			for (int j = i + 1; j < comunityNumber * 5 + 5; j++) {
-				pairs.add(new Pair(i, j, 2.5));				
+				if (i == 0 || i == 1 )
+					pairs.add(new Pair(i, j, 1.25));
+				else
+					pairs.add(new Pair(i, j, 2.5));
 			}
 		}
 		return pairs;
@@ -75,7 +78,7 @@ public class SimulationTest {
 	private List<Pair> generateTraveling() {
 		List<Pair> pairs = new ArrayList<Pair>();
 		for (int i = 0; i < 2; i++) {
-			for (int j = 5; j < 15; j++) {
+			for (int j = 5 * (i + 1); j < 5 * (i + 2); j++) {
 				pairs.add(new Pair(i, j, 1.25));
 			}
 		}

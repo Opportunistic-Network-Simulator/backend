@@ -35,7 +35,6 @@ public class Simulation {
 			this.showProgress();
 			this.handle(eventQueue.nextEvent());
 		}
-		this.reportMessageDelay();
 	}
 	
 	private void handle(Event event) {
@@ -62,7 +61,7 @@ public class Simulation {
 		this.nodes.getNode(generatedMessage.getSourceNode()).addMessage(generatedMessage);
 	}
 	
-	public void reportMessageDelay() {
+	public double reportMessageDelay() {
 		double[] delays = new double[this.messages.getSize()];
 		int i = 0;
 		for(Message message : this.messages) {
@@ -70,7 +69,7 @@ public class Simulation {
 			delays[i] = message.getArrivalInstant() - message.getGenarationInstant();
 			i++;
 		}
-		System.out.println("Avarage delay: " + this.avarage(delays));
+		return this.avarage(delays);
 	}
 	
 	private double avarage(double[] delays) {

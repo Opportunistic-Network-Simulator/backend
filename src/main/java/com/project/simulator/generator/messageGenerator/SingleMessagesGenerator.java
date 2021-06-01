@@ -52,10 +52,11 @@ public class SingleMessagesGenerator {
 			destinationNodeId = (long) (Math.random() * nodes.getSize());
 		}
 		
-		for(int i = 0; i < 450; i++) {
-			MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(i, sourceNodeId, destinationNodeId);
-			messageGenerationQueue.add(messageGenerationEvent);
-		}
+//		for(int i = 0; i < 450; i++) {
+//		MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(i, sourceNodeId, destinationNodeId);
+		MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(0, sourceNodeId, destinationNodeId);
+		messageGenerationQueue.add(messageGenerationEvent);
+//		}
 		return messageGenerationQueue;
 	}
 
