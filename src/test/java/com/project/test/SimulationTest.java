@@ -20,7 +20,7 @@ import com.project.simulator.simulation.protocols.SingleCopyEpidemicProtocol;
 public class SimulationTest {
 	SimulationService simulationService = new SimulationService();
 	
-	@Test
+	// @Test
 	public void testSimulation() {
 		List<Pair> pairs = new ArrayList<Pair>();
 		pairs.add(new com.project.simulator.entity.Pair(0, 1, 2.5));
@@ -36,19 +36,52 @@ public class SimulationTest {
 	@Test
 	public void testCase() {
 		List<Pair> pairs = generatePairs();
+		List<Double> results = new ArrayList<Double>();
+		for(int i = 0; i < 15; i++) {
+			for(int j = 0; j < 15; j++) {
+				if(i == j) continue;
+				MessageGeneratorConfiguration config = MessageGeneratorConfiguration.fixedNodes(i, j);
+				List<Double> partial = executeTenTimes(pairs, config);
+				results.add(report(partial, i, j));
+			}
+		}
+		System.out.println(this.avarage(results));
+	}
+
+	private List<Double> executeTenTimes(List<Pair> pairs, MessageGeneratorConfiguration config) {
+		List<Double> results = new ArrayList<Double>();
+		for(int k = 0; k < 100; k++) {
+			results.add(this.specificPair(config, pairs));
+		}
+		return results;
+	}
+	
+	private double report(List<Double> results, int from, int to) {
+		double avg = avarage(results);
+		System.out.println("From " + from + " to " + to + ": " + avg);
+		return avg;
+	}
+	
+	private double avarage(List<Double> values) {
+		Double total = 0d;
+		for(Double value : values) {
+			total += value;
+		}
+		return total / values.size();
+	}
+	
+	private double specificPair(MessageGeneratorConfiguration config, List<Pair> pairs) {
 		NodeGroup nodes = this.simulationService.generateNodes(15);
-		MessageGeneratorConfiguration config = MessageGeneratorConfiguration.randomNodes();
 		List<MessageGenerationEvent> messageGenerationQueue = SingleMessagesGenerator.generateMessages(config, nodes);
-		EventQueue eventQueue = new EventQueue(this.simulationService.generateMeetingTrace(pairs, 500d), messageGenerationQueue);
-		MessageGroup messages = new MessageGroup();
-		
+		EventQueue eventQueue = new EventQueue(this.simulationService.generateMeetingTrace(pairs, 100d), messageGenerationQueue);
+		MessageGroup messages = new MessageGroup();	
 		Simulation simulation = new Simulation( 
-										new SingleCopyEpidemicProtocol(), 
-										eventQueue, 
-										nodes, 
-										messages);
-		
+				new SingleCopyEpidemicProtocol(), 
+				eventQueue, 
+				nodes, 
+				messages);
 		simulation.start();
+		return simulation.reportMessageDelay();
 	}
 	
 	private List<Pair> generatePairs() {

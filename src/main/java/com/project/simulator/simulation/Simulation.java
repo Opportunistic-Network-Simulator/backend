@@ -49,6 +49,7 @@ public class Simulation {
 	
 	private void handleMeet(MeetEvent event) {
 		this.messageTransmissionProtocol.handleMeet(event, this.nodes);
+	
 	}
 
 	private void handleSimulationOver(SimulationOverEvent event) {
@@ -57,7 +58,7 @@ public class Simulation {
 	
 	private void handleMessageGeneration(MessageGenerationEvent event) {
 		Message generatedMessage = this.messages.generateMessage(event.getOriginNodeId(), event.getDestinationNodeId(), event.instant);
-		System.out.println("Message " + generatedMessage.getId() + " generated at " + event.instant + " with source in node " + generatedMessage.getSourceNode() + " and destination to node " + generatedMessage.getDestinationNode());
+		// System.out.println("Message " + generatedMessage.getId() + " generated at " + event.instant + " with source in node " + generatedMessage.getSourceNode() + " and destination to node " + generatedMessage.getDestinationNode());
 		this.nodes.getNode(generatedMessage.getSourceNode()).addMessage(generatedMessage);
 	}
 	
@@ -69,10 +70,10 @@ public class Simulation {
 			delays[i] = message.getArrivalInstant() - message.getGenarationInstant();
 			i++;
 		}
-		return this.avarage(delays);
+		return this.average(delays);
 	}
 	
-	private double avarage(double[] delays) {
+	private double average(double[] delays) {
 		double sum = 0;
 		for(double delay : delays) {
 			sum += delay;
@@ -83,7 +84,7 @@ public class Simulation {
 	private void showProgress() {
 		if(this.eventQueue.getProgress() > this.lastProgress + 0.1) {
 			this.lastProgress = this.eventQueue.getProgress();
-			System.out.println("Progress: " + (this.lastProgress * 100) + "%");
+			// System.out.println("Progress: " + (this.lastProgress * 100) + "%");
 		}
 	}
 

@@ -26,10 +26,10 @@ public class Message {
 	
 	public void notifyNewNode(long newNodeId, double instant) {
 		if(this.genarationInstant != 0) return;
-		System.out.println("Message " + this.id + " delivered to node " + newNodeId);
+		// System.out.println("Message " + this.id + " delivered to node " + newNodeId);
 		if(this.destinationNode == newNodeId) {
 			this.arrivalInstant = instant;
-			System.out.println("Message " + this.id + " arrived at " + instant);
+			// System.out.println("Message " + this.id + " arrived at " + instant);
 		}
 	}
 	

@@ -15,7 +15,7 @@ public class SingleCopyEpidemicProtocol extends MessageTransmissionProtocol {
 		Node node1 = nodes.getNode(meet.getNode1Id());
 		Node node2 = nodes.getNode(meet.getNode2Id());
 		
-		System.out.println("Meet between nodes " + node1.getId() + " and " + node2.getId() + " at " + meet.instant);
+		// System.out.println("Meet between nodes " + node1.getId() + " and " + node2.getId() + " at " + meet.instant);
 
 		List<Message> oneToTwo = transferedMessages(node1, node2);
 		
