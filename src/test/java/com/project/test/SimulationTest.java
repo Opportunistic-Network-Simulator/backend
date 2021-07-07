@@ -49,7 +49,8 @@ public class SimulationTest {
 				System.out.printf("progress: %.2f%%%n", count*100/(double) (n*n) );
 			}
 		}
-		System.out.println(this.average(results));
+		System.out.println("média: " + this.average(results));
+		System.out.println("desvio padrão: " + this.std(results));
 	}
 
 	private List<Double> executeNTimes(List<Pair> pairs, MessageGeneratorConfiguration config, int numberOfRounds,
@@ -73,6 +74,16 @@ public class SimulationTest {
         .average()
         .orElse(0.0);
 	}
+	
+	private double std (List<Double> a){
+        double sum = 0;
+        double mean = this.average(a);
+ 
+        for (Double i : a)
+            sum += Math.pow((i - mean), 2);
+        return Math.sqrt( sum / ( a.size() - 1 ) ); // sample
+//        return Math.sqrt( sum / ( a.size() )); // population
+    }
 	
 	private double specificPair(MessageGeneratorConfiguration config, List<Pair> pairs, double totalSimulationTime) {
 		NodeGroup nodes = this.simulationService.generateNodes(15);
