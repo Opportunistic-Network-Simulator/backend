@@ -14,6 +14,7 @@ public class Message {
 	private long destinationNode;
 	private double genarationInstant;
 	private double arrivalInstant;
+	private boolean delivered;
 	private double delay;
 	
 	public Message(long size, long sourceNode, long destinationNode, double genarationInstant) {
@@ -22,6 +23,7 @@ public class Message {
 		this.sourceNode = sourceNode;
 		this.destinationNode = destinationNode;
 		this.genarationInstant = genarationInstant;
+		this.delivered = false;
 	}
 	
 	public void notifyNewNode(long newNodeId, double instant) {

@@ -43,7 +43,8 @@ public class SimulationController {
 		double avgDelay = simulationService.executeSimulation(
 									pairsDto.getTotalSimulationTime(), 
 									meetingTrace, 
-									pairsDto.getNumberOfNodes());
+									pairsDto.getNumberOfNodes(),
+									pairsDto.isStopOnEndOfArrivals());
 		
 		return ResponseEntity.ok(avgDelay);
 	}

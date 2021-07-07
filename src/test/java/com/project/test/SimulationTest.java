@@ -30,57 +30,61 @@ public class SimulationTest {
 		pairs.add(new com.project.simulator.entity.Pair(1, 3, 2.5));
 		pairs.add(new com.project.simulator.entity.Pair(2, 3, 2.5));
 		MeetingTrace meetingTrace = this.simulationService.generateMeetingTrace(pairs, 3d);
-		this.simulationService.executeSimulation(3, meetingTrace, 4);
+		this.simulationService.executeSimulation(3, meetingTrace, 4, true);
 	}
 	
 	@Test
 	public void testCase() {
 		List<Pair> pairs = generatePairs();
 		List<Double> results = new ArrayList<Double>();
-		for(int i = 0; i < 15; i++) {
-			for(int j = 0; j < 15; j++) {
-				if(i == j) continue;
+		int n = 15;
+		int count = 0;
+		for(int i = 0; i < n; i++) {
+			for(int j = 0; j < n; j++) {
+				if(i == j) continue; //dps testar colcoar apenas para i<j
 				MessageGeneratorConfiguration config = MessageGeneratorConfiguration.fixedNodes(i, j);
-				List<Double> partial = executeTenTimes(pairs, config);
+				List<Double> partial = executeNTimes(pairs, config, 400, 100d);
 				results.add(report(partial, i, j));
+				count++;
+				System.out.printf("progress: %.2f%%%n", count*100/(double) (n*n) );
 			}
 		}
-		System.out.println(this.avarage(results));
+		System.out.println(this.average(results));
 	}
 
-	private List<Double> executeTenTimes(List<Pair> pairs, MessageGeneratorConfiguration config) {
+	private List<Double> executeNTimes(List<Pair> pairs, MessageGeneratorConfiguration config, int numberOfRounds,
+			double totalSimulationTime) {
 		List<Double> results = new ArrayList<Double>();
-		for(int k = 0; k < 100; k++) {
-			results.add(this.specificPair(config, pairs));
+		for(int k = 0; k < numberOfRounds; k++) { //qtd de rodadas para essa config
+			results.add(this.specificPair(config, pairs, totalSimulationTime));
 		}
 		return results;
 	}
 	
 	private double report(List<Double> results, int from, int to) {
-		double avg = avarage(results);
-		System.out.println("From " + from + " to " + to + ": " + avg);
+		double avg = average(results);
+//		System.out.println("From " + from + " to " + to + ": " + avg);
 		return avg;
 	}
 	
-	private double avarage(List<Double> values) {
-		Double total = 0d;
-		for(Double value : values) {
-			total += value;
-		}
-		return total / values.size();
+	private double average(List<Double> values) {
+		return values.stream()
+        .mapToDouble(d -> d)
+        .average()
+        .orElse(0.0);
 	}
 	
-	private double specificPair(MessageGeneratorConfiguration config, List<Pair> pairs) {
+	private double specificPair(MessageGeneratorConfiguration config, List<Pair> pairs, double totalSimulationTime) {
 		NodeGroup nodes = this.simulationService.generateNodes(15);
 		List<MessageGenerationEvent> messageGenerationQueue = SingleMessagesGenerator.generateMessages(config, nodes);
-		EventQueue eventQueue = new EventQueue(this.simulationService.generateMeetingTrace(pairs, 100d), messageGenerationQueue);
+		EventQueue eventQueue = new EventQueue(this.simulationService.generateMeetingTrace(pairs, totalSimulationTime), messageGenerationQueue);
 		MessageGroup messages = new MessageGroup();	
 		Simulation simulation = new Simulation( 
 				new SingleCopyEpidemicProtocol(), 
 				eventQueue, 
 				nodes, 
 				messages);
-		simulation.start();
+		simulation.start(true);
 		return simulation.reportMessageDelay();
 	}
 	

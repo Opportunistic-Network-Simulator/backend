@@ -1,6 +1,10 @@
 package com.project.test;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import com.project.simulator.entity.Node;
 
@@ -16,20 +20,12 @@ public class Test {
 	private Node node;
 	
 	public static void main(String[] args) throws IOException{
-		
-//		NodeGenerator nodeGenerator = new NodeGenerator(3);
-//		List<Node> nodes = nodeGenerator.nodes;
-//		Pair pair01 = new Pair(nodes.get(0), nodes.get(1));
-//		Pair pair02 = new Pair(nodes.get(0), nodes.get(2));
-//		Node node0 = pair01.getNode1();
-//		System.out.println("NodeGen: " + nodes.get(0).isMessage());
-//		System.out.println("pair01: " + pair01.getNode1().isMessage());
-//		System.out.println("pair02: " + pair02.getNode1().isMessage());
-//		node0.setMessage(true);
-//		System.out.println("NodeGen: " + nodes.get(0).isMessage());
-//		System.out.println("pair01: " + pair01.getNode1().isMessage());
-//		System.out.println("pair02: " + pair02.getNode1().isMessage());
-	
+		int n = 15;
+		for(int i = 0; i < n; i++) {
+			for(int j = 0; j < n; j++) {
+				System.out.printf("%.2f%%%n", (i+1)*(j+1)*100/(double) (n*n) );
+			}
+		}
 	}
 }
 

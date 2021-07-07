@@ -29,6 +29,7 @@ public class Node {
 		if(message.getDestinationNode() == this.id) {
 			message.setArrivalInstant(instant);
 			message.setDelay(instant - message.getGenarationInstant());
+			message.setDelivered(true);
 		}
 	}
 	

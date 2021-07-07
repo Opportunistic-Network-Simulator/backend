@@ -36,7 +36,8 @@ public class SimulationService {
 
 	public double executeSimulation(	double totalSimulationTime,
 									MeetingTrace meetingTrace,
-									long nodeQuantity) {
+									long nodeQuantity,
+									boolean stopOnEndOfArrivals) {
 		NodeGroup nodes = this.generateNodes(nodeQuantity);
 		List<MessageGenerationEvent> messageGenerationQueue = this.generateMessages(nodes);
 		EventQueue eventQueue = new EventQueue(meetingTrace, messageGenerationQueue);
@@ -48,7 +49,7 @@ public class SimulationService {
 										nodes, 
 										messages);
 		
-		simulation.start();
+		simulation.start(stopOnEndOfArrivals);
 		return simulation.reportMessageDelay();
 	}
 }

@@ -1,5 +1,8 @@
 package com.project.simulator.simulation;
 
+import java.util.Arrays;
+import java.util.OptionalDouble;
+
 import com.project.simulator.entity.Message;
 import com.project.simulator.entity.MessageGroup;
 import com.project.simulator.entity.NodeGroup;
@@ -29,29 +32,34 @@ public class Simulation {
 		this.messages = messages;
 	}
 	
-	public void start() {
+	public void start(boolean stopOnEndOfArrivals) {
 		this.simulationHappening = true;
 		while(this.simulationHappening) {
 			this.showProgress();
-			this.handle(eventQueue.nextEvent());
+			this.handle(eventQueue.nextEvent(), stopOnEndOfArrivals);
 		}
 	}
 	
-	private void handle(Event event) {
+	private void handle(Event event, boolean stopOnEndOfArrivals) {
 		if(event instanceof MessageGenerationEvent) {
 			this.handleMessageGeneration((MessageGenerationEvent) event);
 		} else if(event instanceof MeetEvent) {
-			this.handleMeet((MeetEvent) event);
+			this.handleMeet((MeetEvent) event, stopOnEndOfArrivals);
 		} else if(event instanceof SimulationOverEvent) {
 			this.handleSimulationOver((SimulationOverEvent) event);
 		}
 	}
 	
-	private void handleMeet(MeetEvent event) {
+	private void handleMeet(MeetEvent event, boolean stopOnEndOfArrivals) {
 		this.messageTransmissionProtocol.handleMeet(event, this.nodes);
-	
+		if(stopOnEndOfArrivals && this.messages.checkEndOfArrivals()) 
+			this.handleEndOfArrivals(event.instant);
 	}
-
+	
+	private void handleEndOfArrivals(double instant) {
+		this.eventQueue.simulationGenerateEvent(new SimulationOverEvent(instant));
+	}
+	
 	private void handleSimulationOver(SimulationOverEvent event) {
 		this.simulationHappening = false;
 	}
@@ -66,19 +74,15 @@ public class Simulation {
 		double[] delays = new double[this.messages.getSize()];
 		int i = 0;
 		for(Message message : this.messages) {
-			System.out.println("Mensagem " + message.getId() + ": " + (message.getArrivalInstant() - message.getGenarationInstant()));
-			delays[i] = message.getArrivalInstant() - message.getGenarationInstant();
-			i++;
+			if(message.isDelivered()) {
+//				System.out.println("Mensagem " + message.getId() + ": " + (message.getArrivalInstant() - message.getGenarationInstant()));
+				delays[i] = message.getArrivalInstant() - message.getGenarationInstant();
+				i++;
+			} else {
+				System.out.println("Mensagem " + message.getId() + ": não foi entregue");
+			}
 		}
-		return this.average(delays);
-	}
-	
-	private double average(double[] delays) {
-		double sum = 0;
-		for(double delay : delays) {
-			sum += delay;
-		}
-		return sum / delays.length;
+		return Arrays.stream(delays).average().getAsDouble();
 	}
 	
 	private void showProgress() {

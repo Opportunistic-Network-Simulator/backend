@@ -18,5 +18,6 @@ public class PairsDTO {
 	private List<PairDTO> pairsList;
 	private long numberOfNodes;
 	private double totalSimulationTime;
+	private boolean stopOnEndOfArrivals;
 	
 }

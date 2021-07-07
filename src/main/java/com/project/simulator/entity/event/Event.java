@@ -1,6 +1,8 @@
 package com.project.simulator.entity.event;
 
+
 public abstract class Event implements Comparable<Event> {
+	
 	public final double instant;
 	
 	public Event(double instant) {

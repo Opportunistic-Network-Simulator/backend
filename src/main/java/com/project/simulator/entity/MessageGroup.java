@@ -2,6 +2,7 @@ package com.project.simulator.entity;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class MessageGroup implements Iterable<Message> {
@@ -28,5 +29,15 @@ public class MessageGroup implements Iterable<Message> {
 	@Override
 	public Iterator<Message> iterator() {
 		return this.messages.values().iterator();
+	}
+	
+	public boolean checkEndOfArrivals() {
+		Set<Long> keys = this.messages.keySet();
+		for(Long key : keys) {
+			Message message = this.getMessage(key);
+			if(!message.isDelivered())
+				return false;
+		}
+		return true;
 	}
 }

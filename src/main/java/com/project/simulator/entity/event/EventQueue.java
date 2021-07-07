@@ -26,6 +26,11 @@ public class EventQueue {
 		return nextEvent;
 	}
 	
+	public void simulationGenerateEvent(Event event) {
+		this.eventsInTheFuture.add(event);
+		Collections.sort(this.eventsInTheFuture);
+	}
+	
 	public double getProgress() {
 		return (double) this.eventsInThePast.size() / (double) (this.eventsInTheFuture.size() + this.eventsInThePast.size());
 	}
