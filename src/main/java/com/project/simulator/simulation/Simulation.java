@@ -34,6 +34,7 @@ public class Simulation {
 	
 	public void start(boolean stopOnEndOfArrivals) {
 		this.simulationHappening = true;
+		Message.idCounter = 0;
 		while(this.simulationHappening) {
 			this.showProgress();
 			this.handle(eventQueue.nextEvent(), stopOnEndOfArrivals);
@@ -66,7 +67,7 @@ public class Simulation {
 	
 	private void handleMessageGeneration(MessageGenerationEvent event) {
 		Message generatedMessage = this.messages.generateMessage(event.getOriginNodeId(), event.getDestinationNodeId(), event.instant);
-		// System.out.println("Message " + generatedMessage.getId() + " generated at " + event.instant + " with source in node " + generatedMessage.getSourceNode() + " and destination to node " + generatedMessage.getDestinationNode());
+//		 System.out.println("Message " + generatedMessage.getId() + " generated at " + event.instant + " with source in node " + generatedMessage.getSourceNode() + " and destination to node " + generatedMessage.getDestinationNode());
 		this.nodes.getNode(generatedMessage.getSourceNode()).addMessage(generatedMessage);
 	}
 	

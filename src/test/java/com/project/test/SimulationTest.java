@@ -33,7 +33,7 @@ public class SimulationTest {
 		this.simulationService.executeSimulation(3, meetingTrace, 4, true);
 	}
 	
-	@Test
+//	@Test
 	public void testCase() {
 		List<Pair> pairs = generatePairs();
 		List<Double> results = new ArrayList<Double>();
@@ -42,8 +42,8 @@ public class SimulationTest {
 		for(int i = 0; i < n; i++) {
 			for(int j = 0; j < n; j++) {
 				if(i == j) continue; //dps testar colcoar apenas para i<j
-				MessageGeneratorConfiguration config = MessageGeneratorConfiguration.fixedNodes(i, j);
-				List<Double> partial = executeNTimes(pairs, config, 400, 100d);
+				List<MessageGeneratorConfiguration> configList = MessageGeneratorConfiguration.fixedNodes(i, j);
+				List<Double> partial = executeNTimes(pairs, configList, 400, 100d);
 				results.add(report(partial, i, j));
 				count++;
 				System.out.printf("progress: %.2f%%%n", count*100/(double) (n*n) );
@@ -52,12 +52,27 @@ public class SimulationTest {
 		System.out.println("média: " + this.average(results));
 		System.out.println("desvio padrão: " + this.std(results));
 	}
+	
+	@Test
+	public void testCaseAllPairs() {
+		List<Pair> pairs = generatePairs();
+//		List<Double> results = new ArrayList<Double>();
+		int n = 15;
+		int count = 0;
+		List<MessageGeneratorConfiguration> configList = MessageGeneratorConfiguration.allPairs(15);
+		List<Double> results = executeNTimes(pairs, configList, 400, 100d);
+//		results.add(report(partial, i, j));
+		count++;
+//		System.out.printf("progress: %.2f%%%n", count*100/(double) (n*n) );
+		System.out.println("média: " + this.average(results));
+//		System.out.println("desvio padrão: " + this.std(results));
+	}
 
-	private List<Double> executeNTimes(List<Pair> pairs, MessageGeneratorConfiguration config, int numberOfRounds,
+	private List<Double> executeNTimes(List<Pair> pairs, List<MessageGeneratorConfiguration> configList, int numberOfRounds,
 			double totalSimulationTime) {
 		List<Double> results = new ArrayList<Double>();
 		for(int k = 0; k < numberOfRounds; k++) { //qtd de rodadas para essa config
-			results.add(this.specificPair(config, pairs, totalSimulationTime));
+			results.add(this.specificPair(configList, pairs, totalSimulationTime));
 		}
 		return results;
 	}
@@ -85,9 +100,9 @@ public class SimulationTest {
 //        return Math.sqrt( sum / ( a.size() )); // population
     }
 	
-	private double specificPair(MessageGeneratorConfiguration config, List<Pair> pairs, double totalSimulationTime) {
+	private double specificPair(List<MessageGeneratorConfiguration> configList, List<Pair> pairs, double totalSimulationTime) {
 		NodeGroup nodes = this.simulationService.generateNodes(15);
-		List<MessageGenerationEvent> messageGenerationQueue = SingleMessagesGenerator.generateMessages(config, nodes);
+		List<MessageGenerationEvent> messageGenerationQueue = SingleMessagesGenerator.generateMessages(configList, nodes);
 		EventQueue eventQueue = new EventQueue(this.simulationService.generateMeetingTrace(pairs, totalSimulationTime), messageGenerationQueue);
 		MessageGroup messages = new MessageGroup();	
 		Simulation simulation = new Simulation( 

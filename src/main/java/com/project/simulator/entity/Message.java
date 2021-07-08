@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Message {
-	private static long idCounter = 0;
+	public static long idCounter = 0;
 	
 	private long id;
 	private long size;

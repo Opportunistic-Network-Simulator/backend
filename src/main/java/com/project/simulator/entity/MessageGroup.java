@@ -32,9 +32,10 @@ public class MessageGroup implements Iterable<Message> {
 	}
 	
 	public boolean checkEndOfArrivals() {
-		Set<Long> keys = this.messages.keySet();
-		for(Long key : keys) {
-			Message message = this.getMessage(key);
+//		Set<Long> keys = this.messages.keySet();
+//		for(Long key : keys) {
+//			Message message = this.getMessage(key);
+		for(Message message : this) {
 			if(!message.isDelivered())
 				return false;
 		}

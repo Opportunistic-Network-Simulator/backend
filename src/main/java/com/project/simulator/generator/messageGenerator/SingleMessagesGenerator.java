@@ -30,33 +30,33 @@ public class SingleMessagesGenerator {
 		return messageGenerationQueue;
 	}
 	
-	public static List<MessageGenerationEvent> generateMessages(MessageGeneratorConfiguration config, NodeGroup nodes) { //posteriormente, deve pegar dados da requisição para gerar as msg
+	public static List<MessageGenerationEvent> generateMessages(List<MessageGeneratorConfiguration> configList, NodeGroup nodes) { //posteriormente, deve pegar dados da requisição para gerar as msg
 		List<MessageGenerationEvent> messageGenerationQueue = new ArrayList<MessageGenerationEvent>();
 		
-		long sourceNodeId;
-		long destinationNodeId;
+		for(MessageGeneratorConfiguration config : configList) {
 		
-		if (config.getSourceNodeId() != null) {
-			sourceNodeId = config.getSourceNodeId();
-		} else {
-			sourceNodeId = (long) (Math.random() * nodes.getSize());
+			long sourceNodeId;
+			long destinationNodeId;
+			
+			if (config.getSourceNodeId() != null) {
+				sourceNodeId = config.getSourceNodeId();
+			} else {
+				sourceNodeId = (long) (Math.random() * nodes.getSize());
+			}
+			
+			if (config.getDestinationNodeId() != null) {
+				destinationNodeId = config.getDestinationNodeId();
+			} else {
+				destinationNodeId = (long) (Math.random() * nodes.getSize());
+			}
+			
+			while(destinationNodeId == sourceNodeId) {
+				destinationNodeId = (long) (Math.random() * nodes.getSize());
+			}
+			
+			MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(0, sourceNodeId, destinationNodeId);
+			messageGenerationQueue.add(messageGenerationEvent);
 		}
-		
-		if (config.getDestinationNodeId() != null) {
-			destinationNodeId = config.getDestinationNodeId();
-		} else {
-			destinationNodeId = (long) (Math.random() * nodes.getSize());
-		}
-		
-		while(destinationNodeId == sourceNodeId) {
-			destinationNodeId = (long) (Math.random() * nodes.getSize());
-		}
-		
-//		for(int i = 0; i < 450; i++) {
-//		MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(i, sourceNodeId, destinationNodeId);
-		MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(0, sourceNodeId, destinationNodeId);
-		messageGenerationQueue.add(messageGenerationEvent);
-//		}
 		return messageGenerationQueue;
 	}
 
