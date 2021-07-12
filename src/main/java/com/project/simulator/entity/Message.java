@@ -1,5 +1,8 @@
 package com.project.simulator.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +19,7 @@ public class Message {
 	private double arrivalInstant;
 	private boolean delivered;
 	private double delay;
+	private Map<String, String> storedProperties = new HashMap<String, String>();
 	
 	public Message(long size, long sourceNode, long destinationNode, double genarationInstant) {
 		this.id = idCounter++;
@@ -33,6 +37,18 @@ public class Message {
 			this.arrivalInstant = instant;
 			// System.out.println("Message " + this.id + " arrived at " + instant);
 		}
+	}
+	
+	public void storeValue(String key, String value) {
+		this.storedProperties.put(key, value);
+	}
+	
+	public boolean hasStoredElement(String key) {
+		return this.storedProperties.containsKey(key);
+	}
+	
+	public String getStoredValue(String key) {
+		return this.storedProperties.get(key);
 	}
 	
 }

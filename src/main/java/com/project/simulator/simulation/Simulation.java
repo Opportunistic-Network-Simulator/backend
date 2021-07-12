@@ -1,7 +1,6 @@
 package com.project.simulator.simulation;
 
 import java.util.Arrays;
-import java.util.OptionalDouble;
 
 import com.project.simulator.entity.Message;
 import com.project.simulator.entity.MessageGroup;
@@ -67,7 +66,6 @@ public class Simulation {
 	
 	private void handleMessageGeneration(MessageGenerationEvent event) {
 		Message generatedMessage = this.messages.generateMessage(event.getOriginNodeId(), event.getDestinationNodeId(), event.instant);
-//		 System.out.println("Message " + generatedMessage.getId() + " generated at " + event.instant + " with source in node " + generatedMessage.getSourceNode() + " and destination to node " + generatedMessage.getDestinationNode());
 		this.nodes.getNode(generatedMessage.getSourceNode()).addMessage(generatedMessage);
 	}
 	
@@ -76,7 +74,6 @@ public class Simulation {
 		int i = 0;
 		for(Message message : this.messages) {
 			if(message.isDelivered()) {
-//				System.out.println("Mensagem " + message.getId() + ": " + (message.getArrivalInstant() - message.getGenarationInstant()));
 				delays[i] = message.getArrivalInstant() - message.getGenarationInstant();
 				i++;
 			} else {
@@ -89,7 +86,6 @@ public class Simulation {
 	private void showProgress() {
 		if(this.eventQueue.getProgress() > this.lastProgress + 0.1) {
 			this.lastProgress = this.eventQueue.getProgress();
-			// System.out.println("Progress: " + (this.lastProgress * 100) + "%");
 		}
 	}
 

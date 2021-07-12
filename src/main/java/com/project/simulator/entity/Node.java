@@ -1,7 +1,9 @@
 package com.project.simulator.entity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +14,7 @@ public class Node {
 	
 	private long id;
 	private List<Message> messages;
+	private Map<String, String> storedProperties = new HashMap<String, String>();
 	
 	public Node(long id) {
 		this.id = id;
@@ -52,6 +55,18 @@ public class Node {
 				receiverNode.receiveMessage(message, instant);
 			}
 		}
+	}
+	
+	public void storeValue(String key, String value) {
+		this.storedProperties.put(key, value);
+	}
+	
+	public boolean hasStoredElement(String key) {
+		return this.storedProperties.containsKey(key);
+	}
+	
+	public String getStoredValue(String key) {
+		return this.storedProperties.get(key);
 	}
 
 }

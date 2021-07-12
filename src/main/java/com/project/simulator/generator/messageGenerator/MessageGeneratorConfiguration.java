@@ -3,8 +3,6 @@ package com.project.simulator.generator.messageGenerator;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.project.simulator.entity.Pair;
-
 public class MessageGeneratorConfiguration {
 	private Long sourceNodeId;
 	private Long destinationNodeId;
