@@ -19,6 +19,7 @@ public class Simulation {
 	private MessageTransmissionProtocol messageTransmissionProtocol;
 	private boolean simulationHappening = false;
 	private double lastProgress = 0;
+	private int threadId;
 	
 	public Simulation(
 						MessageTransmissionProtocol messageTransmissionProtocol, 
@@ -31,9 +32,10 @@ public class Simulation {
 		this.messages = messages;
 	}
 	
-	public void start(boolean stopOnEndOfArrivals) {
+	public void start(int id, boolean stopOnEndOfArrivals) {
 		this.simulationHappening = true;
 		Message.idCounter = 0;
+		this.threadId = id;
 		while(this.simulationHappening) {
 			this.showProgress();
 			this.handle(eventQueue.nextEvent(), stopOnEndOfArrivals);
@@ -61,6 +63,7 @@ public class Simulation {
 	}
 	
 	private void handleSimulationOver(SimulationOverEvent event) {
+		System.out.println("end");
 		this.simulationHappening = false;
 	}
 	
@@ -77,7 +80,7 @@ public class Simulation {
 				delays[i] = message.getArrivalInstant() - message.getGenarationInstant();
 				i++;
 			} else {
-				System.out.println("Mensagem " + message.getId() + ": não foi entregue");
+				System.out.println("Mensagem " + message.getId() + ": não foi entregue na thread " + this.threadId);
 			}
 		}
 		return Arrays.stream(delays).average().getAsDouble();

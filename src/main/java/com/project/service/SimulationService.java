@@ -49,7 +49,7 @@ public class SimulationService {
 										nodes, 
 										messages);
 		
-		simulation.start(stopOnEndOfArrivals);
+		simulation.start(0, stopOnEndOfArrivals);
 		return simulation.reportMessageDelay();
 	}
 }

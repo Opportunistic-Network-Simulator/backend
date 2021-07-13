@@ -53,30 +53,47 @@ public class SimulationTest {
 		System.out.println("desvio padrão: " + this.std(results));
 	}
 	
-	@Test
+//	@Test
 	public void testCaseAllPairs() {
 		List<Pair> pairs = generatePairs();
-//		List<Double> results = new ArrayList<Double>();
-		int n = 15;
-		int count = 0;
 		List<MessageGeneratorConfiguration> configList = MessageGeneratorConfiguration.allPairs(15);
 		List<Double> results = executeNTimes(pairs, configList, 400, 100d);
-//		results.add(report(partial, i, j));
-		count++;
-//		System.out.printf("progress: %.2f%%%n", count*100/(double) (n*n) );
+		
 		System.out.println("média: " + this.average(results));
-//		System.out.println("desvio padrão: " + this.std(results));
 	}
-
+	
 	private List<Double> executeNTimes(List<Pair> pairs, List<MessageGeneratorConfiguration> configList, int numberOfRounds,
 			double totalSimulationTime) {
 		List<Double> results = new ArrayList<Double>();
 		for(int k = 0; k < numberOfRounds; k++) { //qtd de rodadas para essa config
-			results.add(this.specificPair(configList, pairs, totalSimulationTime));
+			results.add(this.specificPair(0, configList, pairs, totalSimulationTime));
 		}
 		return results;
 	}
 	
+	@Test
+	public void testCaseAllPairsInParallel() throws InterruptedException {
+		List<Pair> pairs = generatePairs();
+		List<MessageGeneratorConfiguration> configList = MessageGeneratorConfiguration.allPairs(15);
+		
+		List<Double> results = executeNTimesInParallel(pairs, configList, 100, 100d);
+		
+		System.out.println("média: " + this.average(results));
+	}
+	
+	private List<Double> executeNTimesInParallel(List<Pair> pairs, List<MessageGeneratorConfiguration> configList, int numberOfRounds,
+			double totalSimulationTime) throws InterruptedException {
+		List<Double> results = new ArrayList<Double>();
+		for(int k = 0; k < numberOfRounds; k++) { //qtd de rodadas para essa config
+			new SpecificPairThread(k, results, configList, pairs, totalSimulationTime).start();
+		}
+		while(results.size() != numberOfRounds) {
+			System.out.println("current size: " + results.size());
+			Thread.sleep(1);
+		}
+		return results;
+	}
+		
 	private double report(List<Double> results, int from, int to) {
 		double avg = average(results);
 //		System.out.println("From " + from + " to " + to + ": " + avg);
@@ -100,17 +117,17 @@ public class SimulationTest {
 //        return Math.sqrt( sum / ( a.size() )); // population
     }
 	
-	private double specificPair(List<MessageGeneratorConfiguration> configList, List<Pair> pairs, double totalSimulationTime) {
+	public double specificPair(int id, List<MessageGeneratorConfiguration> configList, List<Pair> pairs, double totalSimulationTime) {
 		NodeGroup nodes = this.simulationService.generateNodes(15);
 		List<MessageGenerationEvent> messageGenerationQueue = SingleMessagesGenerator.generateMessages(configList, nodes);
 		EventQueue eventQueue = new EventQueue(this.simulationService.generateMeetingTrace(pairs, totalSimulationTime), messageGenerationQueue);
-		MessageGroup messages = new MessageGroup();	
+		MessageGroup messages = new MessageGroup();
 		Simulation simulation = new Simulation( 
 				new SingleCopyEpidemicProtocol(), 
 				eventQueue, 
 				nodes, 
 				messages);
-		simulation.start(true);
+		simulation.start(id, true);
 		return simulation.reportMessageDelay();
 	}
 	
