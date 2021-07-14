@@ -10,6 +10,7 @@ import com.project.simulator.entity.MeetingTrace;
 import com.project.simulator.entity.MessageGroup;
 import com.project.simulator.entity.NodeGroup;
 import com.project.simulator.entity.Pair;
+import com.project.simulator.entity.SimulationOutput;
 import com.project.simulator.entity.event.EventQueue;
 import com.project.simulator.entity.event.MessageGenerationEvent;
 import com.project.simulator.generator.messageGenerator.MessageGeneratorConfiguration;
@@ -46,7 +47,27 @@ public class SimulationTest {
 				List<Double> partial = executeNTimes(pairs, configList, 400, 100d);
 				results.add(report(partial, i, j));
 				count++;
-				System.out.printf("progress: %.2f%%%n", count*100/(double) (n*n) );
+//				System.out.printf("progress: %.2f%%%n", count*100/(double) (n*n) );
+			}
+		}
+		System.out.println("média: " + this.average(results));
+		System.out.println("desvio padrão: " + this.std(results));
+	}
+	
+//	@Test
+	public void testCaseInParallel() throws InterruptedException {
+		List<Pair> pairs = generatePairs();
+		List<Double> results = new ArrayList<Double>();
+		int n = 15;
+		int count = 0;
+		for(int i = 0; i < n; i++) {
+			for(int j = 0; j < n; j++) {
+				if(i == j) continue; //dps testar colcoar apenas para i<j
+				List<MessageGeneratorConfiguration> configList = MessageGeneratorConfiguration.fixedNodes(i, j);
+				List<Double> partial = executeNTimesInParallel(pairs, configList, 400, 100d);
+				results.add(report(partial, i, j));
+				count++;
+//				System.out.printf("progress: %.2f%%%n", count*100/(double) (n*n) );
 			}
 		}
 		System.out.println("média: " + this.average(results));
@@ -83,15 +104,17 @@ public class SimulationTest {
 	
 	private List<Double> executeNTimesInParallel(List<Pair> pairs, List<MessageGeneratorConfiguration> configList, int numberOfRounds,
 			double totalSimulationTime) throws InterruptedException {
-		List<Double> results = new ArrayList<Double>();
+		SimulationOutput simulationOutput = new SimulationOutput();
  		for(int k = 0; k < numberOfRounds; k++) { //qtd de rodadas para essa config
-			new SpecificPairThread(k, results, configList, pairs, totalSimulationTime).start();
+			new SpecificPairThread(k, simulationOutput, configList, pairs, totalSimulationTime).start();
 		}
-		while(results.size() != numberOfRounds) {
-			System.out.println("current size: " + results.size());
-			Thread.sleep(1);
+		int size;
+		while( (size = simulationOutput.getSizeOfDeliveryDelaySimulationResults()) != numberOfRounds) {
+			System.out.println("current size: " + size);
+			Thread.sleep(100);
 		}
-		return results;
+		System.out.println("current size: " + size);
+		return simulationOutput.getAllDeliveryDelaySimulationResults();
 	}
 		
 	private double report(List<Double> results, int from, int to) {

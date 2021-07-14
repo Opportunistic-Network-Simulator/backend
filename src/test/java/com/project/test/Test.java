@@ -18,25 +18,11 @@ import lombok.Setter;
 @Builder
 public class Test {
 	
+	private volatile List<Integer> l1;
+	
 	public static void main(String[] args) throws IOException{
 		
-		File file=new File("D:\\Gabriel\\Documentos\\Matérias\\PFC\\endedThreads.txt");    //creates a new file instance  
-		FileReader fr=new FileReader(file);   //reads the file  
-		BufferedReader br=new BufferedReader(fr);  //creates a buffering character input stream  
-		String line;
-		List<Integer> ids = new ArrayList<Integer>();
-		while((line=br.readLine())!=null)  
-		{ 
-		ids.add(Integer.parseInt(line)); 
-		}  
-		fr.close();    //closes the stream and release the resources
-		
-		for(int i = 0; i < 400; i++) {
-			boolean t = ids.contains(i);
-			if(!t)
-				System.out.println("não tem " + i);
-		}
-		
+		System.out.println(Thread.currentThread().getName());
 	}
 }
 
