@@ -23,7 +23,7 @@ public class SpecificPairThread extends Thread{
 	}
 
 	public void run() {
-		System.out.println("Iniciada thread " + id);
+//		System.out.println("Iniciada thread " + id);
 		SimulationTest simulationTest = new SimulationTest();
 		results.add(simulationTest.specificPair(id, configList, pairs, totalSimulationTime));
 	}

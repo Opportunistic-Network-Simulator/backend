@@ -10,11 +10,11 @@ public class RunThreads {
 //		ThreadTest test = new ThreadTest();
 //		test.start();
 		
-		createThread();
+		new RunThreads().createThread();
 		
 	}
 	
-	public static int createThread() throws InterruptedException {
+	public int createThread() throws InterruptedException {
 		List<Integer> ids = new ArrayList<Integer>();
 		int n = 10;
 		for(int i=0; i<n; i++) {

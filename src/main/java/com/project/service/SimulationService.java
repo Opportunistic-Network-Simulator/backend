@@ -43,13 +43,14 @@ public class SimulationService {
 		EventQueue eventQueue = new EventQueue(meetingTrace, messageGenerationQueue);
 		MessageGroup messages = new MessageGroup();
 		
-		Simulation simulation = new Simulation( 
+		Simulation simulation = new Simulation(
+										0,
 										new SingleCopyEpidemicProtocol(), 
 										eventQueue, 
 										nodes, 
 										messages);
 		
-		simulation.start(0, stopOnEndOfArrivals);
+		simulation.start(stopOnEndOfArrivals);
 		return simulation.reportMessageDelay();
 	}
 }

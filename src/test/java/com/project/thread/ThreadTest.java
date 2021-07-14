@@ -13,6 +13,12 @@ public class ThreadTest extends Thread {
 	}
 
 	public void run(){
+		try {
+			Thread.sleep((long) (Math.random()*100));
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.ids.add(this.i);
 	}
 	

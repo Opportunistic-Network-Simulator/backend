@@ -66,7 +66,7 @@ public class SimulationTest {
 			double totalSimulationTime) {
 		List<Double> results = new ArrayList<Double>();
 		for(int k = 0; k < numberOfRounds; k++) { //qtd de rodadas para essa config
-			results.add(this.specificPair(0, configList, pairs, totalSimulationTime));
+			results.add(this.specificPair(k, configList, pairs, totalSimulationTime));
 		}
 		return results;
 	}
@@ -76,7 +76,7 @@ public class SimulationTest {
 		List<Pair> pairs = generatePairs();
 		List<MessageGeneratorConfiguration> configList = MessageGeneratorConfiguration.allPairs(15);
 		
-		List<Double> results = executeNTimesInParallel(pairs, configList, 100, 100d);
+		List<Double> results = executeNTimesInParallel(pairs, configList, 400, 100d);
 		
 		System.out.println("média: " + this.average(results));
 	}
@@ -84,7 +84,7 @@ public class SimulationTest {
 	private List<Double> executeNTimesInParallel(List<Pair> pairs, List<MessageGeneratorConfiguration> configList, int numberOfRounds,
 			double totalSimulationTime) throws InterruptedException {
 		List<Double> results = new ArrayList<Double>();
-		for(int k = 0; k < numberOfRounds; k++) { //qtd de rodadas para essa config
+ 		for(int k = 0; k < numberOfRounds; k++) { //qtd de rodadas para essa config
 			new SpecificPairThread(k, results, configList, pairs, totalSimulationTime).start();
 		}
 		while(results.size() != numberOfRounds) {
@@ -122,12 +122,13 @@ public class SimulationTest {
 		List<MessageGenerationEvent> messageGenerationQueue = SingleMessagesGenerator.generateMessages(configList, nodes);
 		EventQueue eventQueue = new EventQueue(this.simulationService.generateMeetingTrace(pairs, totalSimulationTime), messageGenerationQueue);
 		MessageGroup messages = new MessageGroup();
-		Simulation simulation = new Simulation( 
+		Simulation simulation = new Simulation(
+				id,
 				new SingleCopyEpidemicProtocol(), 
 				eventQueue, 
 				nodes, 
 				messages);
-		simulation.start(id, true);
+		simulation.start(true);
 		return simulation.reportMessageDelay();
 	}
 	
