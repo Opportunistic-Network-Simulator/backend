@@ -19,15 +19,12 @@ public class Simulation {
 	private MessageTransmissionProtocol messageTransmissionProtocol;
 	private boolean simulationHappening = false;
 	private double lastProgress = 0;
-	private int threadId;
 	private long messageIdCounter;
 	
-	public Simulation(	int id,
-						MessageTransmissionProtocol messageTransmissionProtocol, 
+	public Simulation(	MessageTransmissionProtocol messageTransmissionProtocol, 
 						EventQueue eventQueue, 
 						NodeGroup nodes, 
 						MessageGroup messages) {
-		this.threadId = id;
 		this.messageTransmissionProtocol = messageTransmissionProtocol;
 		this.eventQueue = eventQueue;
 		this.nodes = nodes;
@@ -84,7 +81,7 @@ public class Simulation {
 				delays[i] = message.getArrivalInstant() - message.getGenarationInstant();
 				i++;
 			} else {
-				System.out.println("Mensagem " + message.getId() + ": não foi entregue na thread " + this.threadId);
+//				System.out.println("Mensagem " + message.getId() + ": não foi entregue na thread " + this.threadId);
 			}
 		}
 		return Arrays.stream(delays).average().getAsDouble();
@@ -93,6 +90,7 @@ public class Simulation {
 	private void showProgress() {
 		if(this.eventQueue.getProgress() > this.lastProgress + 0.1) {
 			this.lastProgress = this.eventQueue.getProgress();
+			System.out.println(this.lastProgress);
 		}
 	}
 

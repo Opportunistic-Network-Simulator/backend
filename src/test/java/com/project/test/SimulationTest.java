@@ -146,7 +146,6 @@ public class SimulationTest {
 		EventQueue eventQueue = new EventQueue(this.simulationService.generateMeetingTrace(pairs, totalSimulationTime), messageGenerationQueue);
 		MessageGroup messages = new MessageGroup();
 		Simulation simulation = new Simulation(
-				id,
 				new SingleCopyEpidemicProtocol(), 
 				eventQueue, 
 				nodes, 

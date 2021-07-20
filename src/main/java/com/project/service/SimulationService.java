@@ -44,7 +44,6 @@ public class SimulationService {
 		MessageGroup messages = new MessageGroup();
 		
 		Simulation simulation = new Simulation(
-										0,
 										new SingleCopyEpidemicProtocol(), 
 										eventQueue, 
 										nodes, 
