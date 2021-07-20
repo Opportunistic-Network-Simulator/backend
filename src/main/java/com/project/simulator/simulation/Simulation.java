@@ -19,21 +19,24 @@ public class Simulation {
 	private MessageTransmissionProtocol messageTransmissionProtocol;
 	private boolean simulationHappening = false;
 	private double lastProgress = 0;
+	private int threadId;
+	private long messageIdCounter;
 	
-	public Simulation(
+	public Simulation(	int id,
 						MessageTransmissionProtocol messageTransmissionProtocol, 
 						EventQueue eventQueue, 
 						NodeGroup nodes, 
 						MessageGroup messages) {
+		this.threadId = id;
 		this.messageTransmissionProtocol = messageTransmissionProtocol;
 		this.eventQueue = eventQueue;
 		this.nodes = nodes;
 		this.messages = messages;
+		this.messageIdCounter = 0;
 	}
 	
 	public void start(boolean stopOnEndOfArrivals) {
 		this.simulationHappening = true;
-		Message.idCounter = 0;
 		while(this.simulationHappening) {
 			this.showProgress();
 			this.handle(eventQueue.nextEvent(), stopOnEndOfArrivals);
@@ -43,10 +46,13 @@ public class Simulation {
 	private void handle(Event event, boolean stopOnEndOfArrivals) {
 		if(event instanceof MessageGenerationEvent) {
 			this.handleMessageGeneration((MessageGenerationEvent) event);
+//			System.out.println("MessageGenerationEvent");
 		} else if(event instanceof MeetEvent) {
 			this.handleMeet((MeetEvent) event, stopOnEndOfArrivals);
+//			System.out.println("MeetEvent");
 		} else if(event instanceof SimulationOverEvent) {
 			this.handleSimulationOver((SimulationOverEvent) event);
+//			System.out.println("SimulationOverEvent");
 		}
 	}
 	
@@ -61,11 +67,12 @@ public class Simulation {
 	}
 	
 	private void handleSimulationOver(SimulationOverEvent event) {
+//		System.out.println(this.threadId);
 		this.simulationHappening = false;
 	}
 	
 	private void handleMessageGeneration(MessageGenerationEvent event) {
-		Message generatedMessage = this.messages.generateMessage(event.getOriginNodeId(), event.getDestinationNodeId(), event.instant);
+		Message generatedMessage = this.messages.generateMessage(this.messageIdCounter++, event.getOriginNodeId(), event.getDestinationNodeId(), event.instant);
 		this.nodes.getNode(generatedMessage.getSourceNode()).addMessage(generatedMessage);
 	}
 	
@@ -77,7 +84,7 @@ public class Simulation {
 				delays[i] = message.getArrivalInstant() - message.getGenarationInstant();
 				i++;
 			} else {
-				System.out.println("Mensagem " + message.getId() + ": não foi entregue");
+				System.out.println("Mensagem " + message.getId() + ": não foi entregue na thread " + this.threadId);
 			}
 		}
 		return Arrays.stream(delays).average().getAsDouble();

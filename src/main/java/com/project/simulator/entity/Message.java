@@ -9,7 +9,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Message {
-	public static long idCounter = 0;
 	
 	private long id;
 	private long size;
@@ -21,8 +20,8 @@ public class Message {
 	private double delay;
 	private Map<String, String> storedProperties = new HashMap<String, String>();
 	
-	public Message(long size, long sourceNode, long destinationNode, double genarationInstant) {
-		this.id = idCounter++;
+	public Message(long messageIdCounter, long size, long sourceNode, long destinationNode, double genarationInstant) {
+		this.id = messageIdCounter;
 		this.size = size;
 		this.sourceNode = sourceNode;
 		this.destinationNode = destinationNode;
