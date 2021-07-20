@@ -56,7 +56,7 @@ public class SimulationRandomWaypointTest {
 				nodes, 
 				messages);
 		simulation.start(true);
-		System.out.println(simulation.reportMessageDelay());
+		System.out.println("delay: " + simulation.reportMessageDelay());
 	}
 	
 	

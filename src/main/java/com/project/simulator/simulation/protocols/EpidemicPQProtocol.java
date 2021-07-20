@@ -40,7 +40,10 @@ public class EpidemicPQProtocol extends MessageTransmissionProtocol {
 	}
 
 	private boolean shouldTransfer(Node fromNode, Node toNode, Message message) {
-		if(message.getSourceNode() == fromNode.getId()) {
+		if(message.getDestinationNode() == toNode.getId()) {
+			return true;
+		}
+		else if(message.getSourceNode() == fromNode.getId()) {
 			double randomValue = Math.random();
 			if (randomValue <= q) return true;
 			else return false;
