@@ -53,7 +53,7 @@ public class SimulationTest {
 		System.out.println("desvio padrão: " + this.std(results));
 	}
 	
-	@Test
+	// @Test
 	public void testCaseAllPairs() {
 		List<Pair> pairs = generatePairs();
 //		List<Double> results = new ArrayList<Double>();
@@ -146,5 +146,17 @@ public class SimulationTest {
 			}
 		}
 		return pairs;
+	}
+	
+	@Test
+	public void testeLambda() {	
+		double speed = 50;
+		double omega = 1.3683;
+		double radius = 50;
+		double pi = 3.1416;
+		double side = 2000;
+		double lambda = (8*omega*radius*speed)/(pi*side*side);
+		System.out.println(lambda);
+		System.out.println(1/lambda);
 	}
 }
