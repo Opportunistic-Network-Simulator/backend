@@ -18,11 +18,16 @@ import lombok.Setter;
 @Builder
 public class Test {
 	
-	private volatile List<Integer> l1;
 	
 	public static void main(String[] args) throws IOException{
+		List<Double> list = new ArrayList<Double>();
+		list.add(2.0);
+		list.add(3.0);
+		list.add(4.0);
+		double avg = list.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
+		System.out.println(avg);
 		
-		System.out.println(Thread.currentThread().getName());
+		
 	}
 }
 

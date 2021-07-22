@@ -1,6 +1,9 @@
 package com.project.simulator.simulation;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.OptionalDouble;
 
 import com.project.simulator.entity.Message;
 import com.project.simulator.entity.MessageGroup;
@@ -64,7 +67,6 @@ public class Simulation {
 	}
 	
 	private void handleSimulationOver(SimulationOverEvent event) {
-//		System.out.println(this.threadId);
 		this.simulationHappening = false;
 	}
 	
@@ -74,23 +76,25 @@ public class Simulation {
 	}
 	
 	public double reportMessageDelay() {
-		double[] delays = new double[this.messages.getSize()];
+		List<Double> delays = new ArrayList<Double>();
 		int i = 0;
 		for(Message message : this.messages) {
 			if(message.isDelivered()) {
-				delays[i] = message.getArrivalInstant() - message.getGenarationInstant();
+				delays.add(message.getArrivalInstant() - message.getGenarationInstant());
+//				System.out.println("message " + message.getId() + " arrival at " + message.getArrivalInstant());
 				i++;
 			} else {
-//				System.out.println("Mensagem " + message.getId() + ": não foi entregue na thread " + this.threadId);
+//				System.out.println("Mensagem " + message.getId() + ": não foi entregue");
 			}
 		}
-		return Arrays.stream(delays).average().getAsDouble();
+		System.out.println("Delivery ratio: " + (double) i / this.messages.getSize());
+		return delays.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
 	}
 	
 	private void showProgress() {
 		if(this.eventQueue.getProgress() > this.lastProgress + 0.1) {
 			this.lastProgress = this.eventQueue.getProgress();
-			System.out.println(this.lastProgress);
+//			System.out.println("progress: " + this.lastProgress);
 		}
 	}
 

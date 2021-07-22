@@ -39,24 +39,21 @@ public class SimulationRandomWaypointTest {
 	
 	@Test
 	public void testCase() {
-		double totalSimulationTime = 360000;
-		List<Pair> pairs = generatePairs();
-		NodeGroup nodes = this.simulationService.generateNodes(50);
-		System.out.println("AAAAAAAAAAAAa");
+		double totalSimulationTime = 1800;
+		int numberOfNodes = 50;
+		List<Pair> pairs = generatePairs(18);
+		NodeGroup nodes = this.simulationService.generateNodes(numberOfNodes);
 		List<MessageGenerationEvent> messageGenerationQueue = 
-				SingleMessagesGenerator.generateMessages(MessageGeneratorConfiguration.fixedNodes(0, 1), nodes);
-		System.out.println("AAAAAAAAAAAAA2");
+				SingleMessagesGenerator.generateMessages(MessageGeneratorConfiguration.allPairs(numberOfNodes), nodes);
 		EventQueue eventQueue = new EventQueue(this.simulationService.generateMeetingTrace(pairs, totalSimulationTime), messageGenerationQueue);
-		System.out.println("AAAAAAAAAAAAA3");
 		MessageGroup messages = new MessageGroup();
-		System.out.println("VAI COMEÇAR");
 		Simulation simulation = new Simulation(
 				new DirectDeliveryProtocol(), 
 				eventQueue, 
 				nodes, 
 				messages);
 		simulation.start(true);
-		System.out.println("delay: " + simulation.reportMessageDelay());
+		System.out.println("Delay: " + simulation.reportMessageDelay());
 	}
 	
 	
@@ -74,9 +71,9 @@ public class SimulationRandomWaypointTest {
 		return simulation.reportMessageDelay();
 	}
 	
-	private List<Pair> generatePairs() {
+	private List<Pair> generatePairs(double speed) {
 		List<Pair> pairs = new ArrayList<Pair>();
-		double lambda = this.testeLambda(18);
+		double lambda = this.testeLambda(speed);
 		for(int i = 0; i < 50; i++) {
 			for(int j = i + 1; j < 50; j++) {
 				pairs.add(new Pair(i, j, lambda));
@@ -86,15 +83,12 @@ public class SimulationRandomWaypointTest {
 		return pairs;
 	}
 	
-	@Test
 	public double testeLambda(double speed) {	
 		double omega = 1.3683;
 		double radius = 50;
-		double pi = 3.1416;
+		double pi = Math.PI;
 		double side = 2000;
 		double lambda = (8*omega*radius*speed)/(pi*side*side);
-		System.out.println(lambda);
-		System.out.println(1/lambda);
 		return lambda;
 	}
 }

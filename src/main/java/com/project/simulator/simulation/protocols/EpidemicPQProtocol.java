@@ -56,6 +56,7 @@ public class EpidemicPQProtocol extends MessageTransmissionProtocol {
 	
 	private void transfer(List<Message> messages, Node fromNode, Node toNode, double instant) {
 		for(Message message : messages) {
+//			System.out.println("message " + message.getId() + " delivered at " + instant);
 			toNode.receiveMessage(message, instant);
 		}
 	}
