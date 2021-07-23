@@ -7,10 +7,13 @@ import com.project.simulator.entity.Pair;
 
 public class MeetingTraceGenerator {
 	private static void generatePairMeetings(MeetingTrace meetingTrace, Pair pair, double totalSimulationTime) {
-		double lastMeetInstant = 0;
+		double lastMeetInstant = 0.0;
 
-		while(lastMeetInstant < totalSimulationTime) {
-			lastMeetInstant = lastMeetInstant + pair.generateDt(lastMeetInstant == 0);
+		while(true) {
+			double dt = pair.generateDt(lastMeetInstant == 0);
+			lastMeetInstant = lastMeetInstant + dt;
+			if(lastMeetInstant > totalSimulationTime)
+				break;
 			meetingTrace.addMeet(new Meet(pair, lastMeetInstant));
 		}
 	}
