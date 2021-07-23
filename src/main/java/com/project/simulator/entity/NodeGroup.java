@@ -15,6 +15,9 @@ public class NodeGroup {
 	}
 
 	public Node getNode(long nodeId) {
+		if(!nodes.containsKey(nodeId)) {
+			//throw new Exception("Node id does not exist in this group: " + nodeId);
+		}
 		return this.nodes.get(nodeId);
 	}
 	

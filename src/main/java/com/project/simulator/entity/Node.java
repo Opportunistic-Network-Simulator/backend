@@ -27,13 +27,13 @@ public class Node {
 	
 	public void receiveMessage(Message message, double instant) {
 		if(this.messages.contains(message)) return; //não recebo msg que já tenho
-		this.messages.add(message);
 		message.notifyNewNode(this.id, instant);
 		if(message.getDestinationNode() == this.id) {
 			message.setArrivalInstant(instant);
 			message.setDelay(instant - message.getGenarationInstant());
 			message.setDelivered(true);
 		}
+		this.messages.add(message);
 	}
 	
 	public void removeMessage(long removedMessageId) {

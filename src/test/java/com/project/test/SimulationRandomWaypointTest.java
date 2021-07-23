@@ -42,14 +42,10 @@ public class SimulationRandomWaypointTest {
 		double totalSimulationTime = 360000;
 		List<Pair> pairs = generatePairs();
 		NodeGroup nodes = this.simulationService.generateNodes(50);
-		System.out.println("AAAAAAAAAAAAa");
 		List<MessageGenerationEvent> messageGenerationQueue = 
 				SingleMessagesGenerator.generateMessages(MessageGeneratorConfiguration.fixedNodes(0, 1), nodes);
-		System.out.println("AAAAAAAAAAAAA2");
 		EventQueue eventQueue = new EventQueue(this.simulationService.generateMeetingTrace(pairs, totalSimulationTime), messageGenerationQueue);
-		System.out.println("AAAAAAAAAAAAA3");
 		MessageGroup messages = new MessageGroup();
-		System.out.println("VAI COMEÇAR");
 		Simulation simulation = new Simulation(
 				new DirectDeliveryProtocol(), 
 				eventQueue, 
