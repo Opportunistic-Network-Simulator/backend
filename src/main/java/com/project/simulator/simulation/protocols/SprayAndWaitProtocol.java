@@ -13,52 +13,49 @@ public class SprayAndWaitProtocol extends MessageTransmissionProtocol {
 	}
 
 	@Override
-	public void handleMeet(MeetEvent meet, NodeGroup nodes) {
-		Node node1 = nodes.getNode(meet.getNode1Id());
-		Node node2 = nodes.getNode(meet.getNode2Id());
-		
-		for(Message message : node1.getMessages()) {
-			checkMessageTransfer(node1, node2, message, meet);
-		}
-		
-	}
-
-	private void checkMessageTransfer(Node fromNode, Node toNode, Message message, MeetEvent meet) {
+	protected boolean shouldTransfer(Node fromNode, Node toNode, Message message) {
 		initialStoreMessage(fromNode, message);
 		
+		// TODO: botar esse comportamento no nó/mensagem
 		if(alreadyDelivered(toNode, message))
-			return;
-		
+			return false;
+
 		int messageLValueInNodeFrom = Integer.valueOf(message.getStoredValue(String.valueOf(fromNode.getId())));
 
 		if(messageLValueInNodeFrom == 1) {
-			wait(fromNode, toNode, message, messageLValueInNodeFrom, meet);
+			return wait(fromNode, toNode, message, messageLValueInNodeFrom);
 		} else {
-			spray(fromNode, toNode, message, messageLValueInNodeFrom, meet);
+			return spray(fromNode, toNode, message, messageLValueInNodeFrom);
 		}
 	}
 
-	private void spray(Node fromNode, Node toNode, Message message, int messageLValueInNodeFrom, MeetEvent meet) {
-		toNode.receiveMessage(message, meet.instant);
+	private boolean spray(Node fromNode, Node toNode, Message message, int messageLValueInNodeFrom) {
 		message.storeValue(String.valueOf(fromNode.getId()), String.valueOf(messageLValueInNodeFrom - 1));
 		message.storeValue(String.valueOf(toNode.getId()), String.valueOf(1));
 	}
 
-	private void wait(Node fromNode, Node toNode, Message message, int messageLValueInNodeFrom, MeetEvent meet) {
+	private boolean wait(Node fromNode, Node toNode, Message message, int messageLValueInNodeFrom) {
 		if (message.getDestinationNode() == toNode.getId()) {
-			toNode.receiveMessage(message, meet.instant);
+			return true;
 		}
-		
+		return false;
 	}
 
 	private boolean alreadyDelivered(Node toNode, Message message) {
 		return message.hasStoredElement(String.valueOf(toNode.toString()));
 	}
 
+	// TODO: trocar isso para ser um metodo chamado na criação da mensagem
 	private void initialStoreMessage(Node fromNode, Message message) {
 		if(!message.hasStoredElement(String.valueOf(fromNode.getId()))) {
 			message.storeValue(String.valueOf(fromNode.getId()), String.valueOf(this.lValue));
 		}
 	}
+	
+	@Override
+	protected void postTransfer(Message message, Node fromNode, Node toNode) {
+		
+	}
+
 
 }
