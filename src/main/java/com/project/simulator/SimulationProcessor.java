@@ -16,6 +16,10 @@ public class SimulationProcessor {
         List<MessageGenerationEvent> messages = SingleMessagesGenerator.generateMessages(config.messageGenerationConfig);
         List<MessageGenerationEvent> messages = SingleMessagesGenerator.generateMessages(config.messageGenerationConfig);
         MessageTransmissionProtocol protocol = MessageTransmissionProtocolFactory.getFromConfig(config.protocolConfig);
+        Simulation simulation = sndoifa;
+        result = simutaion.start();
+        Output output = OutputFactory.generate(config.outputConfiguration);
+        output.handle(result);
     }
 
 }
