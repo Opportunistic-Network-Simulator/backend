@@ -1,6 +1,6 @@
 package com.project.test.protocols;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.project.simulator.entity.Message;
@@ -30,18 +30,18 @@ public class SingleCopyEpidemicProtocolTest {
 		
 		protocol.handleMeet(new MeetEvent(7, node1.getId(), node2.getId()), nodes);
 		
-		Assert.assertFalse(message1.isDelivered());
-		Assert.assertTrue(message2.isDelivered());
-		Assert.assertTrue(message3.isDelivered());
-		Assert.assertTrue(message4.isDelivered());
+		Assertions.assertFalse(message1.isDelivered());
+		Assertions.assertTrue(message2.isDelivered());
+		Assertions.assertTrue(message3.isDelivered());
+		Assertions.assertTrue(message4.isDelivered());
 
-		Assert.assertEquals(7, message2.getArrivalInstant(), 0);
-		Assert.assertEquals(7, message3.getArrivalInstant(), 0);
-		Assert.assertEquals(7, message4.getArrivalInstant(), 0);
+		Assertions.assertEquals(7, message2.getArrivalInstant(), 0);
+		Assertions.assertEquals(7, message3.getArrivalInstant(), 0);
+		Assertions.assertEquals(7, message4.getArrivalInstant(), 0);
 
 
-		Assert.assertEquals(4, message2.getDelay(), 0);
-		Assert.assertEquals(6, message3.getDelay(), 0);
-		Assert.assertEquals(2, message4.getDelay(), 0);	
+		Assertions.assertEquals(4, message2.getDelay(), 0);
+		Assertions.assertEquals(6, message3.getDelay(), 0);
+		Assertions.assertEquals(2, message4.getDelay(), 0);
 	}
 }

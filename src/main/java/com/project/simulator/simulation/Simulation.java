@@ -25,9 +25,7 @@ public class Simulation {
 	private long messageIdCounter;
 	
 	public Simulation(	MessageTransmissionProtocol messageTransmissionProtocol, 
-						EventQueue eventQueue, 
-						NodeGroup nodes, 
-						MessageGroup messages) {
+						EventQueue eventQueue) {
 		this.messageTransmissionProtocol = messageTransmissionProtocol;
 		this.eventQueue = eventQueue;
 		this.nodes = nodes;

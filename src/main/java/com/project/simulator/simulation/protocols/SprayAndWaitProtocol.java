@@ -32,6 +32,7 @@ public class SprayAndWaitProtocol extends MessageTransmissionProtocol {
 	private boolean spray(Node fromNode, Node toNode, Message message, int messageLValueInNodeFrom) {
 		message.storeValue(String.valueOf(fromNode.getId()), String.valueOf(messageLValueInNodeFrom - 1));
 		message.storeValue(String.valueOf(toNode.getId()), String.valueOf(1));
+		return true;
 	}
 
 	private boolean wait(Node fromNode, Node toNode, Message message, int messageLValueInNodeFrom) {

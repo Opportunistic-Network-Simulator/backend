@@ -13,21 +13,21 @@ public abstract class MessageTransmissionProtocol {
 		Node node1 = nodes.getNode(meet.getNode1Id());
 		Node node2 = nodes.getNode(meet.getNode2Id());
 		
-		List<Message> oneToTwo = transferedMessages(node1, node2);
-		List<Message> twoToOne = transferedMessages(node2, node1);
+		List<Message> oneToTwo = transferredMessages(node1, node2);
+		List<Message> twoToOne = transferredMessages(node2, node1);
 		
 
 		transferMessages(oneToTwo, node1, node2, meet.instant);
 		transferMessages(twoToOne, node2, node1, meet.instant);
 	}
-	
-	private List<Message> transferedMessages(Node fromNode, Node toNode) { 
-		List<Message> transferedMessages = new ArrayList<Message>();
-		
-		for(Message message : fromNode.getMessages()) {
-			if(shouldTransfer(fromNode, toNode, message)) transferedMessages.add(message);
+
+	private List<Message> transferredMessages(Node fromNode, Node toNode) {
+		List<Message> transferredMessages = new ArrayList<Message>();
+
+		for (Message message : fromNode.getMessages()) {
+			if (shouldTransfer(fromNode, toNode, message)) transferredMessages.add(message);
 		}
-		return transferedMessages;
+		return transferredMessages;
 	}
 	
 	private void transferMessages(List<Message> messages, Node fromNode, Node toNode, double instant) {

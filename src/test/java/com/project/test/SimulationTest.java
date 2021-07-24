@@ -21,7 +21,7 @@ import com.project.simulator.simulation.protocols.SingleCopyEpidemicProtocol;
 public class SimulationTest {
 	SimulationService simulationService = new SimulationService();
 	
-	// @Test
+	@Test
 	public void testSimulation() {
 		List<Pair> pairs = new ArrayList<Pair>();
 		pairs.add(new com.project.simulator.entity.Pair(0, 1, 2.5));
@@ -36,7 +36,7 @@ public class SimulationTest {
 	
 //	@Test
 	public void testCase() {
-		List<Pair> pairs = generatePairs();
+		List<Pair> pairs = generatePairs(); 
 		List<Double> results = new ArrayList<Double>();
 		int n = 15;
 		int count = 0;
