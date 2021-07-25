@@ -63,7 +63,14 @@ public class Simulation {
 	private void handleEndOfArrivals(double instant) {
 		this.eventQueue.simulationGenerateEvent(new SimulationOverEvent(instant));
 	}
-	
+	/* List<MessageGenerationEvent> messages = SingleMessagesGenerator.generateMessages(config.messageGenerationConfig);
+        List<MessageGenerationEvent> messages = SingleMessagesGenerator.generateMessages(config.messageGenerationConfig);
+        List<MessageGenerationEvent> messages = SingleMessagesGenerator.generateMessages(config.messageGenerationConfig);
+        MessageTransmissionProtocol protocol = MessageTransmissionProtocolFactory.getFromConfig(config.protocolConfig);
+        Simulation simulation = sndoifa;
+        result = simutaion.start();
+        Output output = OutputFactory.generate(config.outputConfiguration);
+        output.handle(result);*/
 	private void handleSimulationOver(SimulationOverEvent event) {
 		this.simulationHappening = false;
 	}

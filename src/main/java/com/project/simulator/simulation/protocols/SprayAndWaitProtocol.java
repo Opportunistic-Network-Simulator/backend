@@ -15,8 +15,7 @@ public class SprayAndWaitProtocol extends MessageTransmissionProtocol {
 	@Override
 	protected boolean shouldTransfer(Node fromNode, Node toNode, Message message) {
 		initialStoreMessage(fromNode, message);
-		
-		// TODO: botar esse comportamento no nó/mensagem
+
 		if(alreadyDelivered(toNode, message))
 			return false;
 
@@ -30,13 +29,11 @@ public class SprayAndWaitProtocol extends MessageTransmissionProtocol {
 	}
 
 	private boolean spray(Node fromNode, Node toNode, Message message, int messageLValueInNodeFrom) {
-		message.storeValue(String.valueOf(fromNode.getId()), String.valueOf(messageLValueInNodeFrom - 1));
-		message.storeValue(String.valueOf(toNode.getId()), String.valueOf(1));
 		return true;
 	}
 
 	private boolean wait(Node fromNode, Node toNode, Message message, int messageLValueInNodeFrom) {
-		if (message.getDestinationNode() == toNode.getId()) {
+		if (message.getDestinationNode() == toNode.getId() || message.getSourceNode() == fromNode.getId()) {
 			return true;
 		}
 		return false;
@@ -55,7 +52,21 @@ public class SprayAndWaitProtocol extends MessageTransmissionProtocol {
 	
 	@Override
 	protected void postTransfer(Message message, Node fromNode, Node toNode) {
-		
+		handleFromNode(message, fromNode);
+		handleToNode(message, toNode);
+	}
+
+	private void handleToNode(Message message, Node toNode) {
+		message.storeValue(String.valueOf(toNode.getId()), String.valueOf(1));
+	}
+
+	private void handleFromNode(Message message, Node fromNode) {
+		int messageLValueInNodeFrom = Integer.valueOf(message.getStoredValue(String.valueOf(fromNode.getId())));
+		messageLValueInNodeFrom--;
+		message.storeValue(String.valueOf(fromNode.getId()), String.valueOf(messageLValueInNodeFrom));
+		if(messageLValueInNodeFrom == 0) {
+			fromNode.removeMessage(message.getId());
+		}
 	}
 
 

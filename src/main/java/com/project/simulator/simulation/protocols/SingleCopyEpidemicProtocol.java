@@ -12,6 +12,6 @@ public class SingleCopyEpidemicProtocol extends MessageTransmissionProtocol {
 
 	@Override
 	protected void postTransfer(Message message, Node fromNode, Node toNode) {
-		toNode.removeMessage(message.getId());
+		fromNode.removeMessage(message.getId());
 	}
 }
