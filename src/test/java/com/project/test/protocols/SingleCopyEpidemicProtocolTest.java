@@ -44,4 +44,20 @@ public class SingleCopyEpidemicProtocolTest {
 		Assertions.assertEquals(6, message3.getDelay(), 0);
 		Assertions.assertEquals(2, message4.getDelay(), 0);
 	}
+
+	@Test
+	public void testPassing() {
+		NodeGroup nodes = new NodeGroup(2);
+		Node node1 = nodes.getNode(0);
+		Node node2 = nodes.getNode(1);
+		Message message1 = new Message(0, 0, 0, 3, 0);
+		node1.addMessage(message1);
+
+		MessageTransmissionProtocol protocol = new SingleCopyEpidemicProtocol();
+
+		protocol.handleMeet(new MeetEvent(7, node1.getId(), node2.getId()), nodes);
+
+		Assertions.assertTrue(node2.getMessages().contains(message1), "Message transmitted to new node");
+		Assertions.assertFalse(node1.getMessages().contains(message1), "Message removed from old node");
+	}
 }
