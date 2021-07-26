@@ -7,22 +7,22 @@ import com.project.simulator.entity.NodeGroup;
 import com.project.simulator.entity.event.MessageGenerationEvent;
 
 public class SingleMessagesGenerator {
-	public static List<MessageGenerationEvent> generateMessages(NodeGroup nodes) { //posteriormente, deve pegar dados da requisição para gerar as msg
+	public static List<MessageGenerationEvent> generateMessages(int nodeAmount) {
 		List<MessageGenerationEvent> messageGenerationQueue = new ArrayList<MessageGenerationEvent>();
 		
-		long sourceNodeId = (long) (Math.random() * nodes.getSize());
-		long destinationNodeId = (long) (Math.random() * nodes.getSize());
+		long sourceNodeId = (long) (Math.random() * nodeAmount);
+		long destinationNodeId = (long) (Math.random() * nodeAmount);
 		
 		while(destinationNodeId == sourceNodeId) {
-			destinationNodeId = (long) (Math.random() * nodes.getSize());
+			destinationNodeId = (long) (Math.random() * nodeAmount);
 		}
 		
 		MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(0, sourceNodeId, destinationNodeId);
 		messageGenerationQueue.add(messageGenerationEvent);
-		return generateMessages(sourceNodeId, destinationNodeId, nodes);
+		return generateMessages(sourceNodeId, destinationNodeId);
 	}
 	
-	public static List<MessageGenerationEvent> generateMessages(long sourceNodeId, long destinationNodeId, NodeGroup nodes) { //posteriormente, deve pegar dados da requisição para gerar as msg
+	public static List<MessageGenerationEvent> generateMessages(long sourceNodeId, long destinationNodeId) { //posteriormente, deve pegar dados da requisição para gerar as msg
 		List<MessageGenerationEvent> messageGenerationQueue = new ArrayList<MessageGenerationEvent>();
 		
 		MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(0, sourceNodeId, destinationNodeId);
@@ -30,7 +30,7 @@ public class SingleMessagesGenerator {
 		return messageGenerationQueue;
 	}
 	
-	public static List<MessageGenerationEvent> generateMessages(List<MessageGeneratorConfiguration> configList, NodeGroup nodes) { //posteriormente, deve pegar dados da requisição para gerar as msg
+	public static List<MessageGenerationEvent> generateMessages(List<MessageGeneratorConfiguration> configList, int nodesAmount) { //posteriormente, deve pegar dados da requisição para gerar as msg
 		List<MessageGenerationEvent> messageGenerationQueue = new ArrayList<MessageGenerationEvent>();
 		
 		for(MessageGeneratorConfiguration config : configList) {
@@ -41,17 +41,17 @@ public class SingleMessagesGenerator {
 			if (config.getSourceNodeId() != null) {
 				sourceNodeId = config.getSourceNodeId();
 			} else {
-				sourceNodeId = (long) (Math.random() * nodes.getSize());
+				sourceNodeId = (long) (Math.random() * nodesAmount);
 			}
 			
 			if (config.getDestinationNodeId() != null) {
 				destinationNodeId = config.getDestinationNodeId();
 			} else {
-				destinationNodeId = (long) (Math.random() * nodes.getSize());
+				destinationNodeId = (long) (Math.random() * nodesAmount);
 			}
 			
 			while(destinationNodeId == sourceNodeId) {
-				destinationNodeId = (long) (Math.random() * nodes.getSize());
+				destinationNodeId = (long) (Math.random() * nodesAmount);
 			}
 			
 			MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(0, sourceNodeId, destinationNodeId);

@@ -14,7 +14,7 @@ public class SprayAndWaitProtocolTest {
 	
 	@Test
 	public void testSpray() {
-		NodeGroup nodes = new NodeGroup(5);
+		NodeGroup nodes = new NodeGroup();
 		Node node1 = nodes.getNode(0);
 		Node node2 = nodes.getNode(1);
 		Node node3 = nodes.getNode(2);
@@ -45,7 +45,7 @@ public class SprayAndWaitProtocolTest {
 
 	@Test
 	public void testWait() {
-		NodeGroup nodes = new NodeGroup(5);
+		NodeGroup nodes = new NodeGroup();
 		Node node2 = nodes.getNode(1);
 		Node node3 = nodes.getNode(2);
 		Message message1 = new Message(0, 0, 0, 4, 0);
@@ -64,7 +64,7 @@ public class SprayAndWaitProtocolTest {
 
 	@Test
 	public void testDirectContact() {
-		NodeGroup nodes = new NodeGroup(2);
+		NodeGroup nodes = new NodeGroup();
 		Node node1 = nodes.getNode(0);
 		Node node2 = nodes.getNode(1);
 		Message message1 = new Message(0, 0, 0, 1, 3);

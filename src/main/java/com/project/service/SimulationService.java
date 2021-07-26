@@ -23,11 +23,11 @@ import com.project.simulator.simulation.protocols.SingleCopyEpidemicProtocol;
 public class SimulationService {
 	
 	public NodeGroup generateNodes(long numberOfNodes) {
-		return NodesGenerator.generateNodes(numberOfNodes);
+		return NodesGenerator.generateNodes();
 	}
 
 	public List<MessageGenerationEvent> generateMessages(NodeGroup nodes) {
-		return SingleMessagesGenerator.generateMessages(nodes);
+		return SingleMessagesGenerator.generateMessages((int) nodes.getSize());
 	}
 	
 	public MeetingTrace generateMeetingTrace(List<Pair> pairs, double totalSimulationTime) {
@@ -45,9 +45,7 @@ public class SimulationService {
 		
 		Simulation simulation = new Simulation(
 										new SingleCopyEpidemicProtocol(), 
-										eventQueue, 
-										nodes, 
-										messages);
+										eventQueue);
 		
 		simulation.start(stopOnEndOfArrivals);
 		return simulation.reportMessageDelay();

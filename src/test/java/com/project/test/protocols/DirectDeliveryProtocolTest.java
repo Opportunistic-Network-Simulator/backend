@@ -14,7 +14,7 @@ public class DirectDeliveryProtocolTest {
 	
 	@Test
 	public void testDelivery() {
-		NodeGroup nodes = new NodeGroup(5);
+		NodeGroup nodes = new NodeGroup();
 		Node node1 = nodes.getNode(0);
 		Node node2 = nodes.getNode(1);
 		Message message1 = new Message(0, 0, 0, 1, 0);
@@ -35,7 +35,7 @@ public class DirectDeliveryProtocolTest {
 
 	@Test
 	public void testNoDelivery() {
-		NodeGroup nodes = new NodeGroup(5);
+		NodeGroup nodes = new NodeGroup();
 		Node node1 = nodes.getNode(0);
 		Node node2 = nodes.getNode(1);
 		Message message1 = new Message(0, 0, 0, 3, 0);

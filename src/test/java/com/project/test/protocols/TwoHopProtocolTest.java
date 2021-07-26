@@ -15,7 +15,7 @@ public class TwoHopProtocolTest {
 	// TODO: implement
 	@Test
 	public void testDelivery() {
-		NodeGroup nodes = new NodeGroup(2);
+		NodeGroup nodes = new NodeGroup();
 		Node node1 = nodes.getNode(0);
 		Node node2 = nodes.getNode(1);
 		Message message1 = new Message(0, 0, 0, 3, 0);

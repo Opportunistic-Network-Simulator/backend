@@ -6,6 +6,7 @@ import java.util.TreeMap;
 
 public class MessageGroup implements Iterable<Message> {
 	private Map<Long, Message> messages;
+	private int messageIdCounter;
 	
 	public MessageGroup() {
 		this.messages = new TreeMap<Long, Message>();
@@ -15,8 +16,8 @@ public class MessageGroup implements Iterable<Message> {
 		return messages.get(messageId);
 	}
 	
-	public Message generateMessage(long messageIdCounter, long sourceNodeId, long destinationNodeId, double instant) {
-		Message newMessage = new Message(messageIdCounter, 0l, sourceNodeId, destinationNodeId, instant);
+	public Message generateMessage(long sourceNodeId, long destinationNodeId, double instant) {
+		Message newMessage = new Message(messageIdCounter++, 0l, sourceNodeId, destinationNodeId, instant);
 		messages.put(newMessage.getId(), newMessage);
 		return newMessage;
 	}
@@ -31,9 +32,6 @@ public class MessageGroup implements Iterable<Message> {
 	}
 	
 	public boolean checkEndOfArrivals() {
-//		Set<Long> keys = this.messages.keySet();
-//		for(Long key : keys) {
-//			Message message = this.getMessage(key);
 		for(Message message : this) {
 			if(!message.isDelivered())
 				return false;

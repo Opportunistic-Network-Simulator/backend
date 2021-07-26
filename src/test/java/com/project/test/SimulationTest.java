@@ -141,15 +141,11 @@ public class SimulationTest {
     }
 	
 	public double specificPair(int id, List<MessageGeneratorConfiguration> configList, List<Pair> pairs, double totalSimulationTime) {
-		NodeGroup nodes = this.simulationService.generateNodes(15);
-		List<MessageGenerationEvent> messageGenerationQueue = SingleMessagesGenerator.generateMessages(configList, nodes);
+		List<MessageGenerationEvent> messageGenerationQueue = SingleMessagesGenerator.generateMessages(configList, 15);
 		EventQueue eventQueue = new EventQueue(this.simulationService.generateMeetingTrace(pairs, totalSimulationTime), messageGenerationQueue);
-		MessageGroup messages = new MessageGroup();
 		Simulation simulation = new Simulation(
 				new SingleCopyEpidemicProtocol(), 
-				eventQueue, 
-				nodes, 
-				messages);
+				eventQueue);
 		simulation.start(true);
 		return simulation.reportMessageDelay();
 	}

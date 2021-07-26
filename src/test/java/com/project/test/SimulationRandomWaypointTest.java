@@ -42,31 +42,24 @@ public class SimulationRandomWaypointTest {
 		double totalSimulationTime = 1800;
 		int numberOfNodes = 50;
 		List<Pair> pairs = generatePairs(18);
-		NodeGroup nodes = this.simulationService.generateNodes(numberOfNodes);
-		List<MessageGenerationEvent> messageGenerationQueue = 
-				SingleMessagesGenerator.generateMessages(MessageGeneratorConfiguration.allPairs(numberOfNodes), nodes);
+		List<MessageGenerationEvent> messageGenerationQueue =
+				SingleMessagesGenerator.generateMessages(MessageGeneratorConfiguration.allPairs(numberOfNodes), numberOfNodes);
 		EventQueue eventQueue = new EventQueue(this.simulationService.generateMeetingTrace(pairs, totalSimulationTime), messageGenerationQueue);
-		MessageGroup messages = new MessageGroup();
 		Simulation simulation = new Simulation(
 				new DirectDeliveryProtocol(), 
-				eventQueue, 
-				nodes, 
-				messages);
+				eventQueue);
 		simulation.start(true);
 		System.out.println("Delay: " + simulation.reportMessageDelay());
 	}
 	
 	
 	public double specificPair(int id, List<MessageGeneratorConfiguration> configList, List<Pair> pairs, double totalSimulationTime) {
-		NodeGroup nodes = this.simulationService.generateNodes(15);
-		List<MessageGenerationEvent> messageGenerationQueue = SingleMessagesGenerator.generateMessages(configList, nodes);
+		List<MessageGenerationEvent> messageGenerationQueue = SingleMessagesGenerator.generateMessages(configList, 15);
 		EventQueue eventQueue = new EventQueue(this.simulationService.generateMeetingTrace(pairs, totalSimulationTime), messageGenerationQueue);
 		MessageGroup messages = new MessageGroup();
 		Simulation simulation = new Simulation(
 				new SingleCopyEpidemicProtocol(), 
-				eventQueue, 
-				nodes, 
-				messages);
+				eventQueue);
 		simulation.start(true);
 		return simulation.reportMessageDelay();
 	}
