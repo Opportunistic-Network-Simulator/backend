@@ -1,9 +1,16 @@
 package com.project.simulator;
 
 import com.project.simulator.configuration.SimulationConfiguration;
+import com.project.simulator.entity.MeetingTrace;
+import com.project.simulator.entity.event.EventQueue;
 import com.project.simulator.entity.event.MessageGenerationEvent;
-import com.project.simulator.generator.messageGenerator.SingleMessagesGenerator;
+import com.project.simulator.generator.MeetingTraceGenerator;
+import com.project.simulator.generator.messageGenerator.MessageGenerator;
+import com.project.simulator.generator.messageGenerator.MessageTransmissionProtocolFactory;
+import com.project.simulator.simulation.Simulation;
 import com.project.simulator.simulation.protocols.MessageTransmissionProtocol;
+
+import java.util.List;
 
 public class SimulationProcessor {
     SimulationConfiguration config;
@@ -12,14 +19,13 @@ public class SimulationProcessor {
     }
 
     public void runSimulation() {
-//        List<MessageGenerationEvent> messages = SingleMessagesGenerator.generateMessages(config.messageGenerationConfig);
-//        List<MessageGenerationEvent> messages = SingleMessagesGenerator.generateMessages(config.messageGenerationConfig);
-//        List<MessageGenerationEvent> messages = SingleMessagesGenerator.generateMessages(config.messageGenerationConfig);
-//        MessageTransmissionProtocol protocol = MessageTransmissionProtocolFactory.getFromConfig(config.protocolConfig);
-//        Simulation simulation = sndoifa;
-//        result = simutaion.start();
-//        Output output = OutputFactory.generate(config.outputConfiguration);
-//        output.handle(result);
+        List<MessageGenerationEvent> messageGenerationQueue = MessageGenerator.generate(config.getMessageGenerationConfiguration());
+        MeetingTrace meetingTrace = MeetingTraceGenerator.generate(config.getMeetingTraceConfiguration());
+        EventQueue eventQueue = EventQueue.makeEventQueue(meetingTrace, messageGenerationQueue);
+        MessageTransmissionProtocol protocol = MessageTransmissionProtocolFactory.make(config.getProtocolConfiguration());
+        Simulation simulation = new Simulation(protocol, eventQueue);
+        simulation.start(true);
+        simulation.reportMessageDelay();
     }
 
 }

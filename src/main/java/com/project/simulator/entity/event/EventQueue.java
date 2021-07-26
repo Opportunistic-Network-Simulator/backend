@@ -34,4 +34,8 @@ public class EventQueue {
 	public double getProgress() {
 		return (double) this.eventsInThePast.size() / (double) (this.eventsInTheFuture.size() + this.eventsInThePast.size());
 	}
+
+	public static EventQueue makeEventQueue(MeetingTrace meetingTrace, List<MessageGenerationEvent> messageGenerationEventQueue) {
+		return new EventQueue(meetingTrace, messageGenerationEventQueue);
+	}
 }

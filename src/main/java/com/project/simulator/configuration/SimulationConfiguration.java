@@ -1,5 +1,8 @@
 package com.project.simulator.configuration;
 
+import lombok.Getter;
+
+@Getter
 public class SimulationConfiguration {
     MessageGenerationConfiguration messageGenerationConfiguration;
     MeetingTraceConfiguration meetingTraceConfiguration;
