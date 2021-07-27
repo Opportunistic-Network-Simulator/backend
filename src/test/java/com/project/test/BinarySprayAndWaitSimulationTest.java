@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SprayAndWaitSimulationTest {
+public class BinarySprayAndWaitSimulationTest {
     private double[] testSpeeds = { 2, 8, 12, 18 };
 
     @Test
@@ -56,7 +56,7 @@ public class SprayAndWaitSimulationTest {
     }
 
     private ProtocolConfiguration prepareProtocolConfig() {
-        return new ProtocolConfiguration(ProtocolType.SPRAY_AND_WAIT, 5);
+        return new ProtocolConfiguration(ProtocolType.BINARY_SPRAY_AND_WAIT, 5);
     }
 
     private double testLambda(double speed) {

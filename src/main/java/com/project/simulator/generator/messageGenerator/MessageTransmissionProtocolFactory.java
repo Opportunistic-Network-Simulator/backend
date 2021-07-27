@@ -18,6 +18,8 @@ public class MessageTransmissionProtocolFactory {
                 return new EpidemicPQProtocol(config.getP(), config.getQ());
             case SPRAY_AND_WAIT:
                 return new SprayAndWaitProtocol(config.getL());
+            case BINARY_SPRAY_AND_WAIT:
+                return new BinarySprayAndWaitProtocol(config.getL());
             case SINGLE_COPY_EPIDEMIC:
                 return new SingleCopyEpidemicProtocol();
             default:
