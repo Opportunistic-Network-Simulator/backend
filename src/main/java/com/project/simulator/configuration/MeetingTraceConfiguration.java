@@ -11,4 +11,10 @@ public class MeetingTraceConfiguration {
     String fileName;
     double totalSimulationTime;
     List<Pair> pairs;
+
+    public MeetingTraceConfiguration(MeetingTraceConfigurationType type, double totalSimulationTime, List<Pair> pairs) {
+        this.type = type;
+        this.totalSimulationTime = totalSimulationTime;
+        this.pairs = pairs;
+    }
 }

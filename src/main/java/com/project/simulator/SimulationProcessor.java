@@ -2,6 +2,7 @@ package com.project.simulator;
 
 import com.project.simulator.configuration.SimulationConfiguration;
 import com.project.simulator.entity.MeetingTrace;
+import com.project.simulator.entity.SimulationReport;
 import com.project.simulator.entity.event.EventQueue;
 import com.project.simulator.entity.event.MessageGenerationEvent;
 import com.project.simulator.generator.MeetingTraceGenerator;
@@ -18,14 +19,14 @@ public class SimulationProcessor {
         this.config = config;
     }
 
-    public void runSimulation() {
+    public SimulationReport runSimulation() {
         List<MessageGenerationEvent> messageGenerationQueue = MessageGenerator.generate(config.getMessageGenerationConfiguration());
         MeetingTrace meetingTrace = MeetingTraceGenerator.generate(config.getMeetingTraceConfiguration());
         EventQueue eventQueue = EventQueue.makeEventQueue(meetingTrace, messageGenerationQueue);
         MessageTransmissionProtocol protocol = MessageTransmissionProtocolFactory.make(config.getProtocolConfiguration());
         Simulation simulation = new Simulation(protocol, eventQueue);
         simulation.start(true);
-        simulation.reportMessageDelay();
+        return simulation.reportMessageDelay();
     }
 
 }

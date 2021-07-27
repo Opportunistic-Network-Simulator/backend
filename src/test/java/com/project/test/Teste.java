@@ -16,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class Test {
+public class Teste {
 	
 	
 	public static void main(String[] args) throws IOException{

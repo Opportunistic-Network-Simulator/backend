@@ -8,6 +8,7 @@ import java.util.OptionalDouble;
 import com.project.simulator.entity.Message;
 import com.project.simulator.entity.MessageGroup;
 import com.project.simulator.entity.NodeGroup;
+import com.project.simulator.entity.SimulationReport;
 import com.project.simulator.entity.event.Event;
 import com.project.simulator.entity.event.EventQueue;
 import com.project.simulator.entity.event.MeetEvent;
@@ -68,7 +69,7 @@ public class Simulation {
 		this.nodes.getNode(generatedMessage.getSourceNode()).addMessage(generatedMessage);
 	}
 	
-	public double reportMessageDelay() {
+	public SimulationReport reportMessageDelay() {
 		List<Double> delays = new ArrayList<Double>();
 		int i = 0;
 		for(Message message : this.messages) {
@@ -77,8 +78,9 @@ public class Simulation {
 				i++;
 			}
 		}
-		System.out.println("Delivery ratio: " + (double) i / this.messages.getSize());
-		return delays.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
+		double deliveryRatio = (double) i / this.messages.getSize();
+		double averageDelay = delays.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
+		return new SimulationReport(averageDelay, deliveryRatio, 0);
 	}
 	
 	private void showProgress() {

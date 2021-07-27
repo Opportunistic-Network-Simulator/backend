@@ -10,4 +10,12 @@ public class SimulationConfiguration {
     OutputConfiguration outputConfiguration;
     double totalSimulationTime;
     int numberOfRounds;
+
+    public SimulationConfiguration(MessageGenerationConfiguration messageGenerationConfiguration,
+                                   MeetingTraceConfiguration meetingTraceConfiguration,
+                                   ProtocolConfiguration protocolConfiguration) {
+        this.messageGenerationConfiguration = messageGenerationConfiguration;
+        this.meetingTraceConfiguration = meetingTraceConfiguration;
+        this.protocolConfiguration = protocolConfiguration;
+    }
 }

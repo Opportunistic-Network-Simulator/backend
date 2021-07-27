@@ -61,7 +61,7 @@ public class SimulationRandomWaypointTest {
 				new SingleCopyEpidemicProtocol(), 
 				eventQueue);
 		simulation.start(true);
-		return simulation.reportMessageDelay();
+		return simulation.reportMessageDelay().getAverageDelay();
 	}
 	
 	private List<Pair> generatePairs(double speed) {

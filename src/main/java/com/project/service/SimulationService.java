@@ -48,6 +48,6 @@ public class SimulationService {
 										eventQueue);
 		
 		simulation.start(stopOnEndOfArrivals);
-		return simulation.reportMessageDelay();
+		return simulation.reportMessageDelay().getAverageDelay();
 	}
 }
