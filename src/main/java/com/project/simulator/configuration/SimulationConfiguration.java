@@ -13,9 +13,11 @@ public class SimulationConfiguration {
 
     public SimulationConfiguration(MessageGenerationConfiguration messageGenerationConfiguration,
                                    MeetingTraceConfiguration meetingTraceConfiguration,
-                                   ProtocolConfiguration protocolConfiguration) {
+                                   ProtocolConfiguration protocolConfiguration,
+                                   Integer numberOfRounds) {
         this.messageGenerationConfiguration = messageGenerationConfiguration;
         this.meetingTraceConfiguration = meetingTraceConfiguration;
         this.protocolConfiguration = protocolConfiguration;
+        this.numberOfRounds = (numberOfRounds == null || numberOfRounds == 0) ? 1 : numberOfRounds;
     }
 }

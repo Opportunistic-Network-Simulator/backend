@@ -10,23 +10,41 @@ import com.project.simulator.generator.messageGenerator.MessageGenerator;
 import com.project.simulator.generator.messageGenerator.MessageTransmissionProtocolFactory;
 import com.project.simulator.simulation.Simulation;
 import com.project.simulator.simulation.protocols.MessageTransmissionProtocol;
+import com.project.simulator.threadHandler.SimulationThreadHandler;
+import com.project.simulator.threadHandler.SimulationThreadReportHandler;
 
 import java.util.List;
 
 public class SimulationProcessor {
-    SimulationConfiguration config;
+	
+    private SimulationConfiguration config;
+    
     public SimulationProcessor(SimulationConfiguration config) {
         this.config = config;
     }
 
     public SimulationReport runSimulation() {
-        List<MessageGenerationEvent> messageGenerationQueue = MessageGenerator.generate(config.getMessageGenerationConfiguration());
-        MeetingTrace meetingTrace = MeetingTraceGenerator.generate(config.getMeetingTraceConfiguration());
-        EventQueue eventQueue = EventQueue.makeEventQueue(meetingTrace, messageGenerationQueue);
-        MessageTransmissionProtocol protocol = MessageTransmissionProtocolFactory.make(config.getProtocolConfiguration());
-        Simulation simulation = new Simulation(protocol, eventQueue);
-        simulation.start(true);
-        return simulation.reportMessageDelay();
+    	
+    	SimulationThreadReportHandler simulationThreadReportHandler = new SimulationThreadReportHandler();
+    	
+    	for(int i = 0; i < this.config.getNumberOfRounds(); i++) {
+    		new SimulationThreadHandler(simulationThreadReportHandler, config).start(); 
+    		//inicia a thread da simulação para essa rodada
+    	}
+    	
+    	while(true) {
+    		if(simulationThreadReportHandler.getSizeOfSimulationReportList() == this.config.getNumberOfRounds()) {
+    			//verifica se todas as threads já terminaram
+    			return simulationThreadReportHandler.calculateSimulationReportAverage();
+    		}
+    		
+    		try {
+				Thread.sleep(100); //intervalo de tempo entre as verificações de término das threads
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+    	}
+        
     }
 
 }

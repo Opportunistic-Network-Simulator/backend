@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SprayAndWaitSimulationTest {
+	
     private double[] testSpeeds = { 2, 8, 12, 18 };
 
     @Test
@@ -21,15 +22,17 @@ public class SprayAndWaitSimulationTest {
 
     private void testCaseSpeed(double speed) {
         System.out.println("SPEED: " + speed);
-        SimulationConfiguration config = prepareConfig(speed);
+        SimulationConfiguration config = prepareConfig(speed, 10);
         SimulationProcessor processor = new SimulationProcessor(config);
         SimulationReport report = processor.runSimulation();
         System.out.println("Average delay: " + report.getAverageDelay());
         System.out.println("Delivery ratio: " + report.getDeliveryRatio());
+        System.out.println();
     }
 
-    private SimulationConfiguration prepareConfig(double speed) {
-        return new SimulationConfiguration(prepareMessageConfig(), prepareMeetingTraceConfig(speed), prepareProtocolConfig());
+    private SimulationConfiguration prepareConfig(double speed, int numberOfRounds) {
+        return new SimulationConfiguration(prepareMessageConfig(), prepareMeetingTraceConfig(speed),
+        		prepareProtocolConfig(), numberOfRounds);
     }
 
     private MessageGenerationConfiguration prepareMessageConfig() {

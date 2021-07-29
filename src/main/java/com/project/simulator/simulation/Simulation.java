@@ -69,7 +69,7 @@ public class Simulation {
 		this.nodes.getNode(generatedMessage.getSourceNode()).addMessage(generatedMessage);
 	}
 	
-	public SimulationReport reportMessageDelay() {
+	public SimulationReport reportSimulationResult() {
 		List<Double> delays = new ArrayList<Double>();
 		int i = 0;
 		for(Message message : this.messages) {
