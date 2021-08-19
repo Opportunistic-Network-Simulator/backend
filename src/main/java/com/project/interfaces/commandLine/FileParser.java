@@ -2,7 +2,6 @@ package com.project.interfaces.commandLine;
 
 import com.moandjiezana.toml.Toml;
 import com.project.simulator.configuration.*;
-import com.project.simulator.simulation.Simulation;
 
 import java.io.File;
 
