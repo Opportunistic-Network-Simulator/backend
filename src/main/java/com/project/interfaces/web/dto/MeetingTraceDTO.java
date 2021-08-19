@@ -1,9 +1,7 @@
-package com.project.api.dto;
+package com.project.interfaces.web.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.project.simulator.entity.Meet;
 
 import lombok.Getter;
 

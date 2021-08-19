@@ -1,23 +1,19 @@
-package com.project.api.controller;
+package com.project.interfaces.web.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.project.api.dto.UploadFileResponse;
-import com.project.api.dto.UploadMultipleFilesResponseDTO;
-import com.project.service.FileStorageService;
-import javax.servlet.http.HttpServletRequest;
+import com.project.interfaces.web.dto.UploadFileResponse;
+import com.project.interfaces.web.dto.UploadMultipleFilesResponseDTO;
+import com.project.interfaces.web.service.FileStorageService;
+
 import javax.xml.bind.JAXBException;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Timestamp;

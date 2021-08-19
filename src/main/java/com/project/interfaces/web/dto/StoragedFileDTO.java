@@ -1,4 +1,4 @@
-package com.project.api.dto;
+package com.project.interfaces.web.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

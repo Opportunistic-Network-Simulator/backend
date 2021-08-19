@@ -1,4 +1,4 @@
-package com.project.api.controller;
+package com.project.interfaces.web.controller;
 
 
 import java.util.ArrayList;
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.api.dto.MeetDTO;
-import com.project.api.dto.MeetingTraceDTO;
-import com.project.api.dto.PairDTO;
-import com.project.api.dto.PairsDTO;
-import com.project.service.SimulationService;
+import com.project.interfaces.web.dto.MeetDTO;
+import com.project.interfaces.web.dto.MeetingTraceDTO;
+import com.project.interfaces.web.dto.PairDTO;
+import com.project.interfaces.web.dto.PairsDTO;
+import com.project.interfaces.web.service.SimulationService;
 import com.project.simulator.entity.Meet;
 import com.project.simulator.entity.MeetingTrace;
 import com.project.simulator.entity.Pair;

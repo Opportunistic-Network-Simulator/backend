@@ -1,8 +1,6 @@
-package com.project.api.dto;
+package com.project.interfaces.web.dto;
 
 import java.util.List;
-
-import com.project.simulator.entity.Pair;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

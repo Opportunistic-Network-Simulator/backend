@@ -2,15 +2,19 @@ package com.project.simulator.configuration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class MessageGenerationConfiguration {
-    MessageGenerationType type;
-    String fileName;
-    int sourceNodeId;
-    int destinationNodeId;
-    double generationInstant;
-    int amountNodes;
+    private MessageGenerationType type;
+    private String fileName;
+    private int sourceNodeId;
+    private int destinationNodeId;
+    private double generationInstant;
+    private int amountNodes;
+
+    public MessageGenerationConfiguration() {}
 
     public MessageGenerationConfiguration(MessageGenerationType type, int sourceNodeId, int destinationNodeId, double generationInstant) {
         this.type = type;

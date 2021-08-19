@@ -1,4 +1,4 @@
-package com.project.service;
+package com.project.interfaces.web.service;
 
 import java.util.List;
 

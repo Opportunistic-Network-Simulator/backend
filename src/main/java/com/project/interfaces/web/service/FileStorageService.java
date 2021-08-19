@@ -1,4 +1,4 @@
-package com.project.service;
+package com.project.interfaces.web.service;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.project.api.dto.StoragedFileDTO;
+import com.project.interfaces.web.dto.StoragedFileDTO;
 import com.project.exception.FileStorageException;
 import com.project.exception.MyFileNotFoundException;
 //import com.project.model.entity.Progress;
