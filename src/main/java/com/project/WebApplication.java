@@ -13,10 +13,10 @@ import com.project.model.entity.FileStorageProperties;
 @EnableConfigurationProperties({
     FileStorageProperties.class
 })
-public class Application implements WebMvcConfigurer {
+public class WebApplication implements WebMvcConfigurer {
 	
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(WebApplication.class, args);
 	}
 
 }
