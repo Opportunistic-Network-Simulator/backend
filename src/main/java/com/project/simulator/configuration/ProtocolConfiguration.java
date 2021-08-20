@@ -1,13 +1,17 @@
 package com.project.simulator.configuration;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class ProtocolConfiguration {
     ProtocolType type;
     double p;
     double q;
     int l;
+
+    public ProtocolConfiguration() {}
 
     public ProtocolConfiguration(ProtocolType type, double p, double q) {
         this.type = type;
