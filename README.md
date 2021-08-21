@@ -1,5 +1,11 @@
 # IME-Opportunistic-Network-Simulator
 
-Softwares necessários para desenvolvimento:
-- java versão 8
-- spring tool suite (com extensão do lombok https://projectlombok.org/download) 
+## Usage
+
+If you just want to use the simulator, follow the [usage instructions](README-usage.md#section)
+
+## Development
+
+Softwares for development:
+- java version 8
+- spring tool suite (with lombok extension https://projectlombok.org/download) 
