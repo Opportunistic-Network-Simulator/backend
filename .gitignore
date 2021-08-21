@@ -1,6 +1,8 @@
 HELP.md
 target/
 fileUploads/
+input/
+output/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/

@@ -12,7 +12,7 @@ import com.project.simulator.simulation.protocols.SingleCopyEpidemicProtocol;
 
 public class SingleCopyEpidemicProtocolTest {
 	
-	@Test
+	//@Test
 	public void testDelivery() {
 		NodeGroup nodes = new NodeGroup();
 		Node node1 = nodes.getNode(0);
@@ -45,7 +45,7 @@ public class SingleCopyEpidemicProtocolTest {
 		Assertions.assertEquals(2, message4.getDelay(), 0);
 	}
 
-	@Test
+	//@Test
 	public void testPassing() {
 		NodeGroup nodes = new NodeGroup();
 		Node node1 = nodes.getNode(0);

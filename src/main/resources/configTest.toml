@@ -13,5 +13,6 @@ l = 5
 [meetingTrace]
 type = "EXPONENTIAL"
 totalSimulationTime = 1800.0
-pairDefinitionFile = "/home/bernardo/Documents/PFC/tests/testPairDefinition.json"
+# pairDefinitionFile = "/home/bernardo/Documents/PFC/tests/testPairDefinition.json"
+pairDefinitionFile = "D:\Dev\PFC\jartest\pairs.json"
 

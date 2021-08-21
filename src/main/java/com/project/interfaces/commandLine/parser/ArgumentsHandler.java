@@ -1,4 +1,4 @@
-package com.project.interfaces.commandLine;
+package com.project.interfaces.commandLine.parser;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,27 +11,26 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.hibernate.loader.plan.exec.process.internal.AbstractRowReader;
 
 import com.project.exception.SimulatorException;
 
 public class ArgumentsHandler {
 	
-	public static Optional<String> handleArgs(String args[]) throws IOException {
+	public static Optional<File> handleArgs(String args[]) throws IOException {
 		
 		Options options = new Options();
 
         Option input = new Option("i", "input", true, "input file name (wihtout spaces)");
         input.setRequired(true);
         options.addOption(input);
-        
+                
         Option help = new Option("h", "help", false, "Displays the help");
         help.setRequired(false);
         options.addOption(help);
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
-        CommandLine cmd = null;//not a good practice, it serves it purpose 
+        CommandLine cmd = null;
         
         try {
             cmd = parser.parse(options, args);
@@ -46,30 +45,22 @@ public class ArgumentsHandler {
             System.exit(1);
         }
                 
-        Optional<String> optionalFileName = verifyFileInput(cmd.getOptionValue(input.getOpt()));
-        return optionalFileName;
+        Optional<File> optionalInputFileName = verifyFileInput(cmd.getOptionValue(input.getOpt()));
+        return optionalInputFileName;
 
 	}
 	
-	private static Optional<String> verifyFileInput(String inputFileName) throws IOException {
-	
-		File inputFile = new File(inputFileName); //trying get realtive filename
+	private static Optional<File> verifyFileInput(String inputFileName) throws IOException {
+		String absoluteInputFileName = FileNamesParser.toAbsoluteInputConfigFile(inputFileName);
+		File inputFile = new File(absoluteInputFileName);
 		
 		if(inputFile.exists()) {
-			return Optional.of(inputFileName);
+			return Optional.of(inputFile);
 		}
-		
 		else {
-			String dir = System.getProperty("user.dir");
-			String absoluteInputFileName = dir + File.separator + inputFileName;
-			inputFile = new File(absoluteInputFileName); //trying get absolute filename
-		
-			if(inputFile.exists()) {
-				return Optional.of(absoluteInputFileName);
-			} else {
-				throw new SimulatorException("Could not find neither " + inputFileName + " or " + absoluteInputFileName);
-			}
+			throw new SimulatorException("Could not find " + absoluteInputFileName);
 		}
+		
 	}
 
 }
