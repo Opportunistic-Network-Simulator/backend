@@ -2,7 +2,7 @@
 
 ## Usage
 
-If you just want to use the simulator, follow the [usage instructions](README-usage.md)
+If you just want to use the simulator, follow the [usage instructions](./README-usage.md)
 
 ## Development
 
