@@ -1,0 +1,17 @@
+{
+    "pairsList": [
+        {
+            "node1": 1,
+            "node2": 2,
+            "rate": 2.5,
+            "variableRate": false
+        },
+        {
+            "node1": 1,
+            "node2": 3,
+            "rate": 3,
+            "variableRate": true,
+            "variabilityDegree": 0.5
+        }
+    ]
+}

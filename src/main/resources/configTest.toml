@@ -1,0 +1,18 @@
+numberOfRounds = 5	
+
+
+[messageGeneration]
+type = "ALL_PAIRS"
+generationInstant = 0.0
+amountNodes = 15
+
+[protocol]
+type = "BINARY_SPRAY_AND_WAIT"
+l = 5
+
+[meetingTrace]
+type = "EXPONENTIAL"
+totalSimulationTime = 1800.0
+# pairDefinitionFile = "/home/bernardo/Documents/PFC/tests/testPairDefinition.json"
+pairDefinitionFile = "D:\Dev\PFC\jartest\pairs.json"
+
