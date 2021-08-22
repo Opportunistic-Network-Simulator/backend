@@ -10,7 +10,7 @@ Download the IONS-Simulator.zip [here](https://github.com/PFC-IME-Opportunistic-
 Open a terminal in executableJar folder, inside IONS-Simulator folder and run:
 
 ```
-java -jar IONS-simulator.jar -i <config file>
+java -jar IONS-simulator.jar -i <config file> -o <output file name>
 ```
 The config file must to bem located at input folder, inside IONS-Simulator folder and it must be passed just the file name wiht its extension (without any path).
 
@@ -76,7 +76,7 @@ In the dowloaded zip file, there are the configExample.toml (inside input folder
 Open a terminal in executableJar folder, inside IONS-Simulator folder and run:
 
 ```
-java -jar IONS-simulator.jar -i configExample.toml
+java -jar IONS-simulator.jar -i configExample.toml -o example
 ```
 
-So, it will be generated a outupt folder with the report.txt, containing the simulation result (Delivery ratio and Average delay).
+So, it will be generated a outupt folder with the example.txt, containing the simulation result (Delivery ratio and Average delay).
