@@ -74,7 +74,7 @@ In the dowloaded zip file, there are the configExample.toml (inside input folder
 Open a terminal in executableJar folder, inside IONS-Simulator folder and run:
 
 ```
-java -jar IONS-simulator.jar -i configExample.toml -o example
+java -jar CLI_IONS_Simulator.jar -i configExample.toml -o example
 ```
 
 So, it will be generated a outupt folder with the example.txt, containing the simulation result (Delivery ratio and Average delay).
