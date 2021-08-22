@@ -16,14 +16,18 @@ import com.project.exception.SimulatorException;
 
 public class ArgumentsHandler {
 	
-	public static Optional<File> handleArgs(String args[]) throws IOException {
+	public static FileNamesParser handleArgs(String args[]) throws IOException {
 		
 		Options options = new Options();
 
-        Option input = new Option("i", "input", true, "input file name (wihtout spaces)");
+        Option input = new Option("i", "input", true, "input file name (just name with extension, without spaces or parent path)");
         input.setRequired(true);
         options.addOption(input);
-                
+        
+        Option output = new Option("o", "output", true, "output file name (just name, without extension or spaces or parent path)");
+        output.setRequired(true);
+        options.addOption(output);
+        
         Option help = new Option("h", "help", false, "Displays the help");
         help.setRequired(false);
         options.addOption(help);
@@ -36,7 +40,7 @@ public class ArgumentsHandler {
             cmd = parser.parse(options, args);
             if(cmd.hasOption(help.getOpt())) {
             	formatter.printHelp("simulator", options);
-            	return Optional.of(null);
+            	return new FileNamesParser(Optional.of(null));
             }
         } catch (ParseException e) {
             System.out.println(e.getMessage());
@@ -44,14 +48,15 @@ public class ArgumentsHandler {
 
             System.exit(1);
         }
-                
-        Optional<File> optionalInputFileName = verifyFileInput(cmd.getOptionValue(input.getOpt()));
-        return optionalInputFileName;
+        FileNamesParser fileNamesParser = new FileNamesParser();  
+        fileNamesParser.setInputFile(verifyFileInput(fileNamesParser, cmd.getOptionValue(input.getOpt())));
+        fileNamesParser.setOutputFileName(cmd.getOptionValue(output.getOpt()));
+        return fileNamesParser;
 
 	}
 	
-	private static Optional<File> verifyFileInput(String inputFileName) throws IOException {
-		String absoluteInputFileName = FileNamesParser.toAbsoluteInputConfigFile(inputFileName);
+	private static Optional<File> verifyFileInput(FileNamesParser fileNamesParser, String inputFileName) throws IOException {
+		String absoluteInputFileName = fileNamesParser.toAbsoluteInputConfigFile(inputFileName);
 		File inputFile = new File(absoluteInputFileName);
 		
 		if(inputFile.exists()) {

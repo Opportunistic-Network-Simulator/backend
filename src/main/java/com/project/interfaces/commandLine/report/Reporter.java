@@ -11,11 +11,11 @@ import com.project.simulator.entity.SimulationReport;
 
 public class Reporter {
 	
-	public static void report(SimulationReport report) throws IOException {
+	public static void report(FileNamesParser fileNamesParser, SimulationReport report) throws IOException {
 		
 		String reportMessage = "Delivery ratio: " + report.getDeliveryRatio()
 								+ "\n" + "Average delay: " + report.getAverageDelay();
-		File outputFile = FileNamesParser.outputReportFile();
+		File outputFile = fileNamesParser.outputReportFile();
 	    BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
 	    writer.write(reportMessage);
 	    writer.close();

@@ -15,13 +15,15 @@ import com.project.simulator.configuration.ProtocolType;
 import com.project.simulator.configuration.SimulationConfiguration;
 import com.project.simulator.entity.Pair;
 import com.project.simulator.entity.SimulationReport;
+import com.project.test.interfaces.commandLine.PairsJsonParser;
 
 public class DirectDeliverySimulationTest {
 	
-	private double[] testSpeeds = { 2, 8, 12, 18 };
+//	private double[] testSpeeds = { 2, 8, 12, 18 };
+	private double[] testSpeeds = {2};
 
 	
-	@Test
+	//@Test
 	public void testSuite() {
 		for(double speed : testSpeeds) {
             testCaseSpeed(speed);
@@ -62,6 +64,7 @@ public class DirectDeliverySimulationTest {
                 pairs.add(new Pair(i, j, lambda));
             }
         }
+        PairsJsonParser.pairsToJsonFile(pairs);
         return pairs;
     }
 	
