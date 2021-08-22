@@ -5,16 +5,14 @@ Currently, the simulator is only available for use through the executable jar. I
 ## Executable Jar
 It is need java version 8 in your computer.
 
-Download the IONS-Simulator.zip [here](https://github.com/PFC-IME-Opportunistic-Network-Simulator/backend/releases/tag/1.0):
+Download the IONS-Simulator.zip [here](https://github.com/PFC-IME-Opportunistic-Network-Simulator/backend/releases/download/1.0/IONS-Simulator.zip):
 
-Open a terminal in executableJar folder, inside IONS-Simulator folder and run:
+Unzip the file, open a terminal in CLI (Command Line Interface) folder and run:
 
 ```
-java -jar IONS-simulator.jar -i <config file> -o <output file name>
+java -jar CLI_IONS_Simulator.jar -i <config file> -o <output file name>
 ```
-The config file must to bem located at input folder, inside IONS-Simulator folder and it must be passed just the file name wiht its extension (without any path).
-
-This is a [toml file](https://github.com/toml-lang/toml) that has all information needed to configure the simulation scenario.
+The config file must to bem located at input folder and it must be passed just the file name wiht its extension (without any path). This is a [toml file](https://github.com/toml-lang/toml) that has all information needed to configure the simulation scenario.
 
 The information needed is: 
 
@@ -51,24 +49,24 @@ It determines the fowarding protocol tha will be used in the simulation. It may 
   - BINARY_SPRAY_AND_WAIT
   - DIRECT_DELIVERY
 
-- L: It means the L-parameter (number of messages copies) of SPRAY_AND_WAIT and BINARY_SPRAY_AND_WAIT protocols
+- L: It means the L-parameter (number of messages copies) of SPRAY_AND_WAIT and BINARY_SPRAY_AND_WAIT protocols. So, it must be informed only for use of SPRAY_AND_WAIT and BINARY_SPRAY_AND_WAIT protocols.
 
-- p: It means the p-parameters (probability to occour a message trasnfer between two relay nodes) of EPIDEMIC_P_Q protocol.
+- p: It means the p-parameters (probability to occour a message trasnfer between two relay nodes) of EPIDEMIC_P_Q protocol. So, it must be informed only for use of EPIDEMIC_P_Q protocol.
 
-- q: It means the p-parameters (probability to occour a message trasnfer between the source and any relay node) of EPIDEMIC_P_Q protocol.
+- q: It means the p-parameters (probability to occour a message trasnfer between the source and any relay node) of EPIDEMIC_P_Q protocol. So, it must be informed only for use of EPIDEMIC_P_Q protocol.
 
 ### Meeting Trace
 
 It determines how the meet between pairs will be generated. There are 3 parameters:
 
 - #### type: 
-Only EXPONENTIAL type is avaiable.
-
-- #### totalSimulationTime: 
-A double number to determine the total simulation time
+Only EXPONENTIAL type is avaiable. That is, the interval between meet for each pair will be modelated by a exponential probability distribution and each interval until next meet will be calculated using the Inverse Transform Sampling method using the meet rate of each pair how the λ-parameter.
 
 - #### pairDefinitionFile:
 Name of json file that contains the meet rate of each pair. This file must be located at pairDefinitionFile folder, inside input folder.
+
+- #### totalSimulationTime: 
+A double number to determine the total simulation time
 
 ### Test
 In the dowloaded zip file, there are the configExample.toml (inside input folder) and the pairsExample.json (inside pairDefinitionFile folder) files to test.
