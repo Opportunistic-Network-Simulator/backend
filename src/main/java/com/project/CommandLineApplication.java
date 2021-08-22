@@ -1,12 +1,11 @@
 package com.project;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
 
 import org.json.simple.parser.ParseException;
 
 import com.project.interfaces.commandLine.parser.ArgumentsHandler;
+import com.project.interfaces.commandLine.parser.FileNamesParser;
 import com.project.interfaces.commandLine.parser.FileParser;
 import com.project.interfaces.commandLine.report.Reporter;
 import com.project.simulator.SimulationProcessor;
@@ -18,14 +17,15 @@ public class CommandLineApplication {
 	public static void main(String args[]) throws IOException, ParseException {
 		
 		try {
-			Optional<File> optionalFileName = ArgumentsHandler.handleArgs(args);
-			if(!optionalFileName.isPresent()) return;
+			FileNamesParser fileNamesParser = ArgumentsHandler.handleArgs(args);
+			if(!fileNamesParser.getInputFile().isPresent()) return;
 				
-			SimulationConfiguration config = FileParser.parseConfig(optionalFileName.get());
+			SimulationConfiguration config = FileParser.parseConfig(fileNamesParser);
 			SimulationProcessor processor = new SimulationProcessor(config);
+			System.out.println("Simulation started");
 		    SimulationReport report = processor.runSimulation();
 		    
-		    Reporter.report(report);
+		    Reporter.report(fileNamesParser, report);
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage() == null ? "Internal Error" : e.getMessage());

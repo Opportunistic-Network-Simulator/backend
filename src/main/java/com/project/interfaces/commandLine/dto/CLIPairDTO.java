@@ -13,6 +13,7 @@ public class CLIPairDTO {
 	private long node1;
 	private long node2;
 	private double rate;
+	boolean variableRate;
 	private double variabilityDegree;
 	
 }

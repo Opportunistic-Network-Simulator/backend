@@ -1,11 +1,13 @@
-package com.project.test.interfaces;
+package com.project.test.interfaces.commandLine;
 
+import com.project.interfaces.commandLine.parser.FileNamesParser;
 import com.project.interfaces.commandLine.parser.FileParser;
 import com.project.simulator.configuration.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Optional;
 
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Assertions;
@@ -15,7 +17,8 @@ public class FileParserTest {
 
 //    @Test
     public void parseTest() throws FileNotFoundException, IOException, ParseException {
-        SimulationConfiguration config = FileParser.parseConfig(new File("/home/bernardo/Documents/PFC/tests/configTest.toml"));
+        SimulationConfiguration config = FileParser.parseConfig(
+        		new FileNamesParser(Optional.of( new File("/home/bernardo/Documents/PFC/tests/configTest.toml"))));
         Assertions.assertEquals(5, config.getNumberOfRounds());
 
         MessageGenerationConfiguration messageConfig = config.getMessageGenerationConfiguration();

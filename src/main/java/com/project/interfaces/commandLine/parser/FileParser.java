@@ -21,14 +21,15 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class FileParser {
-    public static SimulationConfiguration parseConfig(File file) throws FileNotFoundException, IOException {
-        Toml parser = new Toml().read(file);
+    public static SimulationConfiguration parseConfig(FileNamesParser fileNamesParser) throws FileNotFoundException, IOException {
+        Toml parser = new Toml().read(fileNamesParser.getInputFile().get());
 
         SimulationConfiguration config = new SimulationConfiguration();
 
         config.setMessageGenerationConfiguration(parseMessageGenerationConfig(parser.getTable("messageGeneration")));
         config.setProtocolConfiguration(parseProtocolConfig(parser.getTable("protocol")));
-        config.setMeetingTraceConfiguration(parseMeetingTraceConfig(parser.getTable("meetingTrace")));
+        config.setMeetingTraceConfiguration(
+        		parseMeetingTraceConfig(parser.getTable("meetingTrace"), fileNamesParser));
 
         Long numberOfRounds = parser.getLong("numberOfRounds");
 
@@ -75,23 +76,26 @@ public class FileParser {
         return config;
     }
 
-    private static MeetingTraceConfiguration parseMeetingTraceConfig(Toml parser) throws FileNotFoundException, IOException {
+    private static MeetingTraceConfiguration parseMeetingTraceConfig(Toml parser, FileNamesParser fileNamesParser) 
+    		throws FileNotFoundException, IOException {
+    	
     	String pairDefinitionFile = parser.getString("pairDefinitionFile");
 
     	
-			return new MeetingTraceConfiguration(
-			    MeetingTraceConfigurationType.valueOf(parser.getString("type")),
-			    parser.getDouble("totalSimulationTime"),
-			    parsePairDefinitionFile(pairDefinitionFile)
-			);
+		return new MeetingTraceConfiguration(
+		    MeetingTraceConfigurationType.valueOf(parser.getString("type")),
+		    parser.getDouble("totalSimulationTime"),
+		    parsePairDefinitionFile(fileNamesParser, pairDefinitionFile)
+		);
     }
     
-    private static List<Pair> parsePairDefinitionFile(String pairDefinitionFile) throws FileNotFoundException, IOException {
+    private static List<Pair> parsePairDefinitionFile(FileNamesParser fileNamesParser, String pairDefinitionFile) throws FileNotFoundException, IOException {
     	JSONParser parser = new JSONParser();
         JSONObject jsonObject;
+        System.out.println(fileNamesParser.toAbsoluteInputPairDefinitionFile(pairDefinitionFile));
 		try {
 			jsonObject = (JSONObject) parser
-					.parse(new FileReader(FileNamesParser.toAbsoluteInputPairDefinitionFile(pairDefinitionFile)));
+					.parse(new FileReader(fileNamesParser.toAbsoluteInputPairDefinitionFile(pairDefinitionFile)));
 		} catch (ParseException e) {
 			throw new SimulatorException("pairDefinitionFile format error");
 		}
