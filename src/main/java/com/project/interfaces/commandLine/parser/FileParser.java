@@ -92,7 +92,6 @@ public class FileParser {
     private static List<Pair> parsePairDefinitionFile(FileNamesParser fileNamesParser, String pairDefinitionFile) throws FileNotFoundException, IOException {
     	JSONParser parser = new JSONParser();
         JSONObject jsonObject;
-        System.out.println(fileNamesParser.toAbsoluteInputPairDefinitionFile(pairDefinitionFile));
 		try {
 			jsonObject = (JSONObject) parser
 					.parse(new FileReader(fileNamesParser.toAbsoluteInputPairDefinitionFile(pairDefinitionFile)));
