@@ -2,8 +2,9 @@
 
 Currently, the simulator is only available for use through the executable jar. It can run in whatever OS.
 
+It is needed java version 8 in your computer.
+
 ## Executable Jar
-It is need java version 8 in your computer.
 
 Download the IONS-Simulator.zip [here](https://github.com/PFC-IME-Opportunistic-Network-Simulator/backend/releases/download/1.0/IONS-Simulator.zip):
 
