@@ -12,7 +12,7 @@ Unzip the file, open a terminal in CLI (Command Line Interface) folder and run:
 ```
 java -jar CLI_IONS_Simulator.jar -i <config file> -o <output file name>
 ```
-The config file must to bem located at input folder and it must be passed just the file name wiht its extension (without any path). This is a [toml file](https://github.com/toml-lang/toml) that has all information needed to configure the simulation scenario.
+The config file must to be located at input folder and it must be passed just the file name wiht its extension (without any path). This is a [toml file](https://github.com/toml-lang/toml) that has all information needed to configure the simulation scenario.
 
 The information needed is: 
 
