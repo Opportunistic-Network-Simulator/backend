@@ -14,7 +14,7 @@ java -jar CLI_IONS_Simulator.jar -i <config file> -o <output file name>
 ```
 The config file must to be located at input folder and it must be passed just the file name wiht its extension (without any path). This is a [toml file](https://github.com/toml-lang/toml) that has all information needed to configure the simulation scenario.
 
-The information needed is: 
+The information needed in the config file is: 
 
 ### Number of Rounds
 A interger number to determinate the number of times the simulation will run with the specified scenarion, in order to get all results and make the average.
