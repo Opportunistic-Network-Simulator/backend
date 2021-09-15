@@ -35,7 +35,7 @@ It determines the message generation that will be used. There are 3 parameters:
 A double number to determinate in which instant the all messages of simulation will be generated in the respectives source nodes.
 
 - #### Amount Of Nodes:
-A integer number to determinate the total number of node in the simulation.
+A integer number to determinate the total number of nodes in the simulation.
 
 
 ### Protocol
