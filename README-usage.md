@@ -18,7 +18,7 @@ The config file must to be located at input folder and it must be passed just th
 The information needed in the config file is: 
 
 ### Number of Rounds
-A interger number to determinate the number of times the simulation will run with the specified scenarion, in order to get all results and make the average.
+A interger number to determinate the number of times the simulation will run with the specified scenario, in order to get all results and make the average.
 
 ### Message Generation
 
