@@ -77,7 +77,7 @@ public class WebParser {
 			return new MessageGenerationConfiguration(
 					type,
 					messageGenerationConfigurationDTO.getSourceNodeId(),
-					messageGenerationConfiguration.getDestinationNodeId(),
+					messageGenerationConfigurationDTO.getDestinationNodeId(),
 					messageGenerationConfigurationDTO.getGenerationInstant(),
 					messageGenerationConfigurationDTO.getAmountNodes()
 				);

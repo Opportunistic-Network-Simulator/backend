@@ -6,6 +6,9 @@ import java.util.List;
 
 import com.project.simulator.entity.MeetingTrace;
 
+import lombok.Getter;
+
+@Getter
 public class EventQueue {
 	private List<Event> eventsInTheFuture;
 	private List<Event> eventsInThePast;
@@ -15,6 +18,7 @@ public class EventQueue {
 		this.eventsInThePast = new ArrayList<Event>();
 		this.eventsInTheFuture.addAll(meetingTrace.generateMeetEventQueue());
 		this.eventsInTheFuture.addAll(messageGenerationEventQueue);
+		this.sortEvents();
 	}
 	
 	public Event nextEvent() {
@@ -37,5 +41,10 @@ public class EventQueue {
 
 	public static EventQueue makeEventQueue(MeetingTrace meetingTrace, List<MessageGenerationEvent> messageGenerationEventQueue) {
 		return new EventQueue(meetingTrace, messageGenerationEventQueue);
+	}
+
+	private EventQueue sortEvents() {
+		Collections.sort(this.eventsInTheFuture);
+		return null;
 	}
 }

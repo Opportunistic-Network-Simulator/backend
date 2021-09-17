@@ -26,8 +26,13 @@ public class Node {
 	}
 	
 	public void receiveMessage(Message message, double instant) {
-		if(this.messages.contains(message)) return; //não recebo msg que já tenho
+		if(this.messages.contains(message)) {
+			System.out.println("n recebo");
+			return; //não recebo msg que já tenho
+			
+		}
 		message.notifyNewNode(this.id, instant);
+		System.out.println("dest node: " + message.getDestinationNode());
 		if(message.getDestinationNode() == this.id) {
 			message.setArrivalInstant(instant);
 			message.setDelay(instant - message.getGenarationInstant());

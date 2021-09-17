@@ -23,37 +23,44 @@ public class Simulation {
 	private MessageTransmissionProtocol messageTransmissionProtocol;
 	private boolean simulationHappening = false;
 	private double lastProgress = 0;
+	private boolean stopOnEndOfArrivals;
 
 	public Simulation(	MessageTransmissionProtocol messageTransmissionProtocol, 
-						EventQueue eventQueue) {
+						EventQueue eventQueue,
+						boolean stopOnEndOfArrivals) {
 		this.messageTransmissionProtocol = messageTransmissionProtocol;
 		this.eventQueue = eventQueue;
 		this.nodes = new NodeGroup();
 		this.messages = new MessageGroup();
+		this.stopOnEndOfArrivals = stopOnEndOfArrivals;
 	}
 	
-	public void start(boolean stopOnEndOfArrivals) {
+	public void start() {
 		this.simulationHappening = true;
 		while(this.simulationHappening) {
 			this.showProgress();
-			this.handle(eventQueue.nextEvent(), stopOnEndOfArrivals);
+			this.handle(eventQueue.nextEvent(), this.stopOnEndOfArrivals);
 		}
 	}
 	
 	private void handle(Event event, boolean stopOnEndOfArrivals) {
 		if(event instanceof MessageGenerationEvent) {
+			System.out.println("MSG GEN");
 			this.handleMessageGeneration((MessageGenerationEvent) event);
 		} else if(event instanceof MeetEvent) {
 			this.handleMeet((MeetEvent) event, stopOnEndOfArrivals);
 		} else if(event instanceof SimulationOverEvent) {
+			System.out.println("end: " + event.instant);
 			this.handleSimulationOver((SimulationOverEvent) event);
 		}
 	}
 	
 	private void handleMeet(MeetEvent event, boolean stopOnEndOfArrivals) {
+		System.out.println("meet");
 		this.messageTransmissionProtocol.handleMeet(event, this.nodes);
-		if(stopOnEndOfArrivals && this.messages.checkEndOfArrivals()) 
+		if(stopOnEndOfArrivals && this.messages.checkEndOfArrivals()) {
 			this.handleEndOfArrivals(event.instant);
+		}
 	}
 	
 	private void handleEndOfArrivals(double instant) {
@@ -65,6 +72,8 @@ public class Simulation {
 	}
 	
 	private void handleMessageGeneration(MessageGenerationEvent event) {
+		System.out.println("msg gen: " + event.instant);
+		System.out.println("from " + event.getOriginNodeId() + "to " + event.getDestinationNodeId());
 		Message generatedMessage = this.messages.generateMessage(event.getOriginNodeId(), event.getDestinationNodeId(), event.instant);
 		this.nodes.getNode(generatedMessage.getSourceNode()).addMessage(generatedMessage);
 	}

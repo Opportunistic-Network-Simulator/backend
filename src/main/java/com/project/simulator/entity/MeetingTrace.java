@@ -19,11 +19,7 @@ public class MeetingTrace {
 	public void addMeet(Meet meet) {
 		this.meetingTrace.add(meet);
 	}
-	
-	public void orderTrace() {
-		Collections.sort(this.meetingTrace);
-	}
-	
+		
 	public List<MeetEvent> generateMeetEventQueue() {
 		List<MeetEvent> meetEventQueue = new ArrayList<MeetEvent>();
 		for(Meet meet : meetingTrace) {

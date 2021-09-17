@@ -14,7 +14,9 @@ public abstract class MessageTransmissionProtocol {
 		Node node2 = nodes.getNode(meet.getNode2Id());
 		
 		List<Message> oneToTwo = transferredMessages(node1, node2);
+		System.out.println("node " + node1.getId() + " " + oneToTwo.size());
 		List<Message> twoToOne = transferredMessages(node2, node1);
+		System.out.println("node " + node2.getId() + " " + twoToOne.size());
 		
 
 		transferMessages(oneToTwo, node1, node2, meet.instant);
