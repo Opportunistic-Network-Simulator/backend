@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 public class SimulationConfigurationDTO {
 	
 	int numberOfRounds;
-	private ProtocolConfigurationDTO proConfigurationDTO;
-	private MeetingTraceConfigurationDTO meetingTraceConfigurationDTO;
-	private MessageGenerationConfigurationDTO MessageConfigurationDTO;	
+	private ProtocolConfigurationDTO protocolConfiguration;
+	private MeetingTraceConfigurationDTO meetingTraceConfiguration;
+	private MessageGenerationConfigurationDTO messageConfiguration;	
 
 }

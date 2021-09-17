@@ -29,10 +29,15 @@ public class EpidemicSingleCopySimulationTest {
     }
 
     private SimulationConfiguration prepareConfig(int numberOfRounds, double totalSimulationTime) {
-        return new SimulationConfiguration(prepareMessageConfig(), prepareMeetingTraceConfig(totalSimulationTime),
-        		prepareProtocolConfig(), numberOfRounds);
+    	
+    	 return new SimulationConfiguration(
+     			numberOfRounds,
+     			prepareProtocolConfig(),
+     			prepareMeetingTraceConfig(totalSimulationTime),
+     			prepareMessageConfig()
+     		);
     }
-
+    
     private MessageGenerationConfiguration prepareMessageConfig() {
         return new MessageGenerationConfiguration(
                 MessageGenerationType.ALL_PAIRS,

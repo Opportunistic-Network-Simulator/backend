@@ -6,7 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SimulationConfiguration {
-    MessageGenerationConfiguration messageGenerationConfiguration;
+   
+	MessageGenerationConfiguration messageGenerationConfiguration;
     MeetingTraceConfiguration meetingTraceConfiguration;
     ProtocolConfiguration protocolConfiguration;
     OutputConfiguration outputConfiguration;
@@ -15,13 +16,24 @@ public class SimulationConfiguration {
 
     public SimulationConfiguration() {};
 
-    public SimulationConfiguration(MessageGenerationConfiguration messageGenerationConfiguration,
-                                   MeetingTraceConfiguration meetingTraceConfiguration,
-                                   ProtocolConfiguration protocolConfiguration,
-                                   Integer numberOfRounds) {
+    public SimulationConfiguration(Integer numberOfRounds,
+    							   ProtocolConfiguration protocolConfiguration,
+    							   MeetingTraceConfiguration meetingTraceConfiguration,
+    							   MessageGenerationConfiguration messageGenerationConfiguration){
+    	
         this.messageGenerationConfiguration = messageGenerationConfiguration;
         this.meetingTraceConfiguration = meetingTraceConfiguration;
         this.protocolConfiguration = protocolConfiguration;
         this.numberOfRounds = (numberOfRounds == null || numberOfRounds == 0) ? 1 : numberOfRounds;
     }
+
+	@Override
+	public String toString() {
+		return "SimulationConfiguration [messageGenerationConfiguration=" + messageGenerationConfiguration
+				+ ", meetingTraceConfiguration=" + meetingTraceConfiguration + ", protocolConfiguration="
+				+ protocolConfiguration + ", totalSimulationTime=" + totalSimulationTime + ", numberOfRounds="
+				+ numberOfRounds + "]";
+	}
+    
+    
 }

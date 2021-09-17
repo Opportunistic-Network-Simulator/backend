@@ -79,7 +79,7 @@ public class Simulation {
 			}
 		}
 		double deliveryRatio = (double) i / this.messages.getSize();
-		double averageDelay = delays.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
+		double averageDelay = delays.isEmpty() ? 0 : delays.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
 		return new SimulationReport(averageDelay, deliveryRatio, 0);
 	}
 	

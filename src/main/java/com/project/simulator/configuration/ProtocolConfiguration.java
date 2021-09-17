@@ -6,7 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProtocolConfiguration {
-    ProtocolType type;
+
+	ProtocolType type;
     double p;
     double q;
     int l;

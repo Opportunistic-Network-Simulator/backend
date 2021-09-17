@@ -22,32 +22,5 @@ import com.project.simulator.simulation.protocols.SingleCopyEpidemicProtocol;
 @Service
 public class SimulationService {
 	
-	public NodeGroup generateNodes(long numberOfNodes) {
-		return NodesGenerator.generateNodes();
-	}
-
-	public List<MessageGenerationEvent> generateMessages(NodeGroup nodes) {
-		return SingleMessagesGenerator.generateMessages((int) nodes.getSize());
-	}
 	
-	public MeetingTrace generateMeetingTrace(List<Pair> pairs, double totalSimulationTime) {
-		return MeetingTraceGenerator.generateMeetingTrace(new MeetingTraceGeneratorInput(pairs, totalSimulationTime));
-	}
-
-	public double executeSimulation(	double totalSimulationTime,
-									MeetingTrace meetingTrace,
-									long nodeQuantity,
-									boolean stopOnEndOfArrivals) {
-		NodeGroup nodes = this.generateNodes(nodeQuantity);
-		List<MessageGenerationEvent> messageGenerationQueue = this.generateMessages(nodes);
-		EventQueue eventQueue = new EventQueue(meetingTrace, messageGenerationQueue);
-		MessageGroup messages = new MessageGroup();
-		
-		Simulation simulation = new Simulation(
-										new SingleCopyEpidemicProtocol(), 
-										eventQueue);
-		
-		simulation.start(stopOnEndOfArrivals);
-		return simulation.reportSimulationResult().getAverageDelay();
-	}
 }

@@ -27,4 +27,11 @@ public class MeetingTraceConfiguration {
         this.totalSimulationTime = totalSimulationTime;
         this.filename = filename;
     }
+
+	@Override
+	public String toString() {
+		return "MeetingTraceConfiguration [type=" + type + ", totalSimulationTime=" + totalSimulationTime + "]";
+	}
+    
+    
 }

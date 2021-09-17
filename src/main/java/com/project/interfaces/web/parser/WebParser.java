@@ -21,48 +21,41 @@ public class WebParser {
 	
 	public SimulationConfiguration parser (SimulationConfigurationDTO simulationConfigurationDTO) {
 		
-		SimulationConfiguration config = new SimulationConfiguration();
-		config.setNumberOfRounds(simulationConfigurationDTO.getNumberOfRounds());
-		config.setProtocolConfiguration(parseProtocolConfiguration(simulationConfigurationDTO.getProConfigurationDTO()));
-		config.setMeetingTraceConfiguration(parserMeetingTraceConfiguration(simulationConfigurationDTO.getMeetingTraceConfigurationDTO()));
-		config.setMessageGenerationConfiguration(parseMessageGenerationConfiguration(simulationConfigurationDTO.getMessageConfigurationDTO()));
-		return config;
-		
+		return new SimulationConfiguration(
+					simulationConfigurationDTO.getNumberOfRounds(),
+					parseProtocolConfiguration(simulationConfigurationDTO.getProtocolConfiguration()),
+					parserMeetingTraceConfiguration(simulationConfigurationDTO.getMeetingTraceConfiguration()),
+					parseMessageGenerationConfiguration(simulationConfigurationDTO.getMessageConfiguration())
+				);
 	}
 	
 	private ProtocolConfiguration parseProtocolConfiguration(ProtocolConfigurationDTO protocolConfigurationDTO) {
-		ProtocolConfiguration protocolConfiguration = new ProtocolConfiguration();
 
         ProtocolType type = ProtocolType.valueOf(protocolConfigurationDTO.getType());
-        protocolConfiguration.setType(type);
         
         switch (type) {
 		
         case EPIDEMIC_P_Q:
-			protocolConfiguration.setP(protocolConfigurationDTO.getP());
-    		protocolConfiguration.setQ(protocolConfigurationDTO.getQ());
-			break;
-
+        	
+        	return new ProtocolConfiguration(type, protocolConfigurationDTO.getP(), protocolConfigurationDTO.getQ());
+		
         case SPRAY_AND_WAIT:
         case BINARY_SPRAY_AND_WAIT:
-        	protocolConfiguration.setL(protocolConfigurationDTO.getL());
-        	break;
+        	return new ProtocolConfiguration(type, protocolConfigurationDTO.getL());
 			
 		default:
-			break;
+			return new ProtocolConfiguration(type);
 		}
-        
-        return protocolConfiguration;
-
+                
 	}
 	
-	private MeetingTraceConfiguration parserMeetingTraceConfiguration(MeetingTraceConfigurationDTO meetingTraceConfigurationDTO) {
-		MeetingTraceConfiguration meetingTraceConfiguration = new MeetingTraceConfiguration();
-		meetingTraceConfiguration.setType(MeetingTraceConfigurationType.valueOf(meetingTraceConfigurationDTO.getType()));
-		meetingTraceConfiguration.setPairs(parsePairs(meetingTraceConfigurationDTO.getPairList()));
-		meetingTraceConfiguration.setTotalSimulationTime(meetingTraceConfigurationDTO.getTotalSimulationTime());
+	private MeetingTraceConfiguration parserMeetingTraceConfiguration(MeetingTraceConfigurationDTO meetingTraceConfigurationDTO) {	
 		
-		return meetingTraceConfiguration;
+		return new MeetingTraceConfiguration(
+					MeetingTraceConfigurationType.valueOf(meetingTraceConfigurationDTO.getType()),
+					meetingTraceConfigurationDTO.getTotalSimulationTime(),
+					parsePairs(meetingTraceConfigurationDTO.getPairList())
+				);
 	}
 	
 	private List<Pair> parsePairs(List<PairDTO> pairs) {
@@ -74,21 +67,28 @@ public class WebParser {
 	}
 	
 	private MessageGenerationConfiguration parseMessageGenerationConfiguration(MessageGenerationConfigurationDTO messageGenerationConfigurationDTO) {
+		
 		MessageGenerationConfiguration messageGenerationConfiguration = new MessageGenerationConfiguration();
 		MessageGenerationType type = MessageGenerationType.valueOf(messageGenerationConfigurationDTO.getType());
+		
+		
 		switch (type) {
 		case FIXED_NODES:
-			messageGenerationConfiguration.setSourceNodeId(messageGenerationConfigurationDTO.getSourceNodeId());
-			messageGenerationConfiguration.setDestinationNodeId(messageGenerationConfigurationDTO.getDestinationNodeId());
-			break;
+			return new MessageGenerationConfiguration(
+					type,
+					messageGenerationConfigurationDTO.getSourceNodeId(),
+					messageGenerationConfiguration.getDestinationNodeId(),
+					messageGenerationConfigurationDTO.getGenerationInstant(),
+					messageGenerationConfigurationDTO.getAmountNodes()
+				);
 
 		default:
-			break;
-		}
-		messageGenerationConfiguration.setGenerationInstant(messageGenerationConfigurationDTO.getGenerationInstant());
-		messageGenerationConfiguration.setAmountNodes(messageGenerationConfigurationDTO.getAmountNodes());
-		return messageGenerationConfiguration;
-		
+			return new MessageGenerationConfiguration(
+						type,
+						messageGenerationConfigurationDTO.getGenerationInstant(),
+						messageGenerationConfigurationDTO.getAmountNodes()
+					);
+		}		
 	}
 
 }
