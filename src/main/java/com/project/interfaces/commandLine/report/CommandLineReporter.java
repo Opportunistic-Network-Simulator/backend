@@ -9,7 +9,7 @@ import java.io.IOException;
 import com.project.interfaces.commandLine.parser.FileNamesParser;
 import com.project.simulator.entity.SimulationReport;
 
-public class Reporter {
+public class CommandLineReporter {
 	
 	public static void report(FileNamesParser fileNamesParser, SimulationReport report) throws IOException {
 		

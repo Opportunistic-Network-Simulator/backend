@@ -12,6 +12,7 @@ public class PairDTO {
 	private long node1;
 	private long node2;
 	private double rate;
+//	boolean variableRate;
 	private double variabilityDegree;
 	
 	public PairDTO(long node1, long node2){
