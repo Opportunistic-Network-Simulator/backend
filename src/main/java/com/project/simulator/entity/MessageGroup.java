@@ -34,7 +34,6 @@ public class MessageGroup implements Iterable<Message> {
 	public boolean checkEndOfArrivals() {
 		
 		if(this.getSize() == 0) {
-			System.out.println("false");
 			return false;
 		}
 		

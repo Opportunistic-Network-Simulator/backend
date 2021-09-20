@@ -29,13 +29,6 @@ public class SimulationThreadHandler extends Thread {
 		List<MessageGenerationEvent> messageGenerationQueue = MessageGenerator.generate(config.getMessageGenerationConfiguration());
         MeetingTrace meetingTrace = MeetingTraceGenerator.generate(config.getMeetingTraceConfiguration());
         EventQueue eventQueue = EventQueue.makeEventQueue(meetingTrace, messageGenerationQueue);
-//        for(Event event : eventQueue.getEventsInTheFuture()) {
-//        	if(event instanceof MessageGenerationEvent) {
-//    			System.out.println("msg gen: " + event.instant);
-//    		} else if(event instanceof MeetEvent) {
-//    			System.out.println("meet: " + event.instant);
-//    		}
-//        }
         MessageTransmissionProtocol protocol = MessageTransmissionProtocolFactory.make(config.getProtocolConfiguration());
         Simulation simulation = new Simulation(protocol, eventQueue, true);
         simulation.start();

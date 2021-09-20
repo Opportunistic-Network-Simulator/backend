@@ -36,6 +36,7 @@ public class Simulation {
 	}
 	
 	public void start() {
+		System.out.println("begin simulation");
 		this.simulationHappening = true;
 		while(this.simulationHappening) {
 			this.showProgress();
@@ -45,18 +46,15 @@ public class Simulation {
 	
 	private void handle(Event event, boolean stopOnEndOfArrivals) {
 		if(event instanceof MessageGenerationEvent) {
-			System.out.println("MSG GEN");
 			this.handleMessageGeneration((MessageGenerationEvent) event);
 		} else if(event instanceof MeetEvent) {
 			this.handleMeet((MeetEvent) event, stopOnEndOfArrivals);
 		} else if(event instanceof SimulationOverEvent) {
-			System.out.println("end: " + event.instant);
 			this.handleSimulationOver((SimulationOverEvent) event);
 		}
 	}
 	
 	private void handleMeet(MeetEvent event, boolean stopOnEndOfArrivals) {
-		System.out.println("meet");
 		this.messageTransmissionProtocol.handleMeet(event, this.nodes);
 		if(stopOnEndOfArrivals && this.messages.checkEndOfArrivals()) {
 			this.handleEndOfArrivals(event.instant);
@@ -72,8 +70,6 @@ public class Simulation {
 	}
 	
 	private void handleMessageGeneration(MessageGenerationEvent event) {
-		System.out.println("msg gen: " + event.instant);
-		System.out.println("from " + event.getOriginNodeId() + "to " + event.getDestinationNodeId());
 		Message generatedMessage = this.messages.generateMessage(event.getOriginNodeId(), event.getDestinationNodeId(), event.instant);
 		this.nodes.getNode(generatedMessage.getSourceNode()).addMessage(generatedMessage);
 	}
