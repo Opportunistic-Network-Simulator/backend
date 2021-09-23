@@ -36,7 +36,6 @@ public class Simulation {
 	}
 	
 	public void start() {
-		System.out.println("begin simulation");
 		this.simulationHappening = true;
 		while(this.simulationHappening) {
 			this.showProgress();

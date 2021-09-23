@@ -13,26 +13,52 @@ import com.project.simulator.simulation.protocols.MessageTransmissionProtocol;
 import com.project.simulator.threadHandler.SimulationThreadHandler;
 import com.project.simulator.threadHandler.SimulationThreadReportHandler;
 
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SimulationProcessor {
 	
     private SimulationConfiguration config;
+    private List<SimulationThreadHandler> threads;
+    private SimulationThreadReportHandler simulationThreadReportHandler;
     
     public SimulationProcessor(SimulationConfiguration config) {
         this.config = config;
+        this.threads = new ArrayList<SimulationThreadHandler>();
     }
 
     public SimulationReport runSimulation() {
     	
-    	SimulationThreadReportHandler simulationThreadReportHandler = new SimulationThreadReportHandler();
+    	this.simulationThreadReportHandler = new SimulationThreadReportHandler();
     	
     	for(int i = 0; i < this.config.getNumberOfRounds(); i++) {
-    		new SimulationThreadHandler(simulationThreadReportHandler, config).start(); 
-    		//inicia a thread da simulação para essa rodada
+    		while(!canInitiateNewThread()) {
+    			try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    		}
+    		try {
+    			
+    			SimulationThreadHandler newThread = new SimulationThreadHandler(simulationThreadReportHandler, config);
+    			threads.add(newThread);
+    			newThread.start();
+    			System.out.println("begin thread " + i);
+    			//inicia a thread da simulação para essa rodada
+    		} catch(Exception e) {
+    			System.out.println("thread exception");
+    		}
     	}
     	
     	while(true) {
+    		
+    		if(wasAnyThreadInterrupted()) {
+    			return null;
+    		}
+    		
     		if(simulationThreadReportHandler.getSizeOfSimulationReportList() == this.config.getNumberOfRounds()) {
     			//verifica se todas as threads já terminaram
     			return simulationThreadReportHandler.calculateSimulationReportAverage();
@@ -45,6 +71,25 @@ public class SimulationProcessor {
 			}
     	}
         
+    }
+    
+    private boolean canInitiateNewThread() {
+    	if(threads.size() - simulationThreadReportHandler.getSizeOfSimulationReportList() > 20) {
+    		//diferença entre qtd de threads iniciadas e qtd de threads com resultado final, ou seja, é a qtd de threads ainda em andamento
+    		return false;	
+    	}
+    	return true;
+    }
+    
+    private boolean wasAnyThreadInterrupted() {
+    	  	
+    	for (SimulationThreadHandler thread : this.threads) {
+    		
+    		if(thread.isError())
+    			return true;
+    	}
+    	
+    	return false;
     }
 
 }
