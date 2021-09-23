@@ -32,6 +32,11 @@ public class MessageGroup implements Iterable<Message> {
 	}
 	
 	public boolean checkEndOfArrivals() {
+		
+		if(this.getSize() == 0) {
+			return false;
+		}
+		
 		for(Message message : this) {
 			if(!message.isDelivered())
 				return false;

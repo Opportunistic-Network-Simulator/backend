@@ -23,20 +23,23 @@ public class Simulation {
 	private MessageTransmissionProtocol messageTransmissionProtocol;
 	private boolean simulationHappening = false;
 	private double lastProgress = 0;
+	private boolean stopOnEndOfArrivals;
 
 	public Simulation(	MessageTransmissionProtocol messageTransmissionProtocol, 
-						EventQueue eventQueue) {
+						EventQueue eventQueue,
+						boolean stopOnEndOfArrivals) {
 		this.messageTransmissionProtocol = messageTransmissionProtocol;
 		this.eventQueue = eventQueue;
 		this.nodes = new NodeGroup();
 		this.messages = new MessageGroup();
+		this.stopOnEndOfArrivals = stopOnEndOfArrivals;
 	}
 	
-	public void start(boolean stopOnEndOfArrivals) {
+	public void start() {
 		this.simulationHappening = true;
 		while(this.simulationHappening) {
 			this.showProgress();
-			this.handle(eventQueue.nextEvent(), stopOnEndOfArrivals);
+			this.handle(eventQueue.nextEvent(), this.stopOnEndOfArrivals);
 		}
 	}
 	
@@ -52,8 +55,9 @@ public class Simulation {
 	
 	private void handleMeet(MeetEvent event, boolean stopOnEndOfArrivals) {
 		this.messageTransmissionProtocol.handleMeet(event, this.nodes);
-		if(stopOnEndOfArrivals && this.messages.checkEndOfArrivals()) 
+		if(stopOnEndOfArrivals && this.messages.checkEndOfArrivals()) {
 			this.handleEndOfArrivals(event.instant);
+		}
 	}
 	
 	private void handleEndOfArrivals(double instant) {
@@ -79,7 +83,7 @@ public class Simulation {
 			}
 		}
 		double deliveryRatio = (double) i / this.messages.getSize();
-		double averageDelay = delays.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
+		double averageDelay = delays.isEmpty() ? 0 : delays.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
 		return new SimulationReport(averageDelay, deliveryRatio, 0);
 	}
 	

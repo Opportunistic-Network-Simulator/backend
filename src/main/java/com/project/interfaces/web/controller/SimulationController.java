@@ -1,9 +1,5 @@
 package com.project.interfaces.web.controller;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,14 +7,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.interfaces.web.dto.MeetDTO;
-import com.project.interfaces.web.dto.MeetingTraceDTO;
-import com.project.interfaces.web.dto.PairDTO;
-import com.project.interfaces.web.dto.PairsDTO;
+import com.project.interfaces.web.dto.ProtocolConfigurationDTO;
+import com.project.interfaces.web.dto.SimulationConfigurationDTO;
+import com.project.interfaces.web.parser.WebParser;
 import com.project.interfaces.web.service.SimulationService;
-import com.project.simulator.entity.Meet;
-import com.project.simulator.entity.MeetingTrace;
-import com.project.simulator.entity.Pair;
+import com.project.simulator.SimulationProcessor;
+import com.project.simulator.configuration.SimulationConfiguration;
+import com.project.simulator.entity.SimulationReport;
 
 @RestController
 //@CrossOrigin //para habilitar cors
@@ -28,44 +23,17 @@ public class SimulationController {
 	@Autowired
 	private SimulationService simulationService;
 	
-	@PostMapping("/generateMeetingTrace")
-	public ResponseEntity<MeetingTraceDTO> generateMeetingTrace(@RequestBody PairsDTO pairsDto) {
-		MeetingTrace meetingTrace = simulationService.generateMeetingTrace(convertDtoToPair(pairsDto.getPairsList()), pairsDto.getTotalSimulationTime());
-		return ResponseEntity.ok(convertMeetingTraceToDto(meetingTrace));
-	}
-	
-	@PostMapping("/executeSimulation")
-	public ResponseEntity<Double> executeSimulation(@RequestBody PairsDTO pairsDto) {
-		MeetingTrace meetingTrace = simulationService
-										.generateMeetingTrace(
-												convertDtoToPair(pairsDto.getPairsList()), 
-												pairsDto.getTotalSimulationTime());
-		double avgDelay = simulationService.executeSimulation(
-									pairsDto.getTotalSimulationTime(), 
-									meetingTrace, 
-									pairsDto.getNumberOfNodes(),
-									pairsDto.isStopOnEndOfArrivals());
-		
-		return ResponseEntity.ok(avgDelay);
-	}
-	
-	private List<Pair> convertDtoToPair(List<PairDTO> pairs) {
-		List<Pair> pairsList = new ArrayList<Pair>();
-		for(PairDTO pair : pairs) {
-			pairsList.add(new Pair(pair.getNode1(), pair.getNode2(), pair.getRate(), pair.getVariabilityDegree()));
+	@PostMapping("/runSimulation")
+	public ResponseEntity<?> runSimulation(@RequestBody SimulationConfigurationDTO simulationConfigurationDTO) {
+		try {
+			SimulationConfiguration config = new WebParser().parser(simulationConfigurationDTO);
+			SimulationProcessor processor = new SimulationProcessor(config);
+			SimulationReport report = processor.runSimulation();
+			return ResponseEntity.ok(report);
 		}
-		return pairsList;
+		catch(Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 	
-	private MeetingTraceDTO convertMeetingTraceToDto(MeetingTrace meetingTrace) {
-		MeetingTraceDTO meetingTraceDto = new MeetingTraceDTO();
-		for(Meet meet : meetingTrace.getMeetingTrace()) {
-			Pair pair = meet.getPair();
-			PairDTO pairDTO = new PairDTO(pair.getNode1(), pair.getNode2());
-			MeetDTO meetDto = new MeetDTO(pairDTO, meet.getInstant());
-			meetingTraceDto.addMeet(meetDto);
-		}
-		return meetingTraceDto;
-		
-	}
 }

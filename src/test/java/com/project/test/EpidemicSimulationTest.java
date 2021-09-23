@@ -30,8 +30,12 @@ public class EpidemicSimulationTest {
     }
 
     private SimulationConfiguration prepareConfig(double speed, int numberOfRounds) {
-        return new SimulationConfiguration(prepareMessageConfig(), prepareMeetingTraceConfig(speed),
-        		prepareProtocolConfig(), numberOfRounds);
+    	 return new SimulationConfiguration(
+     			numberOfRounds,
+     			prepareProtocolConfig(),
+     			prepareMeetingTraceConfig(speed),
+     			prepareMessageConfig()
+     		);
     }
 
     private MessageGenerationConfiguration prepareMessageConfig() {

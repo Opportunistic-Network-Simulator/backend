@@ -1,5 +1,8 @@
 package com.project.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +13,7 @@ import lombok.Setter;
 public class Test {
 	
 	
-	public static void main(String[] args) {		
-		
+	public static void main(String[] args) {
 	}
 }
 

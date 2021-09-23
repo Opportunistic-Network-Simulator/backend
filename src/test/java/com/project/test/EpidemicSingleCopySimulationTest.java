@@ -14,25 +14,30 @@ import java.util.List;
 
 public class EpidemicSingleCopySimulationTest {
 	
-	//@Test
+	@Test
     public void test() {
 		Timestamp begin = Timestamp.valueOf(LocalDateTime.now());
-        SimulationConfiguration config = prepareConfig(1, 10000);
+        SimulationConfiguration config = prepareConfig(100, 10000);
         SimulationProcessor processor = new SimulationProcessor(config);
         SimulationReport report = processor.runSimulation();
         System.out.println("Average delay: " + report.getAverageDelay());
         System.out.println("Delivery ratio: " + report.getDeliveryRatio());
         System.out.println();
         Timestamp end = Timestamp.valueOf(LocalDateTime.now());
-//        System.out.println("tempo de duração: " + end.compareTo(begin));
+        System.out.println("tempo de duração (s): " + (end.getTime() - begin.getTime())/1000);
 
     }
 
     private SimulationConfiguration prepareConfig(int numberOfRounds, double totalSimulationTime) {
-        return new SimulationConfiguration(prepareMessageConfig(), prepareMeetingTraceConfig(totalSimulationTime),
-        		prepareProtocolConfig(), numberOfRounds);
+    	
+    	 return new SimulationConfiguration(
+     			numberOfRounds,
+     			prepareProtocolConfig(),
+     			prepareMeetingTraceConfig(totalSimulationTime),
+     			prepareMessageConfig()
+     		);
     }
-
+    
     private MessageGenerationConfiguration prepareMessageConfig() {
         return new MessageGenerationConfiguration(
                 MessageGenerationType.ALL_PAIRS,

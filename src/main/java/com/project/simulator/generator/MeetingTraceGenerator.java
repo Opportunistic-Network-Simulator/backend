@@ -24,7 +24,6 @@ public class MeetingTraceGenerator {
 		for(Pair pair : input.getPairs()) {
 			if(pair.pairMeets()) MeetingTraceGenerator.generatePairMeetings(meetingTrace, pair, input.getTotalSimulationTime());
 		}
-		meetingTrace.orderTrace();
 		return meetingTrace;
 	}
 
@@ -44,7 +43,6 @@ public class MeetingTraceGenerator {
 		for(Pair pair : config.getPairs()) {
 			if(pair.pairMeets()) MeetingTraceGenerator.generatePairMeetings(meetingTrace, pair, config.getTotalSimulationTime());
 		}
-		meetingTrace.orderTrace();
 		return meetingTrace;
 	}
 }
