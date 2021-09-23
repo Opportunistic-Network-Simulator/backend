@@ -25,10 +25,15 @@ public class SimulationController {
 	
 	@PostMapping("/runSimulation")
 	public ResponseEntity<?> runSimulation(@RequestBody SimulationConfigurationDTO simulationConfigurationDTO) {
-		SimulationConfiguration config = new WebParser().parser(simulationConfigurationDTO);
-		SimulationProcessor processor = new SimulationProcessor(config);
-	    SimulationReport report = processor.runSimulation();
-		return ResponseEntity.ok(report);
+		try {
+			SimulationConfiguration config = new WebParser().parser(simulationConfigurationDTO);
+			SimulationProcessor processor = new SimulationProcessor(config);
+			SimulationReport report = processor.runSimulation();
+			return ResponseEntity.ok(report);
+		}
+		catch(Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 	
 }

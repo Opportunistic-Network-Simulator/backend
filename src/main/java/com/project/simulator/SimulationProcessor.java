@@ -1,5 +1,6 @@
 package com.project.simulator;
 
+import com.project.exception.SimulatorException;
 import com.project.simulator.configuration.SimulationConfiguration;
 import com.project.simulator.entity.MeetingTrace;
 import com.project.simulator.entity.SimulationReport;
@@ -33,7 +34,11 @@ public class SimulationProcessor {
     	this.simulationThreadReportHandler = new SimulationThreadReportHandler();
     	
     	for(int i = 0; i < this.config.getNumberOfRounds(); i++) {
+    		
     		while(!canInitiateNewThread()) {
+    			
+    			wasAnyThreadInterrupted();
+    			
     			try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
@@ -49,15 +54,12 @@ public class SimulationProcessor {
     			System.out.println("begin thread " + i);
     			//inicia a thread da simulação para essa rodada
     		} catch(Exception e) {
-    			System.out.println("thread exception");
     		}
     	}
     	
     	while(true) {
     		
-    		if(wasAnyThreadInterrupted()) {
-    			return null;
-    		}
+    		wasAnyThreadInterrupted();
     		
     		if(simulationThreadReportHandler.getSizeOfSimulationReportList() == this.config.getNumberOfRounds()) {
     			//verifica se todas as threads já terminaram
@@ -81,15 +83,12 @@ public class SimulationProcessor {
     	return true;
     }
     
-    private boolean wasAnyThreadInterrupted() {
-    	  	
+    private void wasAnyThreadInterrupted() {
     	for (SimulationThreadHandler thread : this.threads) {
-    		
     		if(thread.isError())
-    			return true;
+    			throw new SimulatorException(thread.getErrorMessage());
     	}
     	
-    	return false;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.project.simulator.threadHandler;
 
 
+import com.project.exception.SimulatorException;
 import com.project.simulator.configuration.SimulationConfiguration;
 
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class SimulationThreadHandler extends Thread {
 	private SimulationConfiguration config;
 	private SimulationThreadReportHandler simulationThreadReportHandler;
 	private boolean error;
+	private String errorMessage;
 	
 	public SimulationThreadHandler(SimulationThreadReportHandler simulationThreadReportHandler, SimulationConfiguration config) {
 		this.simulationThreadReportHandler = simulationThreadReportHandler;
@@ -44,6 +46,7 @@ public class SimulationThreadHandler extends Thread {
 		} catch(Exception e) {
 			e.printStackTrace();
 			this.error = true;
+			this.errorMessage = e.getMessage();
 		}
 		  
 	}
