@@ -7,6 +7,7 @@ import java.io.IOException;
 
 
 import com.project.interfaces.commandLine.parser.FileNamesParser;
+import com.project.simulator.entity.Meet;
 import com.project.simulator.entity.MeetingTrace;
 import com.project.simulator.entity.SimulationReport;
 import org.apache.commons.cli.CommandLine;
@@ -49,16 +50,21 @@ public class CommandLineReporter {
 
 	public void reportMeetingTrace(MeetingTrace trace) {
 		try {
-			File outputFile = this.fileNamesParser.outputReportFileAllSimulations();
+			File outputFile = this.fileNamesParser.outputReportFileMeetingTraces();
 			BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile, true));
 
 			writer.write("\n\nNew simulation: \n");
 
-			writer.write("[");
-			String reportMessage = "Delivery ratio: " + report.getDeliveryRatio()
-					+ "\n" + "Average delay: " + report.getAverageDelay();
-			writer.write(reportMessage);
-			writer.write("[");
+			writer.write("[\n");
+			for(Meet meet : trace.getMeetingTrace()) {
+				writer.write("\t{\n");
+				writer.write("\t\t'node1': " + meet.getPair().getNode1() + "\n");
+				writer.write("\t\t'node2': " + meet.getPair().getNode2() + "\n");
+				writer.write("\t\t'instant': " + meet.getInstant() + "\n");
+				writer.write("\t}\n");
+			}
+//			writer.write(reportMessage);
+			writer.write("]");
 			writer.close();
 		} catch(Exception e) {
 

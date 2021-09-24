@@ -1,14 +1,10 @@
 package com.project.simulator.threadHandler;
 
 
-import com.project.exception.SimulatorException;
-import com.project.interfaces.commandLine.report.CommandLineReporter;
-import com.project.simulator.configuration.SimulationConfiguration;
-
-import lombok.Getter;
-
 import java.util.List;
 
+import com.project.interfaces.commandLine.report.CommandLineReporter;
+import com.project.simulator.configuration.SimulationConfiguration;
 import com.project.simulator.entity.MeetingTrace;
 import com.project.simulator.entity.SimulationReport;
 import com.project.simulator.entity.event.EventQueue;
@@ -18,6 +14,8 @@ import com.project.simulator.generator.messageGenerator.MessageGenerator;
 import com.project.simulator.generator.messageGenerator.MessageTransmissionProtocolFactory;
 import com.project.simulator.simulation.Simulation;
 import com.project.simulator.simulation.protocols.MessageTransmissionProtocol;
+
+import lombok.Getter;
 
 @Getter
 public class SimulationThreadHandler extends Thread {
@@ -37,6 +35,7 @@ public class SimulationThreadHandler extends Thread {
 		try {
 			List<MessageGenerationEvent> messageGenerationQueue = MessageGenerator.generate(config.getMessageGenerationConfiguration());
 	        MeetingTrace meetingTrace = MeetingTraceGenerator.generate(config.getMeetingTraceConfiguration());
+	        CommandLineReporter.getReporter().reportMeetingTrace(meetingTrace);
 	        EventQueue eventQueue = EventQueue.makeEventQueue(meetingTrace, messageGenerationQueue);
 	        MessageTransmissionProtocol protocol = MessageTransmissionProtocolFactory.make(config.getProtocolConfiguration());
 	        Simulation simulation = new Simulation(protocol, eventQueue, true);
