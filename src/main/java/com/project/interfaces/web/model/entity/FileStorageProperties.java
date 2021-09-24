@@ -1,4 +1,4 @@
-package com.project.model.entity;
+package com.project.interfaces.web.model.entity;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

@@ -30,11 +30,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.project.interfaces.web.dto.StoragedFileDTO;
+import com.project.interfaces.web.model.entity.FileStorageProperties;
 import com.project.exception.FileStorageException;
 import com.project.exception.MyFileNotFoundException;
-//import com.project.model.entity.Progress;
-import com.project.model.entity.FileStorageProperties;
-//import com.project.model.repository.ProgressRepository;
 
 @Service
 public class FileStorageService {
