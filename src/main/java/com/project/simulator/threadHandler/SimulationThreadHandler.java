@@ -2,6 +2,7 @@ package com.project.simulator.threadHandler;
 
 
 import com.project.exception.SimulatorException;
+import com.project.interfaces.commandLine.report.CommandLineReporter;
 import com.project.simulator.configuration.SimulationConfiguration;
 
 import lombok.Getter;
@@ -41,6 +42,8 @@ public class SimulationThreadHandler extends Thread {
 	        Simulation simulation = new Simulation(protocol, eventQueue, true);
 	        simulation.start();
 	        SimulationReport report = simulation.reportSimulationResult();
+			CommandLineReporter reporter = CommandLineReporter.getReporter();
+			reporter.reportSingleSimulation(report);
 		    this.simulationThreadReportHandler.addSimulationReport(report);  
 			
 		} catch(Exception e) {

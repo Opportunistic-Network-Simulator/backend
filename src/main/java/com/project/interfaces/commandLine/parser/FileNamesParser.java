@@ -46,4 +46,20 @@ public class FileNamesParser {
 		return outputFile;
 	}
 
+	public File outputReportFileAllSimulations() throws IOException {
+		File outputFile = new File(localPath() + "output" + File.separator + "simulationsResults.txt");
+		outputFile.getParentFile().mkdirs();
+		if(!outputFile.exists())
+			outputFile.createNewFile();
+		return outputFile;
+	}
+
+	public File outputReportFileMeetingTraces() throws IOException {
+		File outputFile = new File(localPath() + "output" + File.separator + "meetingTraces.txt");
+		outputFile.getParentFile().mkdirs();
+		if(!outputFile.exists())
+			outputFile.createNewFile();
+		return outputFile;
+	}
+
 }
