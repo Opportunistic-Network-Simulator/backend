@@ -21,36 +21,40 @@ import lombok.Getter;
 public class SimulationThreadHandler extends Thread {
 	
 	private SimulationConfiguration config;
-	private SimulationThreadReportHandler simulationThreadReportHandler;
 	private boolean error;
 	private String errorMessage;
+	private boolean running;
+	private Simulation simulation;
+	private CommandLineReporter reporter;
 	
-	public SimulationThreadHandler(SimulationThreadReportHandler simulationThreadReportHandler, SimulationConfiguration config) {
-		this.simulationThreadReportHandler = simulationThreadReportHandler;
+	public SimulationThreadHandler(SimulationConfiguration config, CommandLineReporter reporter) {
 		this.config = config;
 		this.error = false;
+		this.reporter = reporter;
 	}
 	
 	public void run() {
 		try {
+			this.running = true;
 			List<MessageGenerationEvent> messageGenerationQueue = MessageGenerator.generate(config.getMessageGenerationConfiguration());
 	        MeetingTrace meetingTrace = MeetingTraceGenerator.generate(config.getMeetingTraceConfiguration());
-	        CommandLineReporter.getReporter().reportMeetingTrace(meetingTrace);
+	        reporter.reportMeetingTrace(meetingTrace);
 	        EventQueue eventQueue = EventQueue.makeEventQueue(meetingTrace, messageGenerationQueue);
 	        MessageTransmissionProtocol protocol = MessageTransmissionProtocolFactory.make(config.getProtocolConfiguration());
-	        Simulation simulation = new Simulation(protocol, eventQueue, true);
+	        this.simulation = new Simulation(protocol, eventQueue, true);
 	        simulation.start();
-	        SimulationReport report = simulation.reportSimulationResult();
-			CommandLineReporter reporter = CommandLineReporter.getReporter();
-			reporter.reportSingleSimulation(report);
-		    this.simulationThreadReportHandler.addSimulationReport(report);  
 			
 		} catch(Exception e) {
 			e.printStackTrace();
 			this.error = true;
 			this.errorMessage = e.getMessage();
 		}
+		this.running = false;
 		  
+	}
+
+	public SimulationReport getReport() {
+		return this.simulation.reportSimulationResult();
 	}
 
 }
