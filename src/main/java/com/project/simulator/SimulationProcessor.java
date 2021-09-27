@@ -14,10 +14,13 @@ import com.project.simulator.simulation.protocols.MessageTransmissionProtocol;
 import com.project.simulator.threadHandler.SimulationThreadHandler;
 import com.project.simulator.threadHandler.SimulationThreadReportHandler;
 
+import lombok.Getter;
+
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class SimulationProcessor {
 	
     private SimulationConfiguration config;
@@ -27,11 +30,10 @@ public class SimulationProcessor {
     public SimulationProcessor(SimulationConfiguration config) {
         this.config = config;
         this.threads = new ArrayList<SimulationThreadHandler>();
+        this.simulationThreadReportHandler = new SimulationThreadReportHandler();
     }
 
     public SimulationReport runSimulation() {
-    	
-    	this.simulationThreadReportHandler = new SimulationThreadReportHandler();
     	
     	for(int i = 0; i < this.config.getNumberOfRounds(); i++) {
     		

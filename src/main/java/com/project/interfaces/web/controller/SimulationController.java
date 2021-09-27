@@ -28,6 +28,7 @@ public class SimulationController {
 		try {
 			SimulationConfiguration config = new WebParser().parser(simulationConfigurationDTO);
 			SimulationProcessor processor = new SimulationProcessor(config);
+			
 			SimulationReport report = processor.runSimulation();
 			return ResponseEntity.ok(report);
 		}

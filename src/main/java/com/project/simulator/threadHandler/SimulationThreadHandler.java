@@ -1,7 +1,6 @@
 package com.project.simulator.threadHandler;
 
 
-import com.project.exception.SimulatorException;
 import com.project.simulator.configuration.SimulationConfiguration;
 
 import lombok.Getter;
