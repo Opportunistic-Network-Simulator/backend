@@ -19,13 +19,11 @@ public class CommandLineApplication {
 		try {
 			FileNamesParser fileNamesParser = ArgumentsHandler.handleArgs(args);
 			if(!fileNamesParser.getInputFile().isPresent()) return;
-				
+
 			SimulationConfiguration config = FileParser.parseConfig(fileNamesParser);
 			SimulationProcessor processor = new SimulationProcessor(config);
 			System.out.println("Simulation started");
-		    SimulationReport report = processor.runSimulation();
-		    
-		    CommandLineReporter.report(fileNamesParser, report);
+		    processor.runSimulation();
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage() == null ? "Internal Error" : e.getMessage());

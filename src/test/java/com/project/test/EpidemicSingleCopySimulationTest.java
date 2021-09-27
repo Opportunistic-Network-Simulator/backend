@@ -14,7 +14,7 @@ import java.util.List;
 
 public class EpidemicSingleCopySimulationTest {
 	
-	@Test
+//	@Test
     public void test() {
 		Timestamp begin = Timestamp.valueOf(LocalDateTime.now());
         SimulationConfiguration config = prepareConfig(100, 10000);
