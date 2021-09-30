@@ -65,4 +65,9 @@ public class SimulationService {
 		double progress = 100*((double) processor.finishedThreads()) / processor.getConfig().getNumberOfRounds();
 		return progress;
 	}
+	
+	public SimulationReport getSimulationReport(String key) {
+		SimulationProcessor processor = this.simulationMap.get(key);
+		return processor.getReport();
+	}
 }
