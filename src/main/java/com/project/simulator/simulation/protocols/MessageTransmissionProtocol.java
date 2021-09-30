@@ -12,7 +12,6 @@ public abstract class MessageTransmissionProtocol {
 	public void handleMeet(MeetEvent meet, NodeGroup nodes) {
 		Node node1 = nodes.getNode(meet.getNode1Id());
 		Node node2 = nodes.getNode(meet.getNode2Id());
-		
 		List<Message> oneToTwo = transferredMessages(node1, node2);
 		List<Message> twoToOne = transferredMessages(node2, node1);
 		

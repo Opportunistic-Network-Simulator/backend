@@ -6,19 +6,25 @@ import com.project.simulator.configuration.SimulationConfiguration;
 import com.project.simulator.entity.SimulationReport;
 import com.project.simulator.threadHandler.SimulationThreadHandler;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class SimulationProcessor {
 	
     private SimulationConfiguration config;
     private List<SimulationThreadHandler> threads;
+    private SimulationReport report;
+    boolean done;
     CommandLineReporter reporter;
     
     public SimulationProcessor(SimulationConfiguration config) {
         this.config = config;
         this.threads = new ArrayList<SimulationThreadHandler>();
         this.reporter = CommandLineReporter.makeRoot();
+        this.done = false;
     }
 
     public SimulationReport runSimulation() {
@@ -39,6 +45,7 @@ public class SimulationProcessor {
     		try {
     			
     			SimulationThreadHandler newThread = new SimulationThreadHandler(config, CommandLineReporter.make(String.valueOf(i + 1)));
+    			newThread.setRunning(true);
     			threads.add(newThread);
     			newThread.start();
     			System.out.println("begin thread " + i);
@@ -53,7 +60,9 @@ public class SimulationProcessor {
     		if(this.checkAllThreadsDone()) {
     			SimulationReport averageReport = this.calculateSimulationReportAverage();
     			reporter.reportSingleSimulation(averageReport);
-    			return averageReport;
+    			this.report = averageReport;
+    			this.done = true;
+    			return report;
     		}
     		
     		try {
@@ -87,10 +96,18 @@ public class SimulationProcessor {
     	return true;
 	}
 
-	private int runningThreads() {
+	public int runningThreads() {
 		int count = 0;
     	for(SimulationThreadHandler thread : threads) {
 			if (thread.isRunning()) count++;
+		}
+		return count;
+	}
+	
+	public int finishedThreads() {
+		int count = 0;
+    	for(SimulationThreadHandler thread : threads) {
+			if (thread.isDone()) count++;
 		}
 		return count;
 	}

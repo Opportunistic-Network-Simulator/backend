@@ -16,6 +16,7 @@ import com.project.simulator.simulation.Simulation;
 import com.project.simulator.simulation.protocols.MessageTransmissionProtocol;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class SimulationThreadHandler extends Thread {
@@ -23,7 +24,10 @@ public class SimulationThreadHandler extends Thread {
 	private SimulationConfiguration config;
 	private boolean error;
 	private String errorMessage;
+	
+	@Setter
 	private boolean running;
+	private boolean done;
 	private Simulation simulation;
 	private CommandLineReporter reporter;
 	
@@ -31,11 +35,12 @@ public class SimulationThreadHandler extends Thread {
 		this.config = config;
 		this.error = false;
 		this.reporter = reporter;
+		this.done = false;
 	}
 	
 	public void run() {
 		try {
-			this.running = true;
+//			this.running = true;
 			List<MessageGenerationEvent> messageGenerationQueue = MessageGenerator.generate(config.getMessageGenerationConfiguration());
 	        MeetingTrace meetingTrace = MeetingTraceGenerator.generate(config.getMeetingTraceConfiguration());
 	        reporter.reportMeetingTrace(meetingTrace);
@@ -43,6 +48,8 @@ public class SimulationThreadHandler extends Thread {
 	        MessageTransmissionProtocol protocol = MessageTransmissionProtocolFactory.make(config.getProtocolConfiguration());
 	        this.simulation = new Simulation(protocol, eventQueue, true);
 	        simulation.start();
+	        this.done = true;
+	        System.out.println("finished simulation");
 			
 		} catch(Exception e) {
 			e.printStackTrace();
