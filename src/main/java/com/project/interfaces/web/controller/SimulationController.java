@@ -61,8 +61,8 @@ public class SimulationController {
 	 }
 	 
 	 @GetMapping("/getSimulationReport")
-	 public ResponseEntity<Double> getSimulationReport(@RequestParam(value = "key") String key) {
-		return ResponseEntity.ok(this.simulationService.getSimulationProgress(key));
+	 public ResponseEntity<SimulationReport> getSimulationReport(@RequestParam(value = "key") String key) {
+		return ResponseEntity.ok(this.simulationService.getSimulationReport(key));
 		 
 	 }
 	
