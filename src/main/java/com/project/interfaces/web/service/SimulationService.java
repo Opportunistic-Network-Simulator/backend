@@ -1,5 +1,7 @@
 package com.project.interfaces.web.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -69,9 +71,10 @@ public class SimulationService {
 			progress+=thread.getProgress();
 		}
 		progress *= 100/processor.getConfig().getNumberOfRounds();
-		DecimalFormat df = new DecimalFormat("0.00");
-		return Double.parseDouble(df.format(progress));
-	}
+		return BigDecimal.valueOf(progress)
+			    .setScale(2, RoundingMode.HALF_UP)
+			    .doubleValue();
+		}
 	
 	public SimulationReport getSimulationReport(String key) {
 		SimulationProcessor processor = this.simulationMap.get(key);

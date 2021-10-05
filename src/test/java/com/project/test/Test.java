@@ -1,5 +1,7 @@
 package com.project.test;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +17,11 @@ public class Test {
 	
 	
 	public static void main(String[] args) {
-		DecimalFormat df = new DecimalFormat("0.00");
-		System.out.println(Double.parseDouble(df.format("90.3244")));
-
+		Double toBeTruncated = 3.236;
+		Double truncatedDouble = BigDecimal.valueOf(toBeTruncated)
+			    .setScale(2, RoundingMode.HALF_UP)
+			    .doubleValue();
+		System.out.println(truncatedDouble);
 	}
 }
 
