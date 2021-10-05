@@ -1,5 +1,6 @@
 package com.project.interfaces.web.service;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -26,6 +27,7 @@ import com.project.simulator.generator.NodesGenerator;
 import com.project.simulator.generator.messageGenerator.SingleMessagesGenerator;
 import com.project.simulator.simulation.Simulation;
 import com.project.simulator.simulation.protocols.SingleCopyEpidemicProtocol;
+import com.project.simulator.threadHandler.SimulationThreadHandler;
 
 	
 
@@ -62,8 +64,13 @@ public class SimulationService {
 
 	public double getSimulationProgress(String key) {
 		SimulationProcessor processor = this.simulationMap.get(key);
-		double progress = 100*((double) processor.finishedThreads()) / processor.getConfig().getNumberOfRounds();
-		return progress;
+		double progress = 0;
+		for(SimulationThreadHandler thread : processor.getThreads()) {
+			progress+=thread.getProgress();
+		}
+		progress *= 100/processor.getConfig().getNumberOfRounds();
+		DecimalFormat df = new DecimalFormat("0.00");
+		return Double.parseDouble(df.format(progress));
 	}
 	
 	public SimulationReport getSimulationReport(String key) {

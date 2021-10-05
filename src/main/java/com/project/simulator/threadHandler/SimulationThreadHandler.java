@@ -64,4 +64,12 @@ public class SimulationThreadHandler extends Thread {
 		return this.simulation.reportSimulationResult();
 	}
 
+	public double getProgress() {
+		if(this.simulation == null) //caso em que simulation não começou ainda para essa thread
+			return 0;
+		if(this.done)
+			return 1;
+		return this.simulation.getProgress();
+	}
+
 }

@@ -38,7 +38,7 @@ public class Simulation {
 	public void start() {
 		this.simulationHappening = true;
 		while(this.simulationHappening) {
-			this.showProgress();
+//			this.showProgress();
 			this.handle(eventQueue.nextEvent(), this.stopOnEndOfArrivals);
 		}
 	}
@@ -87,11 +87,15 @@ public class Simulation {
 		return new SimulationReport(averageDelay, deliveryRatio, 0);
 	}
 	
-	private void showProgress() {
-		if(this.eventQueue.getProgress() > this.lastProgress + 0.1) {
-			this.lastProgress = this.eventQueue.getProgress();
+//	private void showProgress() {
+//		if(this.eventQueue.getProgress() > this.lastProgress + 0.1) {
+//			this.lastProgress = this.eventQueue.getProgress();
 //			System.out.println("progress: " + this.lastProgress);
-		}
+//		}
+//	}
+
+	public double getProgress() {
+		return this.eventQueue.getProgress();
 	}
 
 }
