@@ -24,9 +24,10 @@ public class SimulationThreadHandler extends Thread {
 	private SimulationConfiguration config;
 	private boolean error;
 	private String errorMessage;
-	
+
 	@Setter
 	private boolean running;
+	
 	private boolean done;
 	private Simulation simulation;
 	private CommandLineReporter reporter;
@@ -34,13 +35,13 @@ public class SimulationThreadHandler extends Thread {
 	public SimulationThreadHandler(SimulationConfiguration config, CommandLineReporter reporter) {
 		this.config = config;
 		this.error = false;
+		this.running = true;
 		this.reporter = reporter;
 		this.done = false;
 	}
 	
 	public void run() {
 		try {
-//			this.running = true;
 			List<MessageGenerationEvent> messageGenerationQueue = MessageGenerator.generate(config.getMessageGenerationConfiguration());
 	        MeetingTrace meetingTrace = MeetingTraceGenerator.generate(config.getMeetingTraceConfiguration());
 	        reporter.reportMeetingTrace(meetingTrace);

@@ -17,6 +17,7 @@ public class SimulationProcessor {
     private SimulationConfiguration config;
     private List<SimulationThreadHandler> threads;
     private SimulationReport report;
+    private List<String> logs;
     boolean done;
     CommandLineReporter reporter;
     
@@ -45,7 +46,6 @@ public class SimulationProcessor {
     		try {
     			
     			SimulationThreadHandler newThread = new SimulationThreadHandler(config, CommandLineReporter.make(String.valueOf(i + 1)));
-    			newThread.setRunning(true);
     			threads.add(newThread);
     			newThread.start();
     			System.out.println("begin thread " + i);
