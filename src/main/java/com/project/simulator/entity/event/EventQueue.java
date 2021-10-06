@@ -36,6 +36,7 @@ public class EventQueue {
 	}
 	
 	public double getProgress() {
+		System.out.println("progress: " + (double) this.eventsInThePast.size() / (double) (this.eventsInTheFuture.size() + this.eventsInThePast.size()));
 		return (double) this.eventsInThePast.size() / (double) (this.eventsInTheFuture.size() + this.eventsInThePast.size());
 	}
 

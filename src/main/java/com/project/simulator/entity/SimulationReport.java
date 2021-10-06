@@ -9,4 +9,5 @@ public class SimulationReport {
     private double averageDelay;
     private double deliveryRatio;
     private double variance;
+    private double stdDeviation;
 }

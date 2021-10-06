@@ -12,6 +12,7 @@ public class SimulationConfigurationDTO {
 	int numberOfRounds;
 	private ProtocolConfigurationDTO protocolConfiguration;
 	private MeetingTraceConfigurationDTO meetingTraceConfiguration;
-	private MessageGenerationConfigurationDTO messageConfiguration;	
+	private MessageGenerationConfigurationDTO messageConfiguration;
+	String key;
 
 }

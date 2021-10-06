@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalDouble;
 
+import com.project.interfaces.commandLine.report.CommandLineReporter;
 import com.project.simulator.entity.Message;
 import com.project.simulator.entity.MessageGroup;
 import com.project.simulator.entity.NodeGroup;
@@ -21,26 +22,32 @@ public class Simulation {
 	private MessageGroup messages;
 	private EventQueue eventQueue;
 	private MessageTransmissionProtocol messageTransmissionProtocol;
+	private CommandLineReporter reporter;
 	private boolean simulationHappening = false;
 	private double lastProgress = 0;
 	private boolean stopOnEndOfArrivals;
 
 	public Simulation(	MessageTransmissionProtocol messageTransmissionProtocol, 
 						EventQueue eventQueue,
-						boolean stopOnEndOfArrivals) {
+						boolean stopOnEndOfArrivals,
+					  	CommandLineReporter reporter) {
 		this.messageTransmissionProtocol = messageTransmissionProtocol;
 		this.eventQueue = eventQueue;
-		this.nodes = new NodeGroup();
-		this.messages = new MessageGroup();
+		this.nodes = new NodeGroup(reporter);
+		this.messages = new MessageGroup(reporter);
 		this.stopOnEndOfArrivals = stopOnEndOfArrivals;
+		this.reporter = reporter;
 	}
 	
 	public void start() {
+		System.out.println("start");
 		this.simulationHappening = true;
 		while(this.simulationHappening) {
-			this.showProgress();
+//			this.showProgress();
 			this.handle(eventQueue.nextEvent(), this.stopOnEndOfArrivals);
 		}
+
+		this.reporter.reportMessageDelivery(this.messages.getMessageList());
 	}
 	
 	private void handle(Event event, boolean stopOnEndOfArrivals) {
@@ -84,14 +91,26 @@ public class Simulation {
 		}
 		double deliveryRatio = (double) i / this.messages.getSize();
 		double averageDelay = delays.isEmpty() ? 0 : delays.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
-		return new SimulationReport(averageDelay, deliveryRatio, 0);
+
+		double variance = 0;
+		for (Double delay : delays) {
+			variance += Math.pow(delay - averageDelay, 2);
+		}
+		variance /= delays.size();
+
+		double std = Math.sqrt(variance);
+		return new SimulationReport(averageDelay, deliveryRatio,  variance, std);
 	}
 	
-	private void showProgress() {
-		if(this.eventQueue.getProgress() > this.lastProgress + 0.1) {
-			this.lastProgress = this.eventQueue.getProgress();
+//	private void showProgress() {
+//		if(this.eventQueue.getProgress() > this.lastProgress + 0.1) {
+//			this.lastProgress = this.eventQueue.getProgress();
 //			System.out.println("progress: " + this.lastProgress);
-		}
+//		}
+//	}
+
+	public double getProgress() {
+		return this.eventQueue.getProgress();
 	}
 
 }

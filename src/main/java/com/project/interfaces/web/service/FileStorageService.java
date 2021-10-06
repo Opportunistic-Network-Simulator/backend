@@ -2,12 +2,14 @@ package com.project.interfaces.web.service;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,9 +17,11 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import javax.xml.bind.JAXBException;
 
@@ -55,6 +59,45 @@ public class FileStorageService {
         }
     }
     
+    public String zipB64(List<File> files) throws IOException {
+	    byte[] buffer = new byte[1024];
+	    ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
+	    try (ZipOutputStream zos = new ZipOutputStream(baos)) {
+	        for (File f : files) {
+	            try (FileInputStream fis = new FileInputStream(f)) {
+	                zos.putNextEntry(new ZipEntry(f.getName()));
+	                int length;
+	                while ((length = fis.read(buffer)) > 0) {
+	                    zos.write(buffer, 0, length);
+	                }
+	                zos.closeEntry();
+	            }
+	        }
+	    }
+	    byte[] bytes = baos.toByteArray();
+	    return new String(Base64.getEncoder().encodeToString(bytes));
+    }
+
+	public String zipB64(List<File> files, File rootFolder) throws IOException {
+		URI base = rootFolder.toURI();
+		byte[] buffer = new byte[1024];
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try (ZipOutputStream zos = new ZipOutputStream(baos)) {
+			for (File f : files) {
+				try (FileInputStream fis = new FileInputStream(f)) {
+					String name = base.relativize(f.toURI()).getPath();
+					zos.putNextEntry(new ZipEntry(name));
+					int length;
+					while ((length = fis.read(buffer)) > 0) {
+						zos.write(buffer, 0, length);
+					}
+					zos.closeEntry();
+				}
+			}
+		}
+		byte[] bytes = baos.toByteArray();
+		return new String(Base64.getEncoder().encodeToString(bytes));
+	}
     
     public StoragedFileDTO storeFile(MultipartFile[] files, String formattedDate, String key) throws JAXBException, FileNotFoundException { 
     	

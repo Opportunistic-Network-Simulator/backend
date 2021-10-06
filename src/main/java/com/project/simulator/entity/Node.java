@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.project.interfaces.commandLine.report.CommandLineReporter;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,10 +16,18 @@ public class Node {
 	private long id;
 	private List<Message> messages;
 	private Map<String, String> storedProperties = new HashMap<String, String>();
+	CommandLineReporter reporter;
 	
+	public Node(long id, CommandLineReporter reporter) {
+		this.id = id;
+		this.messages = new ArrayList<Message>();
+		this.reporter = reporter;
+	}
+
 	public Node(long id) {
 		this.id = id;
 		this.messages = new ArrayList<Message>();
+		this.reporter = reporter;
 	}
 	
 	public void addMessage(Message message) {
