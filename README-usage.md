@@ -1,21 +1,10 @@
 # Usage
 
-Currently, the simulator is only available for use through the executable jar. It can run in whatever OS.
+Currently, the simulator is available for use from a Commnad Line Interface or from a web application. It can run in whatever OS.
 
-It is needed java version 8 in your computer.
+It is needed java version 8 or later in your computer.
 
-## Executable Jar
-
-Download the IONS-Simulator.zip [here](https://github.com/PFC-IME-Opportunistic-Network-Simulator/backend/releases/download/1.0/IONS-Simulator.zip):
-
-Unzip the file, open a terminal in CLI (Command Line Interface) folder and run:
-
-```
-java -jar CLI_IONS_Simulator.jar -i <config file> -o <output file name>
-```
-The config file must to be located at input folder and it must be passed just the file name wiht its extension (without any path). This is a [toml file](https://github.com/toml-lang/toml) that has all information needed to configure the simulation scenario.
-
-The information needed in the config file is: 
+## Simulation Parameters
 
 ### Number of Rounds
 A interger number to determinate the number of times the simulation will run with the specified scenario, in order to get all results and make the average.
@@ -69,13 +58,29 @@ Name of json file that contains the meet rate of each pair. This file must be lo
 - #### totalSimulationTime: 
 A double number to determine the total simulation time
 
-### Test
-In the dowloaded zip file, there are the configExample.toml (inside input folder) and the pairsExample.json (inside pairDefinitionFile folder) files to test.
+## Simulation Report
+The main simulation result consists by a .txt file containing the average of delivery ratio and delay of the messages of all rounds
+
+
+## Usage
+
+### Executable Jar
+
+Download the IONS-Simulator.zip [here](https://github.com/PFC-IME-Opportunistic-Network-Simulator/backend/releases/download/1.0/IONS-Simulator.zip):
+
+Unzip the file, open a terminal in CLI (Command Line Interface) folder and run:
+
+```
+java -jar CLI_IONS_Simulator.jar -i <config file>
+```
+The config file must to be located at input folder and it must be passed just the file name wiht its extension (without any path). This is a [toml file](https://github.com/toml-lang/toml) that has all information needed to configure the simulation scenario.
+
+In the dowloaded zip file, there are some configFiles (inside input folder) and some pairDefinitionFiles (inside pairDefinitionFile folder) for example files to test.
 
 Open a terminal in executableJar folder, inside IONS-Simulator folder and run:
 
 ```
-java -jar CLI_IONS_Simulator.jar -i configExample.toml -o example
+java -jar CLI_IONS_Simulator.jar -i configExample.toml
 ```
 
-So, it will be generated a outupt folder with the example.txt, containing the simulation result (Delivery ratio and Average delay).
+So, it will be generated a outupt folder with simulation report files.
