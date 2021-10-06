@@ -1,5 +1,7 @@
 package com.project.interfaces.web.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -9,6 +11,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +42,9 @@ public class SimulationService {
 	private HashMap<String, SimulationProcessor> simulationMap;
 	private ReadWriteLock rwLock;
 
+	@Autowired
+	private FileStorageService fileStorageService;
+
 	public SimulationService() {
 		this.simulationMap = new HashMap<String, SimulationProcessor>();
 		this.rwLock = new ReentrantReadWriteLock();
@@ -48,7 +54,7 @@ public class SimulationService {
     public void runSimulation(SimulationConfigurationDTO simulationConfigurationDTO, String key) {
 		
 		SimulationConfiguration config = new WebParser().parser(simulationConfigurationDTO);
-		SimulationProcessor processor = new SimulationProcessor(config);
+		SimulationProcessor processor = new SimulationProcessor(config, key);
 		
 		Lock writeLock = rwLock.writeLock();
         
@@ -80,4 +86,11 @@ public class SimulationService {
 		SimulationProcessor processor = this.simulationMap.get(key);
 		return processor.getReport();
 	}
+
+	public String getZippedReport(String key) throws IOException {
+		SimulationProcessor processor = this.simulationMap.get(key);
+		List<File> files = processor.getAllSimulationFiles();
+		return this.fileStorageService.zipB64(files, processor.getReporter().getFileNameManager().getRootFolder());
+	}
+
 }

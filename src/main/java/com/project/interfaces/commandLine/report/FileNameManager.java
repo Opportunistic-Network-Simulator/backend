@@ -2,6 +2,10 @@ package com.project.interfaces.commandLine.report;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 public class FileNameManager {
     String subdir;
@@ -61,5 +65,25 @@ public class FileNameManager {
 
     public static FileNameManager make(String subdir) {
         return new FileNameManager(subdir);
+    }
+
+    public List<File> getAllReportFiles() {
+        List<File> files = new ArrayList<File>();
+
+        File rootFolder = new File(this.getPath(""));
+
+        for(File file : rootFolder.listFiles()) {
+            if(file.isDirectory()) {
+                files.addAll(Arrays.asList(file.listFiles()));
+            } else {
+                files.add(file);
+            }
+        }
+
+        return files;
+    }
+
+    public File getRootFolder() {
+        return new File(this.getPath(""));
     }
 }

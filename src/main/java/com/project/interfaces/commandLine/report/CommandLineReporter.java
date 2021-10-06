@@ -13,11 +13,9 @@ import com.project.simulator.entity.Message;
 import com.project.simulator.entity.SimulationReport;
 
 public class CommandLineReporter {
-	private String id;
 	FileNameManager fileNameManager;
 
 	private CommandLineReporter(String id) {
-		this.id = id;
 		this.fileNameManager = FileNameManager.make(id);
 	}
 
@@ -70,8 +68,8 @@ public class CommandLineReporter {
 		try {
 			File file = this.fileNameManager.getMessageReportFile();
 			BufferedWriter writer = makeBufferedWriter(file);
-			writer.write(String.valueOf(instant) + ","
-					+ String.valueOf(id) + ",ARRIVAL,,\n");
+			writer.write(instant + ","
+					+ id + ",ARRIVAL,,\n");
 			writer.close();
 		} catch (Exception e) {
 
@@ -149,6 +147,10 @@ public class CommandLineReporter {
 
 	private BufferedWriter makeBufferedWriter(File file) throws IOException {
 		return new BufferedWriter(new FileWriter(file, true));
+	}
+
+	public FileNameManager getFileNameManager() {
+		return this.fileNameManager;
 	}
 
 	public static CommandLineReporter make(String id) {

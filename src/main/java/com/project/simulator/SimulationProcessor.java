@@ -8,6 +8,7 @@ import com.project.simulator.threadHandler.SimulationThreadHandler;
 
 import lombok.Getter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,22 +18,24 @@ public class SimulationProcessor {
     private SimulationConfiguration config;
     private List<SimulationThreadHandler> threads;
     private SimulationReport report;
-    private List<String> logs;
     boolean done;
     CommandLineReporter reporter;
+	String prefix;
     
     public SimulationProcessor(SimulationConfiguration config) {
         this.config = config;
         this.threads = new ArrayList<SimulationThreadHandler>();
         this.reporter = CommandLineReporter.makeRoot();
         this.done = false;
+		this.prefix = null;
     }
 
 	public SimulationProcessor(SimulationConfiguration config, String prefix) {
 		this.config = config;
 		this.threads = new ArrayList<SimulationThreadHandler>();
-		this.reporter = CommandLineReporter.makeRoot();
+		this.reporter = CommandLineReporter.make(prefix);
 		this.done = false;
+		this.prefix = prefix;
 	}
 
     public SimulationReport runSimulation() {
@@ -52,7 +55,7 @@ public class SimulationProcessor {
     		}
     		try {
     			
-    			SimulationThreadHandler newThread = new SimulationThreadHandler(config, CommandLineReporter.make(String.valueOf(i + 1)));
+    			SimulationThreadHandler newThread = new SimulationThreadHandler(config, CommandLineReporter.make(getSimulationPrefix(String.valueOf(i + 1))));
     			threads.add(newThread);
     			newThread.start();
     			System.out.println("begin thread " + i);
@@ -64,10 +67,10 @@ public class SimulationProcessor {
     		wasAnyThreadInterrupted();
     		
     		if(this.checkAllThreadsDone()) {
-    			SimulationReport averageReport = this.calculateSimulationReportAverage();
-    			reporter.reportSimulationSummary(averageReport);
+    			this.report = this.calculateSimulationReportAverage();
+    			reporter.reportSimulationSummary(this.report);
     			this.done = true;
-				return averageReport;
+				return this.report;
     		}
     		
     		try {
@@ -78,6 +81,11 @@ public class SimulationProcessor {
     	}
         
     }
+
+	private String getSimulationPrefix(String suffix) {
+		if (this.prefix != null) return this.prefix + File.separator + suffix;
+		else return suffix;
+	}
     
     private boolean canInitiateNewThread() {
     	if(this.runningThreads() > 5) {
@@ -150,6 +158,10 @@ public class SimulationProcessor {
 		}
 
     	return simulationReports;
+	}
+
+	public List<File> getAllSimulationFiles() {
+		return this.reporter.getFileNameManager().getAllReportFiles();
 	}
 
 }

@@ -72,17 +72,13 @@ public class SimulationController {
 
 	 
     @GetMapping(value = "/download", produces = "application/zip")
-    public ResponseEntity<String> downloadFile() throws IOException {
-    	
-    	List<File> files = new ArrayList<>();
-    	files.add(new File("D:\\Dev\\PFC\\Teste\\test.txt"));
-    	
+    public ResponseEntity<String> downloadFile(@RequestParam(value = "key") String key) throws IOException {
     	HttpHeaders headers = new HttpHeaders();
-    	headers.set("Content-Disposition", "attachment; filename=" + "testee.zip");
+    	headers.set("Content-Disposition", "attachment; filename=" + "report_" + key + ".zip");
     	
     	return ResponseEntity.ok()
     			.headers(headers)
-    			.body(this.fileStorageService.zipB64(files));
+    			.body(this.simulationService.getZippedReport(key));
     }
 	 
 }
