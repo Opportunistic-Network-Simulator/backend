@@ -42,8 +42,7 @@ public class SimulationProcessor {
     			threads.add(newThread);
     			newThread.start();
     			System.out.println("begin thread " + i);
-	    		} catch(Exception e) {
-    		}
+			} catch(Exception e) { }
     	}
     	
     	while(true) {
@@ -52,7 +51,7 @@ public class SimulationProcessor {
     		
     		if(this.checkAllThreadsDone()) {
     			SimulationReport averageReport = this.calculateSimulationReportAverage();
-    			reporter.reportSingleSimulation(averageReport);
+    			reporter.reportSimulationSummary(averageReport);
     			return averageReport;
     		}
     		
@@ -109,7 +108,15 @@ public class SimulationProcessor {
 		double finalAverageDelay = delayList.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
 		double finalDeliveryRatio = deliveryRatioList.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
 
-		return new SimulationReport(finalAverageDelay, finalDeliveryRatio, 0);
+		double variance = 0;
+		for (Double delay : delayList) {
+			variance += Math.pow(delay - finalAverageDelay, 2);
+		}
+		variance /= delayList.size();
+
+		double std = Math.sqrt(variance);
+
+		return new SimulationReport(finalAverageDelay, finalDeliveryRatio, variance, std);
 	}
 
 	private List<SimulationReport> getAllSimulationReports() {

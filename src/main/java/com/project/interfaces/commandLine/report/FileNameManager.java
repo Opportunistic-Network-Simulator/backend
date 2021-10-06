@@ -14,6 +14,10 @@ public class FileNameManager {
         return getOutputFile("meetingTrace.csv");
     }
 
+    public File getMessageDeliveryReportFile() throws IOException {
+        return getOutputFile("messageDelivery.csv");
+    }
+
     public File getMessageReportFile() throws IOException {
         return getOutputFile("messageReport.csv");
     }

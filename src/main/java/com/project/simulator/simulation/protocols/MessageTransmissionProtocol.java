@@ -32,6 +32,7 @@ public abstract class MessageTransmissionProtocol {
 	
 	private void transferMessages(List<Message> messages, Node fromNode, Node toNode, double instant) {
 		for(Message message : messages) {
+			message.getReporter().reportMessageTransmitted(message.getId(), instant, fromNode.getId(), toNode.getId());
 			toNode.receiveMessage(message, instant);
 			postTransfer(message, fromNode, toNode);
 		}

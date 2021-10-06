@@ -7,10 +7,8 @@ import org.json.simple.parser.ParseException;
 import com.project.interfaces.commandLine.parser.ArgumentsHandler;
 import com.project.interfaces.commandLine.parser.FileNamesParser;
 import com.project.interfaces.commandLine.parser.FileParser;
-import com.project.interfaces.commandLine.report.CommandLineReporter;
 import com.project.simulator.SimulationProcessor;
 import com.project.simulator.configuration.SimulationConfiguration;
-import com.project.simulator.entity.SimulationReport;
 
 public class CommandLineApplication {
 	
@@ -31,6 +29,5 @@ public class CommandLineApplication {
 		
 		
 	}	
-	
 
 }
