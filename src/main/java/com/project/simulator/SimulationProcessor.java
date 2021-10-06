@@ -75,7 +75,7 @@ public class SimulationProcessor {
     }
     
     private boolean canInitiateNewThread() {
-    	if(this.runningThreads() > 20) {
+    	if(this.runningThreads() > 5) {
     		return false;
     	}
     	return true;
