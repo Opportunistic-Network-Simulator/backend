@@ -6,20 +6,34 @@ import com.project.simulator.configuration.SimulationConfiguration;
 import com.project.simulator.entity.SimulationReport;
 import com.project.simulator.threadHandler.SimulationThreadHandler;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class SimulationProcessor {
 	
     private SimulationConfiguration config;
     private List<SimulationThreadHandler> threads;
+    private SimulationReport report;
+    private List<String> logs;
+    boolean done;
     CommandLineReporter reporter;
     
     public SimulationProcessor(SimulationConfiguration config) {
         this.config = config;
         this.threads = new ArrayList<SimulationThreadHandler>();
         this.reporter = CommandLineReporter.makeRoot();
+        this.done = false;
     }
+
+	public SimulationProcessor(SimulationConfiguration config, String prefix) {
+		this.config = config;
+		this.threads = new ArrayList<SimulationThreadHandler>();
+		this.reporter = CommandLineReporter.makeRoot();
+		this.done = false;
+	}
 
     public SimulationReport runSimulation() {
     	
@@ -52,7 +66,8 @@ public class SimulationProcessor {
     		if(this.checkAllThreadsDone()) {
     			SimulationReport averageReport = this.calculateSimulationReportAverage();
     			reporter.reportSimulationSummary(averageReport);
-    			return averageReport;
+    			this.done = true;
+				return averageReport;
     		}
     		
     		try {
@@ -65,7 +80,7 @@ public class SimulationProcessor {
     }
     
     private boolean canInitiateNewThread() {
-    	if(this.runningThreads() > 20) {
+    	if(this.runningThreads() > 5) {
     		return false;
     	}
     	return true;
@@ -86,10 +101,18 @@ public class SimulationProcessor {
     	return true;
 	}
 
-	private int runningThreads() {
+	public int runningThreads() {
 		int count = 0;
     	for(SimulationThreadHandler thread : threads) {
 			if (thread.isRunning()) count++;
+		}
+		return count;
+	}
+	
+	public int finishedThreads() {
+		int count = 0;
+    	for(SimulationThreadHandler thread : threads) {
+			if (thread.isDone()) count++;
 		}
 		return count;
 	}

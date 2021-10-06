@@ -40,9 +40,10 @@ public class Simulation {
 	}
 	
 	public void start() {
+		System.out.println("start");
 		this.simulationHappening = true;
 		while(this.simulationHappening) {
-			this.showProgress();
+//			this.showProgress();
 			this.handle(eventQueue.nextEvent(), this.stopOnEndOfArrivals);
 		}
 
@@ -101,11 +102,15 @@ public class Simulation {
 		return new SimulationReport(averageDelay, deliveryRatio,  variance, std);
 	}
 	
-	private void showProgress() {
-		if(this.eventQueue.getProgress() > this.lastProgress + 0.1) {
-			this.lastProgress = this.eventQueue.getProgress();
+//	private void showProgress() {
+//		if(this.eventQueue.getProgress() > this.lastProgress + 0.1) {
+//			this.lastProgress = this.eventQueue.getProgress();
 //			System.out.println("progress: " + this.lastProgress);
-		}
+//		}
+//	}
+
+	public double getProgress() {
+		return this.eventQueue.getProgress();
 	}
 
 }

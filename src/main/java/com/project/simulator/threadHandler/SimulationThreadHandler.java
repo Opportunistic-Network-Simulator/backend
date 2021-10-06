@@ -16,6 +16,7 @@ import com.project.simulator.simulation.Simulation;
 import com.project.simulator.simulation.protocols.MessageTransmissionProtocol;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class SimulationThreadHandler extends Thread {
@@ -23,19 +24,24 @@ public class SimulationThreadHandler extends Thread {
 	private SimulationConfiguration config;
 	private boolean error;
 	private String errorMessage;
+
+	@Setter
 	private boolean running;
+	
+	private boolean done;
 	private Simulation simulation;
 	private CommandLineReporter reporter;
 	
 	public SimulationThreadHandler(SimulationConfiguration config, CommandLineReporter reporter) {
 		this.config = config;
 		this.error = false;
+		this.running = true;
 		this.reporter = reporter;
+		this.done = false;
 	}
 	
 	public void run() {
 		try {
-			this.running = true;
 			List<MessageGenerationEvent> messageGenerationQueue = MessageGenerator.generate(config.getMessageGenerationConfiguration());
 	        MeetingTrace meetingTrace = MeetingTraceGenerator.generate(config.getMeetingTraceConfiguration());
 	        reporter.reportMeetingTrace(meetingTrace);
@@ -46,6 +52,9 @@ public class SimulationThreadHandler extends Thread {
 
 			this.reporter.reportSimulationSummary(this.simulation.reportSimulationResult());
 
+	        this.done = true;
+	        System.out.println("finished simulation");
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 			this.error = true;
@@ -57,6 +66,14 @@ public class SimulationThreadHandler extends Thread {
 
 	public SimulationReport getReport() {
 		return this.simulation.reportSimulationResult();
+	}
+
+	public double getProgress() {
+		if(this.simulation == null) //caso em que simulation não começou ainda para essa thread
+			return 0;
+		if(this.done)
+			return 1;
+		return this.simulation.getProgress();
 	}
 
 }
