@@ -48,7 +48,7 @@ public class SimulationController {
 	@PostMapping("/runSimulation")
 	public ResponseEntity<?> runSimulation(@RequestBody SimulationConfigurationDTO simulationConfigurationDTO) {
 		try {
-		 	String key = new Timestamp(System.currentTimeMillis()).toString();
+		 	String key = String.valueOf(System.currentTimeMillis());
 		 	simulationService.runSimulation(simulationConfigurationDTO, key);
 	        return ResponseEntity.ok(key);
 		}

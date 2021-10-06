@@ -55,7 +55,7 @@ public class SimulationService {
 		
 		SimulationConfiguration config = new WebParser().parser(simulationConfigurationDTO);
 		SimulationProcessor processor = new SimulationProcessor(config, key);
-		
+		System.out.println("key: " + key);
 		Lock writeLock = rwLock.writeLock();
         
 		writeLock.lock();
