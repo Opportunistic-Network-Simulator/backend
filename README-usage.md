@@ -75,7 +75,7 @@ Temporal description of events involving simulation messages.
 
 ## Usage
 
-Download the IONS-Simulator.zip [here](https://github.com/PFC-IME-Opportunistic-Network-Simulator/backend/releases/download/1.0/IONS-Simulator.zip) and unzip the file.
+Download the IONS-Simulator.zip [here](https://github.com/PFC-IME-Opportunistic-Network-Simulator/backend/releases/download/2.0/IONS-Simulator.zip) and unzip the file.
 
 There are two folders, CLI and WebInterface.
 
