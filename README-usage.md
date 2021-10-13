@@ -59,16 +59,30 @@ Name of json file that contains the meet rate of each pair. This file must be lo
 A double number to determine the total simulation time
 
 ## Simulation Report
-The main simulation result consists by a .txt file containing the average of delivery ratio and delay of the messages of all rounds
+The main simulation result consists by a .txt file containing the average of delivery ratio and delay of the messages of all rounds. Besisdes, the simulation generate other metrics to user analysis. For each round:
 
+### Summary
+Average of delivery ratio and delay of the messages.
+
+### MeetingTrace
+The meeting trace generated and used in the respective round.
+
+### MessageDelivery
+It shows, for each message, its events for generation, trasmission and delivery.
+
+### MessageReport
+Temporal description of events involving simulation messages.
 
 ## Usage
 
-### Executable Jar
+Download the IONS-Simulator.zip [here](https://github.com/PFC-IME-Opportunistic-Network-Simulator/backend/releases/download/2.0/IONS-Simulator.zip) and unzip the file.
 
-Download the IONS-Simulator.zip [here](https://github.com/PFC-IME-Opportunistic-Network-Simulator/backend/releases/download/1.0/IONS-Simulator.zip):
+There are two folders, CLI and WebInterface.
 
-Unzip the file, open a terminal in CLI (Command Line Interface) folder and run:
+
+### Command Line Application
+
+Open a terminal in CLI (Command Line Interface) folder and run:
 
 ```
 java -jar CLI_IONS_Simulator.jar -i <config file>
@@ -84,3 +98,16 @@ java -jar CLI_IONS_Simulator.jar -i configExample.toml
 ```
 
 So, it will be generated a outupt folder with simulation report files.
+
+
+### Web Application
+
+First, to start the server, open a terminal in WebInterface folder and run:
+
+```
+java -jar Web_IONS_Simulator.jar
+```
+So, to use the simulator, go to folder UserInterface and open index.html in any browser.
+
+
+
