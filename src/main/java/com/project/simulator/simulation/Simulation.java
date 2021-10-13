@@ -105,7 +105,7 @@ public class Simulation {
 //	private void showProgress() {
 //		if(this.eventQueue.getProgress() > this.lastProgress + 0.1) {
 //			this.lastProgress = this.eventQueue.getProgress();
-//			System.out.println("progress: " + this.lastProgress);
+//			System.out.println("progress: " + (this.lastProgress*100) + "%");
 //		}
 //	}
 

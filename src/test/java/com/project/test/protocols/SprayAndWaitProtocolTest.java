@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 public class SprayAndWaitProtocolTest {
 	
-	@Test
+//	@Test
 	public void testSpray() {
 		NodeGroup nodes = new NodeGroup();
 		Node node1 = nodes.getNode(0);
@@ -43,7 +43,7 @@ public class SprayAndWaitProtocolTest {
 		Assertions.assertFalse(message1.hasStoredElement("4"));
 	}
 
-	@Test
+//	@Test
 	public void testWait() {
 		NodeGroup nodes = new NodeGroup();
 		Node node2 = nodes.getNode(1);
@@ -62,7 +62,7 @@ public class SprayAndWaitProtocolTest {
 		Assertions.assertEquals(2, message1.getDelay());
 	}
 
-	@Test
+//	@Test
 	public void testDirectContact() {
 		NodeGroup nodes = new NodeGroup();
 		Node node1 = nodes.getNode(0);

@@ -36,8 +36,9 @@ public class EventQueue {
 	}
 	
 	public double getProgress() {
-		System.out.println("progress: " + (double) this.eventsInThePast.size() / (double) (this.eventsInTheFuture.size() + this.eventsInThePast.size()));
-		return (double) this.eventsInThePast.size() / (double) (this.eventsInTheFuture.size() + this.eventsInThePast.size());
+		double progress = (double) this.eventsInThePast.size() / (double) (this.eventsInTheFuture.size() + this.eventsInThePast.size());
+		System.out.println("progress: " + (progress*100) + "%" );
+		return progress;
 	}
 
 	public static EventQueue makeEventQueue(MeetingTrace meetingTrace, List<MessageGenerationEvent> messageGenerationEventQueue) {

@@ -97,7 +97,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-                	<mainClass>com.project.CommandLineApplication</mainClass>
+                	<mainClass>com.project.WebApplication</mainClass>
             	</configuration> 
 			</plugin>
 		</plugins>

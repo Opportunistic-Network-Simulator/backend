@@ -15,7 +15,6 @@ import lombok.Setter;
 public class FileNamesParser {
 	
 	private Optional<File> inputFile;
-	private String outputFileName;
 	
 	public FileNamesParser(Optional<File> optionalInputFile) {
 		this.inputFile = optionalInputFile;
@@ -37,13 +36,6 @@ public class FileNamesParser {
 	
 	public String toAbsoluteInputPairDefinitionFile(String pairDefinitionFile) {
 		return absolutInputPath() + "pairDefinitionFile" + File.separator + pairDefinitionFile;
-	}
-	
-	public File outputReportFile() throws IOException {
-		File outputFile = new File(localPath() + "output" + File.separator + this.outputFileName + ".txt");
-		outputFile.getParentFile().mkdirs();
-		outputFile.createNewFile();
-		return outputFile;
 	}
 
 	public File outputReportFileAllSimulations() throws IOException {

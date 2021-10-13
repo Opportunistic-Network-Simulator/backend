@@ -9,6 +9,8 @@ import com.project.simulator.threadHandler.SimulationThreadHandler;
 import lombok.Getter;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,6 +97,7 @@ public class SimulationProcessor {
     }
     
     private void wasAnyThreadInterrupted() {
+    	this.getProgress();
     	for (SimulationThreadHandler thread : this.threads) {
     		if(thread.isError())
     			throw new SimulatorException(thread.getErrorMessage());
@@ -163,5 +166,17 @@ public class SimulationProcessor {
 	public List<File> getAllSimulationFiles() {
 		return this.reporter.getFileNameManager().getAllReportFiles();
 	}
-
+	
+	public double getProgress() {
+		double progress = 0;
+		for(SimulationThreadHandler thread : this.getThreads()) {
+			progress+=thread.getProgress();
+		}
+		progress *= 100/this.getConfig().getNumberOfRounds();
+		progress = BigDecimal.valueOf(progress)
+			    .setScale(2, RoundingMode.HALF_UP)
+			    .doubleValue();
+		System.out.println("progress: " + progress + "%");
+		return progress;
+		}
 }

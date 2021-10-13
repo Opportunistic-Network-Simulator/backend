@@ -24,10 +24,6 @@ public class ArgumentsHandler {
         input.setRequired(true);
         options.addOption(input);
         
-        Option output = new Option("o", "output", true, "output file name (just name, without extension or spaces or parent path)");
-        output.setRequired(true);
-        options.addOption(output);
-        
         Option help = new Option("h", "help", false, "Displays the help");
         help.setRequired(false);
         options.addOption(help);
@@ -50,7 +46,6 @@ public class ArgumentsHandler {
         }
         FileNamesParser fileNamesParser = new FileNamesParser();  
         fileNamesParser.setInputFile(verifyFileInput(fileNamesParser, cmd.getOptionValue(input.getOpt())));
-        fileNamesParser.setOutputFileName(cmd.getOptionValue(output.getOpt()));
         return fileNamesParser;
 
 	}

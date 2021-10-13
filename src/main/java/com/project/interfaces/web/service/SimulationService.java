@@ -72,14 +72,7 @@ public class SimulationService {
 
 	public double getSimulationProgress(String key) {
 		SimulationProcessor processor = this.simulationMap.get(key);
-		double progress = 0;
-		for(SimulationThreadHandler thread : processor.getThreads()) {
-			progress+=thread.getProgress();
-		}
-		progress *= 100/processor.getConfig().getNumberOfRounds();
-		return BigDecimal.valueOf(progress)
-			    .setScale(2, RoundingMode.HALF_UP)
-			    .doubleValue();
+		return processor.getProgress();
 		}
 	
 	public SimulationReport getSimulationReport(String key) {
