@@ -32,13 +32,13 @@ public class MeetingTraceGenerator {
 			case FILE:
 				throw new IllegalStateException("Message generation type not implemented: file");
 			case EXPONENTIAL:
-				return generateMeetingTraceExponencial(config);
+				return generateMeetingTraceExponential(config);
 			default:
 				throw new IllegalStateException("Message generation type not implemented: " + config.getType());
 		}
 	}
 
-	public static MeetingTrace generateMeetingTraceExponencial(MeetingTraceConfiguration config) {
+	public static MeetingTrace generateMeetingTraceExponential(MeetingTraceConfiguration config) {
 		MeetingTrace meetingTrace = new MeetingTrace();
 		for(Pair pair : config.getPairs()) {
 			if(pair.pairMeets()) MeetingTraceGenerator.generatePairMeetings(meetingTrace, pair, config.getTotalSimulationTime());
