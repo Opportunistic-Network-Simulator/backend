@@ -15,7 +15,7 @@ public abstract class MessageTransmissionProtocol {
 		List<Message> oneToTwo = transferredMessages(node1, node2);
 		List<Message> twoToOne = transferredMessages(node2, node1);
 		
-
+		preTransfer(node1, node2, meet.instant);
 		transferMessages(oneToTwo, node1, node2, meet.instant);
 		transferMessages(twoToOne, node2, node1, meet.instant);
 	}
@@ -36,6 +36,8 @@ public abstract class MessageTransmissionProtocol {
 			postTransfer(message, fromNode, toNode);
 		}
 	}
+
+	protected void preTransfer(Node node1, Node node2, double instant) {}
 
 	protected abstract boolean shouldTransfer(Node fromNode, Node toNode, Message message);
 	
