@@ -66,6 +66,39 @@ public class PRoPHETProtocol extends MessageTransmissionProtocol {
 		node.storeValue("lastMeetTime", String.valueOf(instant));
 	}
 
+	//TODO: insert updateProbabilities into the protocol workflow
+	private void updateProbabilities(Node node1, Node node2) {
+		long id1 = node1.getId();
+		long id2 = node2.getId();
+
+		updateProbability(node1, String.valueOf(id2));
+		updateProbability(node2, String.valueOf(id1));
+
+		transitivity(node1, node2);
+		transitivity(node2, node1);
+	}
+
+	private void updateProbability(Node node, String idOtherNode) {
+		double oldProb = Double.parseDouble(node.getStoredValue(idOtherNode));
+		double newProb = oldProb + (1 - oldProb) * pInit;
+		node.storeValue(idOtherNode, String.valueOf(newProb));
+	}
+
+	private void transitivity(Node fromNode, Node toNode) {
+		String toNodeId = String.valueOf(toNode.getId());
+		double toNodeProb = Double.parseDouble(fromNode.getStoredValue(toNodeId));
+
+		for(String nodeIdStr : fromNode.getStoredProperties().keySet()) {
+			if(!nodeIdStr.equals("lastMeetTime") && !nodeIdStr.equals(toNodeId)) {
+				double oldProb = Double.parseDouble(fromNode.getStoredValue(nodeIdStr));
+				double transProb = Double.parseDouble(toNode.getStoredValue(nodeIdStr));
+				double newProb = oldProb + (1 - oldProb) * toNodeProb * transProb * beta;
+				fromNode.storeValue(nodeIdStr, String.valueOf(newProb));
+			}
+		}
+	}
+
+	//TODO: implement shouldTransfer
 	@Override
 	protected boolean shouldTransfer(Node fromNode, Node toNode, Message message) {
 		return false;
