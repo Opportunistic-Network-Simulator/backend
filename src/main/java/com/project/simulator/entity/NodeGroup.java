@@ -25,7 +25,11 @@ public class NodeGroup {
 		}
 		return this.nodes.get(nodeId);
 	}
-	
+
+	public Map<Long, Node> getNodes() {
+		return nodes;
+	}
+
 	public long getSize() {
 		return nodes.size();
 	}

@@ -71,7 +71,11 @@ public class Node {
 	public void storeValue(String key, String value) {
 		this.storedProperties.put(key, value);
 	}
-	
+
+	public Map<String, String> getStoredProperties() {
+		return storedProperties;
+	}
+
 	public boolean hasStoredElement(String key) {
 		return this.storedProperties.containsKey(key);
 	}
