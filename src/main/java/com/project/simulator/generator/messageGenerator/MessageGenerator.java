@@ -23,7 +23,7 @@ public class MessageGenerator {
     }
 
     private static List<MessageGenerationEvent> generateAllPairs(MessageGenerationConfiguration config) {
-        List<MessageGenerationEvent> messageGenerationQueue = new ArrayList<MessageGenerationEvent>();
+        List<MessageGenerationEvent> messageGenerationQueue = new ArrayList<>();
 
         for(int i = 0; i < config.getAmountNodes(); i++) {
             for(int j = 0; j < config.getAmountNodes(); j++) {
@@ -37,7 +37,7 @@ public class MessageGenerator {
     }
 
     private static List<MessageGenerationEvent> generateFixedNodes(MessageGenerationConfiguration config) {
-        List<MessageGenerationEvent> messageGenerationQueue = new ArrayList<MessageGenerationEvent>();
+        List<MessageGenerationEvent> messageGenerationQueue = new ArrayList<>();
 
         MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(config.getGenerationInstant(), config.getSourceNodeId(), config.getDestinationNodeId());
         messageGenerationQueue.add(messageGenerationEvent);
@@ -46,7 +46,7 @@ public class MessageGenerator {
     }
 
     private static List<MessageGenerationEvent> generateRandomNodes(MessageGenerationConfiguration config) {
-        List<MessageGenerationEvent> messageGenerationQueue = new ArrayList<MessageGenerationEvent>();
+        List<MessageGenerationEvent> messageGenerationQueue = new ArrayList<>();
 
         long sourceNodeId = (long) (Math.random() * config.getAmountNodes());
         long destinationNodeId = (long) (Math.random() * config.getAmountNodes());

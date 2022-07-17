@@ -1,8 +1,8 @@
 package com.project.simulator.entity.event;
 
 public class MeetEvent extends Event {
-	private long node1Id;
-	private long node2Id;
+	private final long node1Id;
+	private final long node2Id;
 	
 	public MeetEvent(double instant, long node1Id, long node2Id) {
 		super(instant);

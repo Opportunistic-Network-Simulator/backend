@@ -4,7 +4,7 @@ import com.project.simulator.entity.Message;
 import com.project.simulator.entity.Node;
 
 public class BinarySprayAndWaitProtocol extends MessageTransmissionProtocol {
-	private int lValue;
+	private final int lValue;
 
 	public BinarySprayAndWaitProtocol(int lValue) {
 		this.lValue = lValue;
@@ -17,7 +17,7 @@ public class BinarySprayAndWaitProtocol extends MessageTransmissionProtocol {
 		if(alreadyDelivered(toNode, message))
 			return false;
 
-		int messageLValueInNodeFrom = Integer.valueOf(message.getStoredValue(String.valueOf(fromNode.getId())));
+		int messageLValueInNodeFrom = Integer.parseInt(message.getStoredValue(String.valueOf(fromNode.getId())));
 
 		if(messageLValueInNodeFrom == 1) {
 			return wait(fromNode, toNode, message, messageLValueInNodeFrom);
@@ -31,10 +31,7 @@ public class BinarySprayAndWaitProtocol extends MessageTransmissionProtocol {
 	}
 
 	private boolean wait(Node fromNode, Node toNode, Message message, int messageLValueInNodeFrom) {
-		if (message.getDestinationNode() == toNode.getId() || message.getSourceNode() == fromNode.getId()) {
-			return true;
-		}
-		return false;
+		return message.getDestinationNode() == toNode.getId() || message.getSourceNode() == fromNode.getId();
 	}
 
 	private boolean alreadyDelivered(Node toNode, Message message) {
@@ -55,12 +52,12 @@ public class BinarySprayAndWaitProtocol extends MessageTransmissionProtocol {
 	}
 
 	private void handleToNode(Message message, Node fromNode, Node toNode) {
-		int fromNodeLValue = Integer.valueOf(message.getStoredValue(String.valueOf(fromNode.getId())));
+		int fromNodeLValue = Integer.parseInt(message.getStoredValue(String.valueOf(fromNode.getId())));
 		message.storeValue(String.valueOf(toNode.getId()), String.valueOf((int) Math.floor(fromNodeLValue / 2)));
 	}
 
 	private void handleFromNode(Message message, Node fromNode, Node toNode) {
-		int messageLValueInNodeFrom = Integer.valueOf(message.getStoredValue(String.valueOf(fromNode.getId())));
+		int messageLValueInNodeFrom = Integer.parseInt(message.getStoredValue(String.valueOf(fromNode.getId())));
 		messageLValueInNodeFrom = messageLValueInNodeFrom - (int) Math.floor(messageLValueInNodeFrom / 2);
 		message.storeValue(String.valueOf(fromNode.getId()), String.valueOf(messageLValueInNodeFrom));
 		if(messageLValueInNodeFrom == 0) {

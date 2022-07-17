@@ -1,9 +1,5 @@
 package com.project;
 
-import java.io.IOException;
-
-import org.json.simple.parser.ParseException;
-
 import com.project.interfaces.commandLine.parser.ArgumentsHandler;
 import com.project.interfaces.commandLine.parser.FileNamesParser;
 import com.project.interfaces.commandLine.parser.FileParser;
@@ -12,7 +8,7 @@ import com.project.simulator.configuration.SimulationConfiguration;
 
 public class CommandLineApplication {
 	
-	public static void main(String args[]) throws IOException, ParseException {
+	public static void main(String[] args) {
 		
 		try {
 			FileNamesParser fileNamesParser = ArgumentsHandler.handleArgs(args);

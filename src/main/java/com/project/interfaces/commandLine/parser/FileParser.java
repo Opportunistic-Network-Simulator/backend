@@ -9,8 +9,6 @@ import com.project.interfaces.commandLine.dto.CLIPairsDTO;
 import com.project.simulator.configuration.*;
 import com.project.simulator.entity.Pair;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +19,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class FileParser {
-    public static SimulationConfiguration parseConfig(FileNamesParser fileNamesParser) throws FileNotFoundException, IOException {
+    public static SimulationConfiguration parseConfig(FileNamesParser fileNamesParser) throws IOException {
         Toml parser = new Toml().read(fileNamesParser.getInputFile().get());
 
         SimulationConfiguration config = new SimulationConfiguration();
@@ -77,7 +75,7 @@ public class FileParser {
     }
 
     private static MeetingTraceConfiguration parseMeetingTraceConfig(Toml parser, FileNamesParser fileNamesParser) 
-    		throws FileNotFoundException, IOException {
+    		throws IOException {
     	
     	String pairDefinitionFile = parser.getString("pairDefinitionFile");
 
@@ -89,7 +87,7 @@ public class FileParser {
 		);
     }
     
-    private static List<Pair> parsePairDefinitionFile(FileNamesParser fileNamesParser, String pairDefinitionFile) throws FileNotFoundException, IOException {
+    private static List<Pair> parsePairDefinitionFile(FileNamesParser fileNamesParser, String pairDefinitionFile) throws IOException {
     	JSONParser parser = new JSONParser();
         JSONObject jsonObject;
 		try {
@@ -103,14 +101,13 @@ public class FileParser {
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES); //to ignore missing json fields
         CLIPairsDTO pairsDto = mapper.readValue(jsonObject.toJSONString(), CLIPairsDTO.class);
         List<CLIPairDTO> pairDtoList = pairsDto.getPairsList();
-        List<Pair> pairList = convertDtoToPair(pairDtoList);
         
-		return pairList;
+		return convertDtoToPair(pairDtoList);
     	
     }
     
     private static List<Pair> convertDtoToPair(List<CLIPairDTO> pairs) {
-		List<Pair> pairsList = new ArrayList<Pair>();
+		List<Pair> pairsList = new ArrayList<>();
 		for(CLIPairDTO pair : pairs) {
 			pairsList.add(new Pair(pair.getNode1(), pair.getNode2(), pair.getRate(), pair.getVariabilityDegree()));
 		}

@@ -59,7 +59,7 @@ public class WebParser {
 	}
 	
 	private List<Pair> parsePairs(List<PairDTO> pairs) {
-		List<Pair> pairsList = new ArrayList<Pair>();
+		List<Pair> pairsList = new ArrayList<>();
 		for(PairDTO pair : pairs) {
 			pairsList.add(new Pair(pair.getNode1(), pair.getNode2(), pair.getRate(), pair.getVariabilityDegree()));
 		}

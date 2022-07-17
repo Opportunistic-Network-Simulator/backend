@@ -17,8 +17,8 @@ import java.util.List;
 @Getter
 public class SimulationProcessor {
 	
-    private SimulationConfiguration config;
-    private List<SimulationThreadHandler> threads;
+    private final SimulationConfiguration config;
+    private final List<SimulationThreadHandler> threads;
     private SimulationReport report;
     boolean done;
     CommandLineReporter reporter;
@@ -26,7 +26,7 @@ public class SimulationProcessor {
     
     public SimulationProcessor(SimulationConfiguration config) {
         this.config = config;
-        this.threads = new ArrayList<SimulationThreadHandler>();
+        this.threads = new ArrayList<>();
         this.reporter = CommandLineReporter.makeRoot();
         this.done = false;
 		this.prefix = null;
@@ -34,7 +34,7 @@ public class SimulationProcessor {
 
 	public SimulationProcessor(SimulationConfiguration config, String prefix) {
 		this.config = config;
-		this.threads = new ArrayList<SimulationThreadHandler>();
+		this.threads = new ArrayList<>();
 		this.reporter = CommandLineReporter.make(prefix);
 		this.done = false;
 		this.prefix = prefix;
@@ -90,11 +90,8 @@ public class SimulationProcessor {
 	}
     
     private boolean canInitiateNewThread() {
-    	if(this.runningThreads() > 5) {
-    		return false;
-    	}
-    	return true;
-    }
+		return this.runningThreads() <= 5;
+	}
     
     private void wasAnyThreadInterrupted() {
     	this.getProgress();
@@ -129,8 +126,8 @@ public class SimulationProcessor {
 	}
 
 	private SimulationReport calculateSimulationReportAverage() {
-		List<Double> delayList = new ArrayList<Double>();
-		List<Double> deliveryRatioList = new ArrayList<Double>();
+		List<Double> delayList = new ArrayList<>();
+		List<Double> deliveryRatioList = new ArrayList<>();
 
 		List<SimulationReport> reports = this.getAllSimulationReports();
 
@@ -154,7 +151,7 @@ public class SimulationProcessor {
 	}
 
 	private List<SimulationReport> getAllSimulationReports() {
-    	List<SimulationReport> simulationReports = new ArrayList<SimulationReport>();
+    	List<SimulationReport> simulationReports = new ArrayList<>();
 
     	for (SimulationThreadHandler thread : threads) {
     		simulationReports.add(thread.getReport());

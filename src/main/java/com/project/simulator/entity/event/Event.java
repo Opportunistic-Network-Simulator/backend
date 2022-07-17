@@ -11,8 +11,6 @@ public abstract class Event implements Comparable<Event> {
 	
 	@Override
 	public int compareTo(Event otherEvent) {
-		if(this.instant > otherEvent.instant) return 1; //increasing way
-		if(this.instant < otherEvent.instant) return -1;
-		return 0;
+		return Double.compare(this.instant, otherEvent.instant); //increasing way
 	}
 }

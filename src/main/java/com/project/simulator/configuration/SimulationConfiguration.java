@@ -14,7 +14,7 @@ public class SimulationConfiguration {
     double totalSimulationTime;
     int numberOfRounds = 1;
 
-    public SimulationConfiguration() {};
+    public SimulationConfiguration() {}
 
     public SimulationConfiguration(Integer numberOfRounds,
     							   ProtocolConfiguration protocolConfiguration,

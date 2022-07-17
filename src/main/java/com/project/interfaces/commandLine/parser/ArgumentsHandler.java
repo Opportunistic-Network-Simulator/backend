@@ -1,7 +1,6 @@
 package com.project.interfaces.commandLine.parser;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Optional;
 
 import org.apache.commons.cli.CommandLine;
@@ -16,7 +15,7 @@ import com.project.exception.SimulatorException;
 
 public class ArgumentsHandler {
 	
-	public static FileNamesParser handleArgs(String args[]) throws IOException {
+	public static FileNamesParser handleArgs(String[] args) {
 		
 		Options options = new Options();
 
@@ -36,7 +35,7 @@ public class ArgumentsHandler {
             cmd = parser.parse(options, args);
             if(cmd.hasOption(help.getOpt())) {
             	formatter.printHelp("simulator", options);
-            	return new FileNamesParser(Optional.of(null));
+            	return new FileNamesParser(Optional.empty());
             }
         } catch (ParseException e) {
             System.out.println(e.getMessage());
@@ -50,7 +49,7 @@ public class ArgumentsHandler {
 
 	}
 	
-	private static Optional<File> verifyFileInput(FileNamesParser fileNamesParser, String inputFileName) throws IOException {
+	private static Optional<File> verifyFileInput(FileNamesParser fileNamesParser, String inputFileName) throws SimulatorException {
 		String absoluteInputFileName = fileNamesParser.toAbsoluteInputConfigFile(inputFileName);
 		File inputFile = new File(absoluteInputFileName);
 		

@@ -5,18 +5,18 @@ import com.project.interfaces.commandLine.report.CommandLineReporter;
 import java.util.*;
 
 public class MessageGroup implements Iterable<Message> {
-	private Map<Long, Message> messages;
+	private final Map<Long, Message> messages;
 	private int messageIdCounter;
 	private CommandLineReporter reporter;
 	
 	public MessageGroup(CommandLineReporter reporter) {
-		this.messages = new TreeMap<Long, Message>();
+		this.messages = new TreeMap<>();
 		this.reporter = reporter;
 		reporter.writeMessageReportHeader();
 	}
 
 	public MessageGroup() {
-		this.messages = new TreeMap<Long, Message>();
+		this.messages = new TreeMap<>();
 	}
 	
 	public Message getMessage(long messageId) {
@@ -24,7 +24,7 @@ public class MessageGroup implements Iterable<Message> {
 	}
 	
 	public Message generateMessage(long sourceNodeId, long destinationNodeId, double instant) {
-		Message newMessage = new Message(messageIdCounter++, 0l, sourceNodeId, destinationNodeId, instant, this.reporter);
+		Message newMessage = new Message(messageIdCounter++, 0L, sourceNodeId, destinationNodeId, instant, this.reporter);
 		messages.put(newMessage.getId(), newMessage);
 		if (this.reporter != null) {
 			reporter.reportMessageCreated(newMessage);
@@ -37,7 +37,7 @@ public class MessageGroup implements Iterable<Message> {
 	}
 
 	public List<Message> getMessageList() {
-		return new ArrayList<Message>(this.messages.values());
+		return new ArrayList<>(this.messages.values());
 	}
 
 	@Override

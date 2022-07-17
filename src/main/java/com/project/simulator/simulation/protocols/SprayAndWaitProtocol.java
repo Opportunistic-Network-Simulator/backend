@@ -2,11 +2,9 @@ package com.project.simulator.simulation.protocols;
 
 import com.project.simulator.entity.Message;
 import com.project.simulator.entity.Node;
-import com.project.simulator.entity.NodeGroup;
-import com.project.simulator.entity.event.MeetEvent;
 
 public class SprayAndWaitProtocol extends MessageTransmissionProtocol {
-	private int lValue;
+	private final int lValue;
 	
 	public SprayAndWaitProtocol(int lValue) {
 		this.lValue = lValue;
@@ -19,7 +17,7 @@ public class SprayAndWaitProtocol extends MessageTransmissionProtocol {
 		if(alreadyDelivered(toNode, message))
 			return false;
 
-		int messageLValueInNodeFrom = Integer.valueOf(message.getStoredValue(String.valueOf(fromNode.getId())));
+		int messageLValueInNodeFrom = Integer.parseInt(message.getStoredValue(String.valueOf(fromNode.getId())));
 
 		if(messageLValueInNodeFrom == 1) {
 			return wait(fromNode, toNode, message, messageLValueInNodeFrom);
@@ -33,10 +31,7 @@ public class SprayAndWaitProtocol extends MessageTransmissionProtocol {
 	}
 
 	private boolean wait(Node fromNode, Node toNode, Message message, int messageLValueInNodeFrom) {
-		if (message.getDestinationNode() == toNode.getId() || message.getSourceNode() == fromNode.getId()) {
-			return true;
-		}
-		return false;
+		return message.getDestinationNode() == toNode.getId() || message.getSourceNode() == fromNode.getId();
 	}
 
 	private boolean alreadyDelivered(Node toNode, Message message) {
@@ -61,7 +56,7 @@ public class SprayAndWaitProtocol extends MessageTransmissionProtocol {
 	}
 
 	private void handleFromNode(Message message, Node fromNode) {
-		int messageLValueInNodeFrom = Integer.valueOf(message.getStoredValue(String.valueOf(fromNode.getId())));
+		int messageLValueInNodeFrom = Integer.parseInt(message.getStoredValue(String.valueOf(fromNode.getId())));
 		messageLValueInNodeFrom--;
 		message.storeValue(String.valueOf(fromNode.getId()), String.valueOf(messageLValueInNodeFrom));
 		if(messageLValueInNodeFrom == 0) {

@@ -1,7 +1,6 @@
 package com.project.simulator.entity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.project.simulator.entity.event.MeetEvent;
@@ -10,10 +9,10 @@ import lombok.Getter;
 
 @Getter
 public class MeetingTrace {
-	private List<Meet> meetingTrace;
+	private final List<Meet> meetingTrace;
 	
 	public MeetingTrace() {
-		this.meetingTrace = new ArrayList<Meet>();
+		this.meetingTrace = new ArrayList<>();
 	}
 	
 	public void addMeet(Meet meet) {
@@ -21,7 +20,7 @@ public class MeetingTrace {
 	}
 		
 	public List<MeetEvent> generateMeetEventQueue() {
-		List<MeetEvent> meetEventQueue = new ArrayList<MeetEvent>();
+		List<MeetEvent> meetEventQueue = new ArrayList<>();
 		for(Meet meet : meetingTrace) {
 			meetEventQueue.add(new MeetEvent(
 									meet.getInstant(), 

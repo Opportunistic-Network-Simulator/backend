@@ -8,12 +8,12 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class SimulationOutput {
 	
-	private ReadWriteLock rwLock;
-	private List<Double> deliveryDelaySimulationResults;
+	private final ReadWriteLock rwLock;
+	private final List<Double> deliveryDelaySimulationResults;
 	
 	public SimulationOutput() {
 		this.rwLock = new ReentrantReadWriteLock();
-		this.deliveryDelaySimulationResults = new ArrayList<Double>();
+		this.deliveryDelaySimulationResults = new ArrayList<>();
 	}
 	
 	public void addDeliveryDelaySimulationResult(Double result) {
@@ -40,7 +40,7 @@ public class SimulationOutput {
     }
 	
 	public List<Double> getAllDeliveryDelaySimulationResults(){
-		return new ArrayList<Double>(this.deliveryDelaySimulationResults); 
+		return new ArrayList<>(this.deliveryDelaySimulationResults);
 		//Por segurança, retorna uma cópia do deliveryDelaySimulationResults, e não a referência em memória. 
 	}													
 	

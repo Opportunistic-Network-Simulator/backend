@@ -5,7 +5,6 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -19,11 +18,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-
-import javax.xml.bind.JAXBException;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.project.interfaces.web.dto.StoragedFileDTO;
+import com.project.interfaces.web.dto.StoredFileDTO;
 import com.project.exception.FileStorageException;
 import com.project.exception.MyFileNotFoundException;
 //import com.project.model.entity.Progress;
@@ -47,7 +45,7 @@ public class FileStorageService {
 	private static final int BUFFER = 2048;
 		
     @Autowired
-    public FileStorageService(FileStorageProperties fileStorageProperties) throws JAXBException {
+    public FileStorageService(FileStorageProperties fileStorageProperties) {
     	
         this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
                 .toAbsolutePath().normalize();
@@ -75,7 +73,7 @@ public class FileStorageService {
 	        }
 	    }
 	    byte[] bytes = baos.toByteArray();
-	    return new String(Base64.getEncoder().encodeToString(bytes));
+	    return Base64.getEncoder().encodeToString(bytes);
     }
 
 	public String zipB64(List<File> files, File rootFolder) throws IOException {
@@ -96,14 +94,14 @@ public class FileStorageService {
 			}
 		}
 		byte[] bytes = baos.toByteArray();
-		return new String(Base64.getEncoder().encodeToString(bytes));
+		return Base64.getEncoder().encodeToString(bytes);
 	}
     
-    public StoragedFileDTO storeFile(MultipartFile[] files, String formattedDate, String key) throws JAXBException, FileNotFoundException { 
+    public StoredFileDTO storeFile(MultipartFile[] files, String formattedDate, String key) {
     	
         for(MultipartFile file : files) {
         	// Normalize file name
-	    	String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+	    	String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 	
 	        try {
 	            // Check if the file's name contains invalid characters
@@ -124,7 +122,7 @@ public class FileStorageService {
 	        
 	        //process the file
         }
-            return new StoragedFileDTO(null);
+            return new StoredFileDTO(null);
         
     }
 
@@ -144,10 +142,10 @@ public class FileStorageService {
     
 
 	public List<String> unzip(File file) {
-    	List<String> fileNames = new ArrayList<String>();
+    	List<String> fileNames = new ArrayList<>();
     	try {
 	
-			BufferedOutputStream dest = null;
+			BufferedOutputStream dest;
 			FileInputStream fis = new FileInputStream(file);
 			
 			ZipInputStream zis = new ZipInputStream(
@@ -161,9 +159,9 @@ public class FileStorageService {
 			while ((entry = zis.getNextEntry()) != null) {
 				if(!FilenameUtils.getExtension(entry.toString()).equals("")) {
 				int count;
-				byte data[] = new byte[BUFFER];
+				byte[] data = new byte[BUFFER];
 				// Cria os arquivos no disco
-				String path = file.getPath().toString();
+				String path = file.getPath();
 				path = path.replace(file.getName(),"");
 				String fileName = path + folder + File.separator + entry.getName();
 				String location = fileName.replace(FilenameUtils.getName(fileName), "");

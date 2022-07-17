@@ -15,34 +15,34 @@ public class Message {
 	private long size;
 	private long sourceNode;
 	private long destinationNode;
-	private double genarationInstant;
+	private double generationInstant;
 	private double arrivalInstant;
 	private boolean delivered;
 	private double delay;
-	private Map<String, String> storedProperties = new HashMap<String, String>();
+	private Map<String, String> storedProperties = new HashMap<>();
 	private CommandLineReporter reporter;
 	
-	public Message(long messageIdCounter, long size, long sourceNode, long destinationNode, double genarationInstant, CommandLineReporter reporter) {
+	public Message(long messageIdCounter, long size, long sourceNode, long destinationNode, double generationInstant, CommandLineReporter reporter) {
 		this.id = messageIdCounter;
 		this.size = size;
 		this.sourceNode = sourceNode;
 		this.destinationNode = destinationNode;
-		this.genarationInstant = genarationInstant;
+		this.generationInstant = generationInstant;
 		this.delivered = false;
 		this.reporter = reporter;
 	}
 
-	public Message(long messageIdCounter, long size, long sourceNode, long destinationNode, double genarationInstant) {
+	public Message(long messageIdCounter, long size, long sourceNode, long destinationNode, double generationInstant) {
 		this.id = messageIdCounter;
 		this.size = size;
 		this.sourceNode = sourceNode;
 		this.destinationNode = destinationNode;
-		this.genarationInstant = genarationInstant;
+		this.generationInstant = generationInstant;
 		this.delivered = false;
 	}
 	
 	public void notifyNewNode(long newNodeId, double instant) {
-		if(this.genarationInstant != 0) return;
+		if(this.generationInstant != 0) return;
 		if(this.destinationNode == newNodeId) {
 			this.arrivalInstant = instant;
 			if(this.reporter != null)

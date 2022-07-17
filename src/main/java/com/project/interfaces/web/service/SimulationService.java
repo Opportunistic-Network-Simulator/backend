@@ -2,9 +2,6 @@ package com.project.interfaces.web.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -19,34 +16,19 @@ import com.project.interfaces.web.dto.SimulationConfigurationDTO;
 import com.project.interfaces.web.parser.WebParser;
 import com.project.simulator.SimulationProcessor;
 import com.project.simulator.configuration.SimulationConfiguration;
-import com.project.simulator.entity.MeetingTrace;
-import com.project.simulator.entity.MeetingTraceGeneratorInput;
-import com.project.simulator.entity.MessageGroup;
-import com.project.simulator.entity.NodeGroup;
-import com.project.simulator.entity.Pair;
 import com.project.simulator.entity.SimulationReport;
-import com.project.simulator.entity.event.EventQueue;
-import com.project.simulator.entity.event.MessageGenerationEvent;
-import com.project.simulator.generator.MeetingTraceGenerator;
-import com.project.simulator.generator.NodesGenerator;
-import com.project.simulator.generator.messageGenerator.SingleMessagesGenerator;
-import com.project.simulator.simulation.Simulation;
-import com.project.simulator.simulation.protocols.SingleCopyEpidemicProtocol;
-import com.project.simulator.threadHandler.SimulationThreadHandler;
-
-	
 
 @Service
 public class SimulationService {
 	
-	private HashMap<String, SimulationProcessor> simulationMap;
-	private ReadWriteLock rwLock;
+	private final HashMap<String, SimulationProcessor> simulationMap;
+	private final ReadWriteLock rwLock;
 
 	@Autowired
 	private FileStorageService fileStorageService;
 
 	public SimulationService() {
-		this.simulationMap = new HashMap<String, SimulationProcessor>();
+		this.simulationMap = new HashMap<>();
 		this.rwLock = new ReentrantReadWriteLock();
 	}
 	

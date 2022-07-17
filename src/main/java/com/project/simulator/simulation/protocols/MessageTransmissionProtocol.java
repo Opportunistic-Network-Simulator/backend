@@ -21,7 +21,7 @@ public abstract class MessageTransmissionProtocol {
 	}
 
 	private List<Message> transferredMessages(Node fromNode, Node toNode) {
-		List<Message> transferredMessages = new ArrayList<Message>();
+		List<Message> transferredMessages = new ArrayList<>();
 
 		for (Message message : fromNode.getMessages()) {
 			if (shouldTransfer(fromNode, toNode, message)) transferredMessages.add(message);

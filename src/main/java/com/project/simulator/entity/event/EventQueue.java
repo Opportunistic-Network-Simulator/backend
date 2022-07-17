@@ -10,12 +10,12 @@ import lombok.Getter;
 
 @Getter
 public class EventQueue {
-	private List<Event> eventsInTheFuture;
-	private List<Event> eventsInThePast;
+	private final List<Event> eventsInTheFuture;
+	private final List<Event> eventsInThePast;
 	
 	public EventQueue(MeetingTrace meetingTrace, List<MessageGenerationEvent> messageGenerationEventQueue) {
-		this.eventsInTheFuture = new ArrayList<Event>();
-		this.eventsInThePast = new ArrayList<Event>();
+		this.eventsInTheFuture = new ArrayList<>();
+		this.eventsInThePast = new ArrayList<>();
 		this.eventsInTheFuture.addAll(meetingTrace.generateMeetEventQueue());
 		this.eventsInTheFuture.addAll(messageGenerationEventQueue);
 		this.sortEvents();

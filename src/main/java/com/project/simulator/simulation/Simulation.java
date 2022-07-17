@@ -1,9 +1,7 @@
 package com.project.simulator.simulation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.OptionalDouble;
 
 import com.project.interfaces.commandLine.report.CommandLineReporter;
 import com.project.simulator.entity.Message;
@@ -18,14 +16,14 @@ import com.project.simulator.entity.event.SimulationOverEvent;
 import com.project.simulator.simulation.protocols.MessageTransmissionProtocol;
 
 public class Simulation {
-	private NodeGroup nodes;
-	private MessageGroup messages;
-	private EventQueue eventQueue;
-	private MessageTransmissionProtocol messageTransmissionProtocol;
-	private CommandLineReporter reporter;
+	private final NodeGroup nodes;
+	private final MessageGroup messages;
+	private final EventQueue eventQueue;
+	private final MessageTransmissionProtocol messageTransmissionProtocol;
+	private final CommandLineReporter reporter;
 	private boolean simulationHappening = false;
-	private double lastProgress = 0;
-	private boolean stopOnEndOfArrivals;
+	private final double lastProgress = 0;
+	private final boolean stopOnEndOfArrivals;
 
 	public Simulation(	MessageTransmissionProtocol messageTransmissionProtocol, 
 						EventQueue eventQueue,
@@ -81,11 +79,11 @@ public class Simulation {
 	}
 	
 	public SimulationReport reportSimulationResult() {
-		List<Double> delays = new ArrayList<Double>();
+		List<Double> delays = new ArrayList<>();
 		int i = 0;
 		for(Message message : this.messages) {
 			if(message.isDelivered()) {
-				delays.add(message.getArrivalInstant() - message.getGenarationInstant());
+				delays.add(message.getArrivalInstant() - message.getGenerationInstant());
 				i++;
 			}
 		}

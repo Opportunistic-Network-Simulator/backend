@@ -1,8 +1,8 @@
 package com.project.simulator.entity.event;
 
 public class MessageGenerationEvent extends Event {
-	private long sourceNodeId;
-	private long destinationNodeId;
+	private final long sourceNodeId;
+	private final long destinationNodeId;
 	
 	public MessageGenerationEvent(double instant, long sourceNodeId, long destinationNodeId) {
 		super(instant);

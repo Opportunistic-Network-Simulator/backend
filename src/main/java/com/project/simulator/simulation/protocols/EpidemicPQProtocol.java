@@ -4,8 +4,8 @@ import com.project.simulator.entity.Message;
 import com.project.simulator.entity.Node;
 
 public class EpidemicPQProtocol extends MessageTransmissionProtocol {
-	private double p;
-	private double q;
+	private final double p;
+	private final double q;
 	
 	public EpidemicPQProtocol(double p, double q) {
 		this.p = p;
@@ -18,12 +18,10 @@ public class EpidemicPQProtocol extends MessageTransmissionProtocol {
 		}
 		else if(message.getSourceNode() == fromNode.getId()) {
 			double randomValue = Math.random();
-			if (randomValue <= q) return true;
-			else return false;
+			return randomValue <= q;
 		} else {
 			double randomValue = Math.random();
-			if (randomValue <= p) return true;
-			else return false;
+			return randomValue <= p;
 		}
 	}
 

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,8 +21,7 @@ public class FileNamesParser {
 	
 	private String localPath() {
 		String dir = System.getProperty("user.dir");
-		String localPath = dir + File.separator;
-		return localPath;
+		return dir + File.separator;
 	}
 	
 	private String absolutInputPath() {

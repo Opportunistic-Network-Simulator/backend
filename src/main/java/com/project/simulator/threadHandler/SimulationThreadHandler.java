@@ -21,7 +21,7 @@ import lombok.Setter;
 @Getter
 public class SimulationThreadHandler extends Thread {
 	
-	private SimulationConfiguration config;
+	private final SimulationConfiguration config;
 	private boolean error;
 	private String errorMessage;
 
@@ -30,7 +30,7 @@ public class SimulationThreadHandler extends Thread {
 	
 	private boolean done;
 	private Simulation simulation;
-	private CommandLineReporter reporter;
+	private final CommandLineReporter reporter;
 	
 	public SimulationThreadHandler(SimulationConfiguration config, CommandLineReporter reporter) {
 		this.config = config;

@@ -1,7 +1,5 @@
 package com.project.interfaces.web.dto;
 
-import com.project.simulator.configuration.MessageGenerationType;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

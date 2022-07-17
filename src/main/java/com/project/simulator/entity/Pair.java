@@ -7,10 +7,10 @@ import lombok.Getter;
 @Getter
 public class Pair {
 	
-	private long node1;
-	private long node2;
-	private double minRate;
-	private double maxRate;
+	private final long node1;
+	private final long node2;
+	private final double minRate;
+	private final double maxRate;
 	
 	public Pair(long node1, long node2, double rate, double variabilityDegree) throws ValueInputException {
 		if(node1 >= node2) {

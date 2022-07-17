@@ -2,14 +2,12 @@ package com.project.simulator.simulation.protocols;
 
 import com.project.simulator.entity.Message;
 import com.project.simulator.entity.Node;
-import com.project.simulator.entity.NodeGroup;
-import com.project.simulator.entity.event.MeetEvent;
 import com.project.simulator.exception.ValueInputException;
 
 public class PRoPHETProtocol extends MessageTransmissionProtocol {
-	private double pInit;
-	private double gamma;
-	private double beta;
+	private final double pInit;
+	private final double gamma;
+	private final double beta;
 
 	PRoPHETProtocol(double pInit, double gamma, double beta) {
 		if(pInit >= 0 && pInit <= 1) {

@@ -4,14 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 public class FileNameManager {
-    String subdir;
+    String subDirectory;
 
-    private FileNameManager(String subdir) {
-        this.subdir = subdir;
+    private FileNameManager(String subDirectory) {
+        this.subDirectory = subDirectory;
     }
 
     public File getMeetingTraceReportFile() throws IOException {
@@ -37,8 +37,8 @@ public class FileNameManager {
         return outputFile;
     }
 
-    private File getOutputFile(String filename, String subdir) throws IOException {
-        File outputFile = new File(localPath() + "output" + File.separator + subdir + File.separator + filename + ".txt");
+    private File getOutputFile(String filename, String subDirectory) throws IOException {
+        File outputFile = new File(localPath() + "output" + File.separator + subDirectory + File.separator + filename + ".txt");
         outputFile.getParentFile().mkdirs();
         if (!outputFile.exists())
             outputFile.createNewFile();
@@ -48,13 +48,12 @@ public class FileNameManager {
 
     private String localPath() {
         String dir = System.getProperty("user.dir");
-        String localPath = dir + File.separator;
-        return localPath;
+        return dir + File.separator;
     }
 
     private String getPath(String filename) {
-        if (this.subdir != null)
-            return localPath() + "output" + File.separator + this.subdir + File.separator + filename;
+        if (this.subDirectory != null)
+            return localPath() + "output" + File.separator + this.subDirectory + File.separator + filename;
 
         return localPath() + "output" + File.separator + filename;
     }
@@ -63,18 +62,18 @@ public class FileNameManager {
         return new FileNameManager(null);
     }
 
-    public static FileNameManager make(String subdir) {
-        return new FileNameManager(subdir);
+    public static FileNameManager make(String subDirectory) {
+        return new FileNameManager(subDirectory);
     }
 
     public List<File> getAllReportFiles() {
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
 
         File rootFolder = new File(this.getPath(""));
 
-        for(File file : rootFolder.listFiles()) {
+        for(File file : Objects.requireNonNull(rootFolder.listFiles())) {
             if(file.isDirectory()) {
-                files.addAll(Arrays.asList(file.listFiles()));
+                files.addAll(Arrays.asList(Objects.requireNonNull(file.listFiles())));
             } else {
                 files.add(file);
             }

@@ -13,5 +13,5 @@ public class UploadFileResponse {
     private String fileDownloadUri;
     private String fileType;
     private long size;
-    private Integer numberOfRegistredProducts;
+    private Integer numberOfRegisteredProducts;
 }

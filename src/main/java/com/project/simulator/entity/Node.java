@@ -15,19 +15,18 @@ public class Node {
 	
 	private long id;
 	private List<Message> messages;
-	private Map<String, String> storedProperties = new HashMap<String, String>();
+	private Map<String, String> storedProperties = new HashMap<>();
 	CommandLineReporter reporter;
 	
 	public Node(long id, CommandLineReporter reporter) {
 		this.id = id;
-		this.messages = new ArrayList<Message>();
+		this.messages = new ArrayList<>();
 		this.reporter = reporter;
 	}
 
 	public Node(long id) {
 		this.id = id;
-		this.messages = new ArrayList<Message>();
-		this.reporter = reporter;
+		this.messages = new ArrayList<>();
 	}
 	
 	public void addMessage(Message message) {
@@ -42,7 +41,7 @@ public class Node {
 		message.notifyNewNode(this.id, instant);
 		if(message.getDestinationNode() == this.id) {
 			message.setArrivalInstant(instant);
-			message.setDelay(instant - message.getGenarationInstant());
+			message.setDelay(instant - message.getGenerationInstant());
 			message.setDelivered(true);
 		}
 		this.messages.add(message);

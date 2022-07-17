@@ -40,10 +40,10 @@ public class CommandLineReporter {
 		try {
 			File file = this.fileNameManager.getMessageReportFile();
 			BufferedWriter writer = makeBufferedWriter(file);
-			writer.write(String.valueOf(message.getGenarationInstant()) + ","
-					+ String.valueOf(message.getId()) + ",GENERATE,"
-					+ String.valueOf(message.getSourceNode()) + ","
-					+ String.valueOf(message.getDestinationNode()) + "\n");
+			writer.write(message.getGenerationInstant() + ","
+					+ message.getId() + ",GENERATE,"
+					+ message.getSourceNode() + ","
+					+ message.getDestinationNode() + "\n");
 			writer.close();
 		} catch (Exception e) {
 
@@ -141,7 +141,7 @@ public class CommandLineReporter {
 
 	private String makeLineForMessageDeliveryReport(Message message) {
 		return message.getId()+","+(message.isDelivered() ? "DELIVERED" : "NOT_DELIVERED")+
-				","+message.getSourceNode()+","+message.getDestinationNode()+","+message.getGenarationInstant()+","+
+				","+message.getSourceNode()+","+message.getDestinationNode()+","+message.getGenerationInstant()+","+
 				(message.isDelivered() ? message.getArrivalInstant() : "-") + "\n";
 	}
 

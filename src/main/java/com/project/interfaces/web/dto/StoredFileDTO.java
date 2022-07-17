@@ -11,7 +11,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StoragedFileDTO {
+public class StoredFileDTO {
 	
 	private String fileName;
 }
