@@ -3,6 +3,7 @@ package com.project.interfaces.commandLine.parser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moandjiezana.toml.Toml;
+import com.project.exception.InvalidParametersException;
 import com.project.exception.SimulatorException;
 import com.project.interfaces.commandLine.dto.CLIPairDTO;
 import com.project.interfaces.commandLine.dto.CLIPairsDTO;
@@ -14,6 +15,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.project.simulator.entity.distribution.Exponential;
+import com.project.simulator.entity.distribution.HyperExponential;
+import com.project.simulator.entity.distribution.Pareto;
+import com.project.simulator.entity.distribution.VariableExponential;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -78,16 +83,16 @@ public class FileParser {
     		throws IOException {
     	
     	String pairDefinitionFile = parser.getString("pairDefinitionFile");
-
+        String distributionType = parser.getString("type");
     	
 		return new MeetingTraceConfiguration(
-		    MeetingTraceConfigurationType.valueOf(parser.getString("type")),
+		    MeetingTraceConfigurationType.valueOf(distributionType),
 		    parser.getDouble("totalSimulationTime"),
-		    parsePairDefinitionFile(fileNamesParser, pairDefinitionFile)
+		    parsePairDefinitionFile(fileNamesParser, pairDefinitionFile, distributionType)
 		);
     }
     
-    private static List<Pair> parsePairDefinitionFile(FileNamesParser fileNamesParser, String pairDefinitionFile) throws IOException {
+    private static List<Pair> parsePairDefinitionFile(FileNamesParser fileNamesParser, String pairDefinitionFile, String distributionType) throws IOException {
     	JSONParser parser = new JSONParser();
         JSONObject jsonObject;
 		try {
@@ -102,15 +107,38 @@ public class FileParser {
         CLIPairsDTO pairsDto = mapper.readValue(jsonObject.toJSONString(), CLIPairsDTO.class);
         List<CLIPairDTO> pairDtoList = pairsDto.getPairsList();
         
-		return convertDtoToPair(pairDtoList);
+		return convertDtoToPair(pairDtoList, distributionType);
     	
     }
     
-    private static List<Pair> convertDtoToPair(List<CLIPairDTO> pairs) {
+    private static List<Pair> convertDtoToPair(List<CLIPairDTO> pairs, String distributionType) {
 		List<Pair> pairsList = new ArrayList<>();
-		for(CLIPairDTO pair : pairs) {
-			pairsList.add(new Pair(pair.getNode1(), pair.getNode2(), pair.getRate(), pair.getVariabilityDegree()));
-		}
+
+        switch (distributionType) {
+            case "EXPONENTIAL":
+                for(CLIPairDTO pair : pairs) {
+                    pairsList.add(new Pair(pair.getNode1(), pair.getNode2(), new Exponential(pair.getLambda())));
+                }
+                break;
+            case "PARETO":
+                for(CLIPairDTO pair : pairs) {
+                    pairsList.add(new Pair(pair.getNode1(), pair.getNode2(), new Pareto(pair.getMu(), pair.getSigma(), pair.getGamma(), pair.getAlpha())));
+                }
+                break;
+            case "HYPER_EXPONENTIAL":
+                for(CLIPairDTO pair : pairs) {
+                    pairsList.add(new Pair(pair.getNode1(), pair.getNode2(), new HyperExponential(pair.getLambdas(), pair.getPs())));
+                }
+                break;
+            case "VARIABLE_EXPONENTIAL":
+                for(CLIPairDTO pair : pairs) {
+                    pairsList.add(new Pair(pair.getNode1(), pair.getNode2(), new VariableExponential(pair.getLambda(), pair.getVariability())));
+                }
+                break;
+            default:
+                throw new InvalidParametersException("Invalid distribution type. Distribution type: " + distributionType);
+        }
+
 		return pairsList;
 	}
 
@@ -133,6 +161,21 @@ public class FileParser {
         Long l = parser.getLong("l");
         if (l != null) {
             config.setL(l.intValue());
+        }
+
+        Double pInit = parser.getDouble("pInit");
+        if (pInit != null) {
+            config.setPInit(pInit);
+        }
+
+        Double gamma = parser.getDouble("gamma");
+        if (gamma != null) {
+            config.setGamma(gamma);
+        }
+
+        Double beta = parser.getDouble("beta");
+        if (beta != null) {
+            config.setBeta(beta);
         }
 
         return config;

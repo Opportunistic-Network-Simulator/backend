@@ -12,6 +12,8 @@ public class ProtocolConfiguration {
     double q;
     int l;
 
+    double pInit, gamma, beta;
+
     public ProtocolConfiguration() {}
 
     public ProtocolConfiguration(ProtocolType type, double p, double q) {
@@ -23,6 +25,13 @@ public class ProtocolConfiguration {
     public ProtocolConfiguration(ProtocolType type, int l) {
         this.type = type;
         this.l = l;
+    }
+
+    public ProtocolConfiguration(ProtocolType type, double pInit, double gamma, double beta) {
+        this.type = type;
+        this.pInit = pInit;
+        this.gamma = gamma;
+        this.beta = beta;
     }
 
     public ProtocolConfiguration(ProtocolType type) {

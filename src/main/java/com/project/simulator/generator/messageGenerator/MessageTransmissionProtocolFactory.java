@@ -9,7 +9,7 @@ public class MessageTransmissionProtocolFactory {
             case DIRECT_DELIVERY:
                 return new DirectDeliveryProtocol();
             case PROPHET:
-                throw new IllegalStateException("Message generation type not implemented: PROPHET");
+                return new PRoPHETProtocol(config.getPInit(), config.getGamma(), config.getBeta());
             case TWO_HOP:
                 return new TwoHopProtocol();
             case EPIDEMIC:

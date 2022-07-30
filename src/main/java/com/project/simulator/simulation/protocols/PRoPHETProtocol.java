@@ -3,6 +3,7 @@ package com.project.simulator.simulation.protocols;
 import com.project.simulator.entity.Message;
 import com.project.simulator.entity.Node;
 import com.project.simulator.entity.NodeGroup;
+import com.project.simulator.entity.event.MeetEvent;
 import com.project.simulator.exception.ValueInputException;
 
 import java.util.Map;
@@ -12,9 +13,10 @@ public class PRoPHETProtocol extends MessageTransmissionProtocol {
 	private final double pInit;
 	private final double gamma;
 	private final double beta;
-	Map<Long, Node> nodes;
+	private boolean isFirstMeet;
+	private Map<Long, Node> nodes;
 
-	PRoPHETProtocol(double pInit, double gamma, double beta, NodeGroup nodes) {
+	public PRoPHETProtocol(double pInit, double gamma, double beta) {
 		if(pInit >= 0 && pInit <= 1) {
 			this.pInit = pInit;
 		} else {
@@ -33,7 +35,21 @@ public class PRoPHETProtocol extends MessageTransmissionProtocol {
 			throw new ValueInputException("Beta value should be in the interval [0, 1].");
 		}
 
-		this.nodes = nodes.getNodes();
+		isFirstMeet = true;
+	}
+
+	@Override
+	public void handleMeet(MeetEvent meet, NodeGroup nodes) {
+		if (isFirstMeet) {
+			setNodes(nodes.getNodes());
+			isFirstMeet = false;
+		}
+
+		super.handleMeet(meet, nodes);
+	}
+
+	public void setNodes(Map<Long, Node> nodes) {
+		this.nodes = nodes;
 
 		for(Long nodeId : this.nodes.keySet()) {
 			this.nodes.get(nodeId).storeValue("lastMeetTime", String.valueOf(0));
@@ -49,6 +65,7 @@ public class PRoPHETProtocol extends MessageTransmissionProtocol {
 	protected void preTransfer(Node node1, Node node2, double instant) {
 		ageNode(node1, instant);
 		ageNode(node2, instant);
+		updateProbabilities(node1, node2);
 	}
 
 	private void ageNode(Node node, double instant) {
@@ -66,7 +83,6 @@ public class PRoPHETProtocol extends MessageTransmissionProtocol {
 		node.storeValue("lastMeetTime", String.valueOf(instant));
 	}
 
-	//TODO: insert updateProbabilities into the protocol workflow
 	private void updateProbabilities(Node node1, Node node2) {
 		long id1 = node1.getId();
 		long id2 = node2.getId();
@@ -98,9 +114,12 @@ public class PRoPHETProtocol extends MessageTransmissionProtocol {
 		}
 	}
 
-	//TODO: implement shouldTransfer
 	@Override
 	protected boolean shouldTransfer(Node fromNode, Node toNode, Message message) {
-		return false;
+		long destNodeId = message.getDestinationNode();
+		double probFrom = Double.parseDouble(fromNode.getStoredValue(String.valueOf(destNodeId)));
+		double probTo   = Double.parseDouble(toNode.getStoredValue(String.valueOf(destNodeId)));
+
+		return probTo > probFrom;
 	}
 }

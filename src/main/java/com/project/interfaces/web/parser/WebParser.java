@@ -3,6 +3,8 @@ package com.project.interfaces.web.parser;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.project.exception.InvalidParametersException;
+import com.project.interfaces.commandLine.dto.CLIPairDTO;
 import com.project.interfaces.web.dto.MeetingTraceConfigurationDTO;
 import com.project.interfaces.web.dto.MessageGenerationConfigurationDTO;
 import com.project.interfaces.web.dto.PairDTO;
@@ -16,6 +18,10 @@ import com.project.simulator.configuration.ProtocolConfiguration;
 import com.project.simulator.configuration.ProtocolType;
 import com.project.simulator.configuration.SimulationConfiguration;
 import com.project.simulator.entity.Pair;
+import com.project.simulator.entity.distribution.Exponential;
+import com.project.simulator.entity.distribution.HyperExponential;
+import com.project.simulator.entity.distribution.Pareto;
+import com.project.simulator.entity.distribution.VariableExponential;
 
 public class WebParser {
 	
@@ -50,19 +56,42 @@ public class WebParser {
 	}
 	
 	private MeetingTraceConfiguration parserMeetingTraceConfiguration(MeetingTraceConfigurationDTO meetingTraceConfigurationDTO) {	
-		
+		String distributionType = meetingTraceConfigurationDTO.getType();
 		return new MeetingTraceConfiguration(
-					MeetingTraceConfigurationType.valueOf(meetingTraceConfigurationDTO.getType()),
+					MeetingTraceConfigurationType.valueOf(distributionType),
 					meetingTraceConfigurationDTO.getTotalSimulationTime(),
-					parsePairs(meetingTraceConfigurationDTO.getPairList())
+					parsePairs(meetingTraceConfigurationDTO.getPairList(), distributionType)
 				);
 	}
 	
-	private List<Pair> parsePairs(List<PairDTO> pairs) {
+	private List<Pair> parsePairs(List<PairDTO> pairs, String distributionType) {
 		List<Pair> pairsList = new ArrayList<>();
-		for(PairDTO pair : pairs) {
-			pairsList.add(new Pair(pair.getNode1(), pair.getNode2(), pair.getRate(), pair.getVariabilityDegree()));
+
+		switch (distributionType) {
+			case "EXPONENTIAL":
+				for(PairDTO pair : pairs) {
+					pairsList.add(new Pair(pair.getNode1(), pair.getNode2(), new Exponential(pair.getLambda())));
+				}
+				break;
+			case "PARETO":
+				for(PairDTO pair : pairs) {
+					pairsList.add(new Pair(pair.getNode1(), pair.getNode2(), new Pareto(pair.getMu(), pair.getSigma(), pair.getGamma(), pair.getAlpha())));
+				}
+				break;
+			case "HYPER_EXPONENTIAL":
+				for(PairDTO pair : pairs) {
+					pairsList.add(new Pair(pair.getNode1(), pair.getNode2(), new HyperExponential(pair.getLambdas(), pair.getPs())));
+				}
+				break;
+			case "VARIABLE_EXPONENTIAL":
+				for(PairDTO pair : pairs) {
+					pairsList.add(new Pair(pair.getNode1(), pair.getNode2(), new VariableExponential(pair.getLambda(), pair.getVariability())));
+				}
+				break;
+			default:
+				throw new InvalidParametersException("Invalid distribution type. Distribution type: " + distributionType);
 		}
+		
 		return pairsList;
 	}
 	

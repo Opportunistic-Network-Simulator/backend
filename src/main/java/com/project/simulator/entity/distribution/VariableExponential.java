@@ -1,26 +1,23 @@
-package com.project.simulator.entity.mixturedistribution;
+package com.project.simulator.entity.distribution;
 
 import com.project.exception.InvalidParametersException;
 
 import java.util.Collections;
 import java.util.List;
 
-public class Exponential extends MixtureDistribution {
+public class VariableExponential extends MixtureDistribution {
 
-    private final double lambda;
-    private final double minLambda, maxLambda;
+    private final double lambda, minLambda, maxLambda;
 
-    public Exponential(double lambda, double variability) {
-        super(DistributionType.EXPONENTIAL);
-
+    public VariableExponential(double lambda, double variability) {
         if(lambda > 0) {
             this.lambda = lambda;
         } else {
-            throw new InvalidParametersException("Rate should be strictly greater than 0.");
+            throw new InvalidParametersException("Lambda should be strictly greater than 0. Lambda value: " + lambda);
         }
 
         if(variability < 0 || variability >= 1) {
-            throw new InvalidParametersException("Variability should be in the interval [0, 1).");
+            throw new InvalidParametersException("Variability should be in the interval [0, 1). Variability: " + variability);
         }
 
         minLambda = (1 - variability) * lambda;
@@ -28,7 +25,7 @@ public class Exponential extends MixtureDistribution {
     }
 
     @Override
-    List<Double> chooseDistribution() {
+    public List<Double> chooseDistribution() {
         Double newLambda = minLambda + Math.random() * (maxLambda - minLambda);
         return Collections.singletonList(newLambda);
     }
@@ -37,8 +34,6 @@ public class Exponential extends MixtureDistribution {
     public double generateSample() {
         double u = Math.random();
         double newLambda = chooseDistribution().get(0);
-
         return -Math.log(1 - u) / newLambda;
     }
-
 }
