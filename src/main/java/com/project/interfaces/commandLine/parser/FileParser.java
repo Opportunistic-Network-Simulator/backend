@@ -49,9 +49,9 @@ public class FileParser {
         MessageGenerationType type = MessageGenerationType.valueOf(parser.getString("type"));
         config.setType(type);
 
-        String filename = parser.getString("filename");
-        if (filename != null) {
-            config.setFileName(filename);
+        String fileName = parser.getString("fileName");
+        if (fileName != null) {
+            config.setFileName(fileName);
         }
 
         Double generationInstant = parser.getDouble("generationInstant");

@@ -117,6 +117,13 @@ public class PRoPHETProtocol extends MessageTransmissionProtocol {
 	@Override
 	protected boolean shouldTransfer(Node fromNode, Node toNode, Message message) {
 		long destNodeId = message.getDestinationNode();
+		if (destNodeId == toNode.getId()) {
+			return true;
+		}
+		if (destNodeId == fromNode.getId()) {
+			return false;
+		}
+
 		double probFrom = Double.parseDouble(fromNode.getStoredValue(String.valueOf(destNodeId)));
 		double probTo   = Double.parseDouble(toNode.getStoredValue(String.valueOf(destNodeId)));
 

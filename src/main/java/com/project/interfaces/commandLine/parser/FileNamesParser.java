@@ -36,6 +36,10 @@ public class FileNamesParser {
 		return absolutInputPath() + "pairDefinitionFile" + File.separator + pairDefinitionFile;
 	}
 
+	public String toAbsoluteInputMessageGenerationFile(String messageGenerationFile) {
+		return absolutInputPath() + "messageGenerationFile" + File.separator + messageGenerationFile;
+	}
+
 	public File outputReportFileAllSimulations() throws IOException {
 		File outputFile = new File(localPath() + "output" + File.separator + "simulationsResults.txt");
 		outputFile.getParentFile().mkdirs();
