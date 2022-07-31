@@ -13,6 +13,7 @@ public class MessageGenerationConfiguration {
     private int destinationNodeId;
     private double generationInstant;
     private int amountNodes;
+    private long hopLimit;
 
     public MessageGenerationConfiguration() {}
 

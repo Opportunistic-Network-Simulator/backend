@@ -23,8 +23,8 @@ public class MessageGroup implements Iterable<Message> {
 		return messages.get(messageId);
 	}
 	
-	public Message generateMessage(long sourceNodeId, long destinationNodeId, double instant) {
-		Message newMessage = new Message(messageIdCounter++, 0L, sourceNodeId, destinationNodeId, instant, this.reporter);
+	public Message generateMessage(long sourceNodeId, long destinationNodeId, double instant, long hopLimit) {
+		Message newMessage = new Message(messageIdCounter++, 0L, sourceNodeId, destinationNodeId, instant, hopLimit, this.reporter);
 		messages.put(newMessage.getId(), newMessage);
 		if (this.reporter != null) {
 			reporter.reportMessageCreated(newMessage);

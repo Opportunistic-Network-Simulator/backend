@@ -74,7 +74,7 @@ public class Simulation {
 	}
 	
 	private void handleMessageGeneration(MessageGenerationEvent event) {
-		Message generatedMessage = this.messages.generateMessage(event.getOriginNodeId(), event.getDestinationNodeId(), event.instant);
+		Message generatedMessage = this.messages.generateMessage(event.getOriginNodeId(), event.getDestinationNodeId(), event.instant, event.getHopLimit());
 		this.nodes.getNode(generatedMessage.getSourceNode()).addMessage(generatedMessage);
 	}
 	

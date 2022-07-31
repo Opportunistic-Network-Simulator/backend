@@ -16,7 +16,7 @@ public class SingleMessagesGenerator {
 			destinationNodeId = (long) (Math.random() * nodeAmount);
 		}
 		
-		MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(0, sourceNodeId, destinationNodeId);
+		MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(0, sourceNodeId, destinationNodeId, Long.MAX_VALUE);
 		messageGenerationQueue.add(messageGenerationEvent);
 		return generateMessages(sourceNodeId, destinationNodeId);
 	}
@@ -24,7 +24,7 @@ public class SingleMessagesGenerator {
 	public static List<MessageGenerationEvent> generateMessages(long sourceNodeId, long destinationNodeId) { //posteriormente, deve pegar dados da requisição para gerar as msg
 		List<MessageGenerationEvent> messageGenerationQueue = new ArrayList<>();
 		
-		MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(0, sourceNodeId, destinationNodeId);
+		MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(0, sourceNodeId, destinationNodeId, Long.MAX_VALUE);
 		messageGenerationQueue.add(messageGenerationEvent);
 		return messageGenerationQueue;
 	}
@@ -53,7 +53,7 @@ public class SingleMessagesGenerator {
 				destinationNodeId = (long) (Math.random() * nodesAmount);
 			}
 			
-			MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(0, sourceNodeId, destinationNodeId);
+			MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(0, sourceNodeId, destinationNodeId, Long.MAX_VALUE);
 			messageGenerationQueue.add(messageGenerationEvent);
 		}
 		return messageGenerationQueue;

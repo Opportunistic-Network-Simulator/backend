@@ -39,6 +39,7 @@ public class Node {
 			
 		}
 		message.notifyNewNode(this.id, instant);
+		message.incrementHop();
 		if(message.getDestinationNode() == this.id) {
 			message.setArrivalInstant(instant);
 			message.setDelay(instant - message.getGenerationInstant());

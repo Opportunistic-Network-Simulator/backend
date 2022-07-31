@@ -18,16 +18,19 @@ public class Message {
 	private double generationInstant;
 	private double arrivalInstant;
 	private boolean delivered;
+	private long hopCount, hopLimit;
 	private double delay;
 	private Map<String, String> storedProperties = new HashMap<>();
 	private CommandLineReporter reporter;
 	
-	public Message(long messageIdCounter, long size, long sourceNode, long destinationNode, double generationInstant, CommandLineReporter reporter) {
+	public Message(long messageIdCounter, long size, long sourceNode, long destinationNode, double generationInstant, long hopLimit, CommandLineReporter reporter) {
 		this.id = messageIdCounter;
 		this.size = size;
 		this.sourceNode = sourceNode;
 		this.destinationNode = destinationNode;
 		this.generationInstant = generationInstant;
+		this.hopLimit = hopLimit;
+		this.hopCount = 0;
 		this.delivered = false;
 		this.reporter = reporter;
 	}
@@ -42,7 +45,6 @@ public class Message {
 	}
 	
 	public void notifyNewNode(long newNodeId, double instant) {
-		if(this.generationInstant != 0) return;
 		if(this.destinationNode == newNodeId) {
 			this.arrivalInstant = instant;
 			if(this.reporter != null)
@@ -61,5 +63,11 @@ public class Message {
 	public String getStoredValue(String key) {
 		return this.storedProperties.get(key);
 	}
+
+	public void incrementHop() { hopCount++; }
+
+	public boolean canHop() { return hopCount < hopLimit; }
+
+	//TODO: add number of hops and hop limit to report
 	
 }

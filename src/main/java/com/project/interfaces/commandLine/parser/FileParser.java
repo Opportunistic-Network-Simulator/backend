@@ -76,6 +76,13 @@ public class FileParser {
             config.setDestinationNodeId(destinationNodeId.intValue());
         }
 
+        Long hopLimit = parser.getLong("hopLimit");
+        if (hopLimit != null && hopLimit != 0) {
+            config.setHopLimit(hopLimit);
+        } else {
+            config.setHopLimit(Long.MAX_VALUE);
+        }
+
         return config;
     }
 

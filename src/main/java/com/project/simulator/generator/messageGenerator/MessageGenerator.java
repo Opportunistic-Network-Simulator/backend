@@ -37,14 +37,15 @@ public class MessageGenerator {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
-                // TODO: add possibility to have double instant
-                if (!line.matches("\\d+ \\d+ \\d+")) {
-                    throw new SimulatorException("Invalid line in message generation file (Should be '\\d+ \\d+ \\d+'). Line: " + line);
+                // TODO: add possibility to have double instant and to not have hopLimit
+                if (!line.matches("\\d+ \\d+ \\d+ \\d+")) {
+                    throw new SimulatorException("Invalid line in message generation file (Should be '\\d+ \\d+ \\d+ \\d+'). Line: " + line);
                 }
 
                 double instant = Double.parseDouble(line.split(" ")[0]);
                 long sourceNodeId = Long.parseLong(line.split(" ")[1]);
                 long destinationNodeId = Long.parseLong(line.split(" ")[2]);
+                long hopLimit = Long.parseLong(line.split(" ")[3]);
 
                 if (sourceNodeId == destinationNodeId) {
                     throw new SimulatorException("Source node cannot be equals to destination node.");
@@ -53,7 +54,7 @@ public class MessageGenerator {
                     throw new SimulatorException("nodeId value is greater than the amount of nodes.");
                 }
 
-                MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(instant, sourceNodeId, destinationNodeId);
+                MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(instant, sourceNodeId, destinationNodeId, hopLimit);
                 messageGenerationQueue.add(messageGenerationEvent);
             }
         } catch (IOException e) {
@@ -69,7 +70,7 @@ public class MessageGenerator {
         for(int i = 0; i < config.getAmountNodes(); i++) {
             for(int j = 0; j < config.getAmountNodes(); j++) {
                 if(i!=j) {
-                    messageGenerationQueue.add(new MessageGenerationEvent(config.getGenerationInstant(), i, j));
+                    messageGenerationQueue.add(new MessageGenerationEvent(config.getGenerationInstant(), i, j, config.getHopLimit()));
                 }
             }
         }
@@ -80,7 +81,7 @@ public class MessageGenerator {
     private static List<MessageGenerationEvent> generateFixedNodes(MessageGenerationConfiguration config) {
         List<MessageGenerationEvent> messageGenerationQueue = new ArrayList<>();
 
-        MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(config.getGenerationInstant(), config.getSourceNodeId(), config.getDestinationNodeId());
+        MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(config.getGenerationInstant(), config.getSourceNodeId(), config.getDestinationNodeId(), config.getHopLimit());
         messageGenerationQueue.add(messageGenerationEvent);
 
         return messageGenerationQueue;
@@ -96,7 +97,7 @@ public class MessageGenerator {
             destinationNodeId = (long) (Math.random() * config.getAmountNodes());
         }
 
-        MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(config.getGenerationInstant(), sourceNodeId, destinationNodeId);
+        MessageGenerationEvent messageGenerationEvent = new MessageGenerationEvent(config.getGenerationInstant(), sourceNodeId, destinationNodeId, config.getHopLimit());
         messageGenerationQueue.add(messageGenerationEvent);
         return messageGenerationQueue;
     }
