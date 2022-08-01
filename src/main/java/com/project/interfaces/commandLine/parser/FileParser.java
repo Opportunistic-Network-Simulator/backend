@@ -90,13 +90,24 @@ public class FileParser {
     		throws IOException {
     	
     	String pairDefinitionFile = parser.getString("pairDefinitionFile");
+        String meetingTraceFile = parser.getString("meetingTraceFile");
         String distributionType = parser.getString("type");
-    	
-		return new MeetingTraceConfiguration(
-		    MeetingTraceConfigurationType.valueOf(distributionType),
-		    parser.getDouble("totalSimulationTime"),
-		    parsePairDefinitionFile(fileNamesParser, pairDefinitionFile, distributionType)
-		);
+
+        if (pairDefinitionFile != null) {
+            return new MeetingTraceConfiguration(
+                MeetingTraceConfigurationType.valueOf(distributionType),
+                parser.getDouble("totalSimulationTime"),
+                parsePairDefinitionFile(fileNamesParser, pairDefinitionFile, distributionType)
+            );
+        } else if (meetingTraceFile != null) {
+            return new MeetingTraceConfiguration(
+                MeetingTraceConfigurationType.valueOf(distributionType),
+                parser.getDouble("totalSimulationTime"),
+                meetingTraceFile
+            );
+        } else {
+            throw new InvalidParametersException("No file for pair definition nor for meeting trace.");
+        }
     }
     
     private static List<Pair> parsePairDefinitionFile(FileNamesParser fileNamesParser, String pairDefinitionFile, String distributionType) throws IOException {

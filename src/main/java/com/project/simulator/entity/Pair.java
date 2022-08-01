@@ -14,7 +14,7 @@ public class Pair {
 	
 	public Pair(long node1, long node2, Distribution distribution) throws ValueInputException {
 		if(node1 >= node2) {
-			throw new ValueInputException("Node 1 value is bigger than node 2");
+			throw new ValueInputException("Node 1 value is bigger than node 2. Node 1: " + node1 + ". Node 2: " + node2);
 		}
 		this.node1 = node1;
 		this.node2 = node2;

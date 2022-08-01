@@ -40,6 +40,10 @@ public class FileNamesParser {
 		return absolutInputPath() + "messageGenerationFile" + File.separator + messageGenerationFile;
 	}
 
+	public String toAbsoluteMeetingTraceFile(String meetingTraceFile) {
+		return absolutInputPath() + "meetingTraceFile" + File.separator + meetingTraceFile;
+	}
+
 	public File outputReportFileAllSimulations() throws IOException {
 		File outputFile = new File(localPath() + "output" + File.separator + "simulationsResults.txt");
 		outputFile.getParentFile().mkdirs();
