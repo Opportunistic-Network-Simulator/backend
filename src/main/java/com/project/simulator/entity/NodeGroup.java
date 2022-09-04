@@ -20,7 +20,15 @@ public class NodeGroup {
 
 	public Node getNode(long nodeId) {
 		if(!nodes.containsKey(nodeId)) {
-			Node newNode = new Node(nodeId, this.reporter);
+			Node newNode = new Node(nodeId, 0, this.reporter);
+			this.nodes.put(nodeId, newNode);
+		}
+		return this.nodes.get(nodeId);
+	}
+
+	public Node getNode(long nodeId, long capacity) {
+		if(!nodes.containsKey(nodeId)) {
+			Node newNode = new Node(nodeId, capacity, this.reporter);
 			this.nodes.put(nodeId, newNode);
 		}
 		return this.nodes.get(nodeId);
