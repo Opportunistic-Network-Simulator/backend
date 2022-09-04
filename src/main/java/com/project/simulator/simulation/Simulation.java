@@ -46,7 +46,7 @@ public class Simulation {
 	public void start() {
 		System.out.println("start");
 		for (long i = 0; i < this.amountNodes; i++) {
-			this.nodes.getNode(0, this.capacity);
+			this.nodes.getNode(i, this.capacity);
 		}
 		this.simulationHappening = true;
 		while(this.simulationHappening) {

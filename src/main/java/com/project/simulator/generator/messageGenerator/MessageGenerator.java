@@ -37,15 +37,20 @@ public class MessageGenerator {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
-                // TODO: add possibility to have double instant and to not have hopLimit
-                if (!line.matches("\\d+ \\d+ \\d+ \\d+")) {
+                double instant;
+                long sourceNodeId;
+                long destinationNodeId;
+                long hopLimit;
+                if (line.matches("\\d+ \\d+ \\d+ \\d+")) {
+                    hopLimit = Long.parseLong(line.split(" ")[3]);
+                } else if (line.matches("\\d+ \\d+ \\d+")) {
+                    hopLimit = config.getHopLimit();
+                } else {
                     throw new SimulatorException("Invalid line in message generation file (Should be '\\d+ \\d+ \\d+ \\d+'). Line: " + line);
                 }
-
-                double instant = Double.parseDouble(line.split(" ")[0]);
-                long sourceNodeId = Long.parseLong(line.split(" ")[1]);
-                long destinationNodeId = Long.parseLong(line.split(" ")[2]);
-                long hopLimit = Long.parseLong(line.split(" ")[3]);
+                instant = Double.parseDouble(line.split(" ")[0]);
+                sourceNodeId = Long.parseLong(line.split(" ")[1]);
+                destinationNodeId = Long.parseLong(line.split(" ")[2]);
 
                 if (sourceNodeId == destinationNodeId) {
                     throw new SimulatorException("Source node cannot be equals to destination node.");
