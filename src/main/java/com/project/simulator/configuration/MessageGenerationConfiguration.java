@@ -14,6 +14,7 @@ public class MessageGenerationConfiguration {
     private double generationInstant;
     private int amountNodes;
     private long hopLimit;
+    private long capacity;
 
     public MessageGenerationConfiguration() {}
 

@@ -47,7 +47,9 @@ public class SimulationThreadHandler extends Thread {
 	        reporter.reportMeetingTrace(meetingTrace);
 	        EventQueue eventQueue = EventQueue.makeEventQueue(meetingTrace, messageGenerationQueue);
 	        MessageTransmissionProtocol protocol = MessageTransmissionProtocolFactory.make(config.getProtocolConfiguration());
-	        this.simulation = new Simulation(protocol, eventQueue, true, reporter);
+			long amountNodes = config.getMessageGenerationConfiguration().getAmountNodes();
+			long capacity = config.getMessageGenerationConfiguration().getCapacity();
+	        this.simulation = new Simulation(protocol, eventQueue, true, reporter, amountNodes, capacity);
 	        simulation.start();
 
 			this.reporter.reportSimulationSummary(this.simulation.reportSimulationResult());

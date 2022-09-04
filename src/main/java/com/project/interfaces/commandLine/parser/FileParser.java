@@ -83,6 +83,13 @@ public class FileParser {
             config.setHopLimit(Long.MAX_VALUE);
         }
 
+        Long capacity = parser.getLong("capacity");
+        if (capacity != null && capacity != 0) {
+            config.setCapacity(capacity);
+        } else {
+            config.setCapacity(Long.MAX_VALUE);
+        }
+
         return config;
     }
 

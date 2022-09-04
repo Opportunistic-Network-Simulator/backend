@@ -14,18 +14,21 @@ import lombok.Setter;
 public class Node {
 	
 	private long id;
+	private long capacity;
 	private List<Message> messages;
 	private Map<String, String> storedProperties = new HashMap<>();
 	CommandLineReporter reporter;
 	
-	public Node(long id, CommandLineReporter reporter) {
+	public Node(long id, long capacity, CommandLineReporter reporter) {
 		this.id = id;
+		this.capacity = (capacity > 0) ? capacity: Long.MAX_VALUE;
 		this.messages = new ArrayList<>();
 		this.reporter = reporter;
 	}
 
-	public Node(long id) {
+	public Node(long id, long capacity) {
 		this.id = id;
+		this.capacity = (capacity > 0) ? capacity: Long.MAX_VALUE;
 		this.messages = new ArrayList<>();
 	}
 	
@@ -37,6 +40,9 @@ public class Node {
 		if(this.messages.contains(message)) {
 			return; //não recebo msg que já tenho
 			
+		}
+		if(this.messages.size() >= this.capacity) {
+			return; // rejects message if capacity is full
 		}
 		message.notifyNewNode(this.id, instant);
 		message.incrementHop();

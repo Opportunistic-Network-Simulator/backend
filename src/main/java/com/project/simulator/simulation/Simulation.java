@@ -24,21 +24,30 @@ public class Simulation {
 	private boolean simulationHappening = false;
 	private final double lastProgress = 0;
 	private final boolean stopOnEndOfArrivals;
+	private final long amountNodes;
+	private final long capacity;
 
-	public Simulation(	MessageTransmissionProtocol messageTransmissionProtocol, 
-						EventQueue eventQueue,
-						boolean stopOnEndOfArrivals,
-					  	CommandLineReporter reporter) {
+	public Simulation(MessageTransmissionProtocol messageTransmissionProtocol,
+					  EventQueue eventQueue,
+					  boolean stopOnEndOfArrivals,
+					  CommandLineReporter reporter,
+					  long amountNodes,
+					  long capacity) {
 		this.messageTransmissionProtocol = messageTransmissionProtocol;
 		this.eventQueue = eventQueue;
 		this.nodes = new NodeGroup(reporter);
 		this.messages = new MessageGroup(reporter);
 		this.stopOnEndOfArrivals = stopOnEndOfArrivals;
 		this.reporter = reporter;
+		this.amountNodes = amountNodes;
+		this.capacity = capacity;
 	}
 	
 	public void start() {
 		System.out.println("start");
+		for (long i = 0; i < this.amountNodes; i++) {
+			this.nodes.getNode(0, this.capacity);
+		}
 		this.simulationHappening = true;
 		while(this.simulationHappening) {
 //			this.showProgress();
