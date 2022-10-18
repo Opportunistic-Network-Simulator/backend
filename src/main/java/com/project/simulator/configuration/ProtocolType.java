@@ -8,5 +8,6 @@ public enum ProtocolType {
     BINARY_SPRAY_AND_WAIT,
     DIRECT_DELIVERY,
     TWO_HOP,
-    PROPHET
+    PROPHET,
+    K_COPY,
 }

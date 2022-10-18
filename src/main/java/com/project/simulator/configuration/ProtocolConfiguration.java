@@ -3,6 +3,8 @@ package com.project.simulator.configuration;
 import lombok.Getter;
 import lombok.Setter;
 
+import static com.project.simulator.configuration.ProtocolType.K_COPY;
+
 @Getter
 @Setter
 public class ProtocolConfiguration {
@@ -11,6 +13,7 @@ public class ProtocolConfiguration {
     double p;
     double q;
     int l;
+    long K;
 
     double pInit, gamma, beta;
 
@@ -25,6 +28,11 @@ public class ProtocolConfiguration {
     public ProtocolConfiguration(ProtocolType type, int l) {
         this.type = type;
         this.l = l;
+    }
+
+    public ProtocolConfiguration(ProtocolType type, long K) {
+        this.type = type;
+        this.K = K;
     }
 
     public ProtocolConfiguration(ProtocolType type, double pInit, double gamma, double beta) {

@@ -203,6 +203,11 @@ public class FileParser {
             config.setBeta(beta);
         }
 
+        Long K = parser.getLong("K");
+        if (K != null) {
+            config.setK(K);
+        }
+
         return config;
     }
 }

@@ -10,6 +10,8 @@ public class MessageTransmissionProtocolFactory {
                 return new DirectDeliveryProtocol();
             case PROPHET:
                 return new PRoPHETProtocol(config.getPInit(), config.getGamma(), config.getBeta());
+            case K_COPY:
+                return new KCopyEpidemicProtocol(config.getK());
             case TWO_HOP:
                 return new TwoHopProtocol();
             case EPIDEMIC:

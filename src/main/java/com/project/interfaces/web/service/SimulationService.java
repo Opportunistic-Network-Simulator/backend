@@ -55,7 +55,7 @@ public class SimulationService {
 	public double getSimulationProgress(String key) {
 		SimulationProcessor processor = this.simulationMap.get(key);
 		return processor.getProgress();
-		}
+	}
 	
 	public SimulationReport getSimulationReport(String key) {
 		SimulationProcessor processor = this.simulationMap.get(key);

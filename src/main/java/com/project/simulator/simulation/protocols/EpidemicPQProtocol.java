@@ -1,6 +1,7 @@
 package com.project.simulator.simulation.protocols;
 
 import com.project.simulator.entity.Message;
+import com.project.simulator.entity.MessageCopy;
 import com.project.simulator.entity.Node;
 
 public class EpidemicPQProtocol extends MessageTransmissionProtocol {
@@ -12,7 +13,7 @@ public class EpidemicPQProtocol extends MessageTransmissionProtocol {
 		this.q = q;
 	}
 
-	protected boolean shouldTransfer(Node fromNode, Node toNode, Message message) {
+	protected boolean shouldTransfer(Node fromNode, Node toNode, MessageCopy message) {
 		if(message.getDestinationNode() == toNode.getId()) {
 			return true;
 		}

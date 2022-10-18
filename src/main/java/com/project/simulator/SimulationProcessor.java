@@ -175,5 +175,5 @@ public class SimulationProcessor {
 			    .doubleValue();
 		System.out.println("progress: " + progress + "%");
 		return progress;
-		}
+	}
 }

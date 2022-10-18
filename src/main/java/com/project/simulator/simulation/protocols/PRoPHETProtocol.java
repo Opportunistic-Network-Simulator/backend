@@ -1,6 +1,7 @@
 package com.project.simulator.simulation.protocols;
 
 import com.project.simulator.entity.Message;
+import com.project.simulator.entity.MessageCopy;
 import com.project.simulator.entity.Node;
 import com.project.simulator.entity.NodeGroup;
 import com.project.simulator.entity.event.MeetEvent;
@@ -115,7 +116,7 @@ public class PRoPHETProtocol extends MessageTransmissionProtocol {
 	}
 
 	@Override
-	protected boolean shouldTransfer(Node fromNode, Node toNode, Message message) {
+	protected boolean shouldTransfer(Node fromNode, Node toNode, MessageCopy message) {
 		long destNodeId = message.getDestinationNode();
 		if (destNodeId == toNode.getId()) {
 			return true;

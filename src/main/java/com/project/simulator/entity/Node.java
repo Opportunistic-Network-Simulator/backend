@@ -1,9 +1,6 @@
 package com.project.simulator.entity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.project.interfaces.commandLine.report.CommandLineReporter;
 import lombok.Getter;
@@ -15,60 +12,58 @@ public class Node {
 	
 	private long id;
 	private long capacity;
-	private List<Message> messages;
+	private List<Long> deliveredMessageIds;
+	private Queue<MessageCopy> buffer;
 	private Map<String, String> storedProperties = new HashMap<>();
 	CommandLineReporter reporter;
 	
 	public Node(long id, long capacity, CommandLineReporter reporter) {
 		this.id = id;
 		this.capacity = (capacity > 0) ? capacity: Long.MAX_VALUE;
-		this.messages = new ArrayList<>();
+		this.buffer = new LinkedList<>();
+		this.deliveredMessageIds = new ArrayList<>();
 		this.reporter = reporter;
 	}
 
 	public Node(long id, long capacity) {
 		this.id = id;
 		this.capacity = (capacity > 0) ? capacity: Long.MAX_VALUE;
-		this.messages = new ArrayList<>();
+		this.buffer = new LinkedList<>();
+		this.deliveredMessageIds = new ArrayList<>();
+	}
+
+	private void adjustBuffer(){
+		while (buffer.size() > this.capacity) this.buffer.remove();
 	}
 	
-	public void addMessage(Message message) {
-		this.messages.add(message);
+	public void generateMessage(MessageCopy message) {
+		this.buffer.add(message);
+		if (buffer.size() > this.capacity) adjustBuffer();
 	}
 	
-	public void receiveMessage(Message message, double instant) {
-		if(this.messages.contains(message)) {
-			return; //não recebo msg que já tenho
-			
-		}
-		if(this.messages.size() >= this.capacity) {
-			return; // rejects message if capacity is full
-		}
+	public void receiveMessage(MessageCopy message, double instant) {
 		message.notifyNewNode(this.id, instant);
-		message.incrementHop();
 		if(message.getDestinationNode() == this.id) {
-			message.setArrivalInstant(instant);
-			message.setDelay(instant - message.getGenerationInstant());
-			message.setDelivered(true);
+			this.deliveredMessageIds.add(message.getId());
 		}
-		this.messages.add(message);
+		else {
+			MessageCopy copied_message = message.createCopy();
+			this.buffer.add(copied_message);
+			adjustBuffer();
+		}
+	}
+
+	public boolean canReceive(MessageCopy message, int counter) {
+		if (message.getDestinationNode() == this.id) return !this.deliveredMessageIds.contains(message.getId());
+		return !(this.buffer.stream().anyMatch(msg -> msg.getId() == message.getId()));
 	}
 	
 	public void removeMessage(long removedMessageId) {
-		Integer index = null;
-		
-		for(Message message : this.messages) {
-			if(message.getId() == removedMessageId && message.getDestinationNode() != this.id) {
-				index = this.messages.indexOf(message);
-			}
-		}
-
-		if(index != null)
-			this.messages.remove(index.intValue());
+		this.buffer.removeIf(message -> message.getId() == removedMessageId);
 	}
 	
 	public void sendMessages(Node receiverNode, double instant) {
-		for(Message message : this.messages) {
+		for(MessageCopy message : this.buffer) {
 			if(message.getDestinationNode() != this.id) { //não envio se eu sou o destino (já chegou onde deveria)
 				receiverNode.receiveMessage(message, instant);
 			}

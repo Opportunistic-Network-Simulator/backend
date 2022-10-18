@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.project.interfaces.commandLine.report.CommandLineReporter;
-import com.project.simulator.entity.Message;
-import com.project.simulator.entity.MessageGroup;
-import com.project.simulator.entity.NodeGroup;
-import com.project.simulator.entity.SimulationReport;
+import com.project.simulator.entity.*;
 import com.project.simulator.entity.event.Event;
 import com.project.simulator.entity.event.EventQueue;
 import com.project.simulator.entity.event.MeetEvent;
@@ -84,19 +81,20 @@ public class Simulation {
 	
 	private void handleMessageGeneration(MessageGenerationEvent event) {
 		Message generatedMessage = this.messages.generateMessage(event.getOriginNodeId(), event.getDestinationNodeId(), event.instant, event.getHopLimit());
-		this.nodes.getNode(generatedMessage.getSourceNode()).addMessage(generatedMessage);
+		MessageCopy generatedCopy = generatedMessage.createCopy();
+		this.nodes.getNode(generatedMessage.getSourceNode()).generateMessage(generatedCopy);
 	}
 	
 	public SimulationReport reportSimulationResult() {
 		List<Double> delays = new ArrayList<>();
-		int i = 0;
+		int deliveredTotal = 0;
 		for(Message message : this.messages) {
 			if(message.isDelivered()) {
-				delays.add(message.getArrivalInstant() - message.getGenerationInstant());
-				i++;
+				delays.add(message.getDelay());
+				deliveredTotal++;
 			}
 		}
-		double deliveryRatio = (double) i / this.messages.getSize();
+		double deliveryRatio = (double) deliveredTotal / this.messages.getSize();
 		double averageDelay = delays.isEmpty() ? 0 : delays.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
 
 		double variance = 0;
